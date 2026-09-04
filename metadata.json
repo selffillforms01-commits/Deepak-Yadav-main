@@ -1,0 +1,6 @@
+{
+  "name": "Self Fill Forms",
+  "description": "Official Government Citizen Service Portal for Self Fill Forms (SFF) - Smart Form Assistant | Citizen Service Helper",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

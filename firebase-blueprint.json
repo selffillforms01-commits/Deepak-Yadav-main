@@ -1,0 +1,53 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "mobileNumber": { "type": "string" },
+        "role": { "type": "string" },
+        "accountStatus": { "type": "string" },
+        "emailVerified": { "type": "boolean" },
+        "profileCompletion": { "type": "number" },
+        "profileCompleted": { "type": "boolean" },
+        "sffUserId": { "type": "string" },
+        "name": { "type": "string" },
+        "mobile": { "type": "string" }
+      }
+    },
+    "UserDocuments": {
+      "title": "UserDocuments",
+      "description": "Uploaded document list",
+      "type": "object",
+      "properties": {
+        "documents": { "type": "array" }
+      }
+    },
+    "AdminStore": {
+      "title": "AdminStore",
+      "description": "Admin configuration store",
+      "type": "object",
+      "properties": {
+        "value": { "type": "object" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile records"
+    },
+    "/user_documents/{userId}": {
+      "schema": "UserDocuments",
+      "description": "User uploaded documents"
+    },
+    "/admin_store/{key}": {
+      "schema": "AdminStore",
+      "description": "Admin store settings"
+    }
+  }
+}

@@ -1,0 +1,265 @@
+﻿export type AdminTab =
+  | 'dashboard'
+  | 'users'
+  | 'services'
+  | 'jobs'
+  | 'forms'
+  | 'maintenance'
+  | 'notifications'
+  | 'reports'
+  | 'accounts'
+  | 'admins'
+  | 'settings';
+
+export type UserStatus = 'Active' | 'Blocked' | 'Pending Verification';
+
+export interface AdminUserRecord {
+  id: string;
+  sffUserId?: string;
+  photoUrl?: string;
+  signatureUrl?: string;
+  thumbImpressionUrl?: string;
+  name: string;
+  email: string;
+  mobile: string;
+  status: UserStatus;
+  registrationDate: string;
+  lastLogin: string;
+  aadhaarNumber?: string;
+  panNumber?: string;
+  district?: string;
+  state?: string;
+  stream?: string;
+  qualification?: string;
+  casteCategory?: string;
+  gender?: string;
+  dob?: string;
+  fatherName?: string;
+  motherName?: string;
+  fullAddress?: string;
+  pincode?: string;
+  documents?: any[];
+}
+
+export type DocumentCategory =
+  | 'Aadhaar'
+  | 'PAN'
+  | 'Passport Photo'
+  | 'Signature'
+  | 'Thumb Impression'
+  | 'Certificates';
+
+export interface AdminDocumentRecord {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  category: DocumentCategory;
+  fileName: string;
+  fileUrl: string;
+  fileSize: string;
+  uploadDate: string;
+  status: 'Verified' | 'Pending Review' | 'Rejected';
+}
+
+export interface AdminServiceRecord {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  iconName: string;
+  processingDays: number;
+  fee: string;
+  enabled: boolean;
+  totalSubmissions: number;
+  createdDate: string;
+}
+
+export type FormStatus = 'Pending' | 'Approved' | 'Rejected' | 'Under Review';
+
+export interface AdminFormRecord {
+  id: string;
+  formNumber: string;
+  serviceId: string;
+  serviceTitle: string;
+  applicantId: string;
+  applicantName: string;
+  applicantEmail: string;
+  applicantMobile: string;
+  submissionDate: string;
+  status: FormStatus;
+  remarks?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  formData: Record<string, any>;
+}
+
+export type NotificationTargetMode =
+  | 'Single User'
+  | 'All Users'
+  | 'Stream Wise'
+  | 'Qualification Wise'
+  | 'District Wise'
+  | 'Category Wise'
+  | 'Job Category Wise';
+
+export interface AdminNotificationRecord {
+  id: string;
+  title: string;
+  message: string;
+  notificationType?: 'Job Alert' | 'Personal Message' | 'Application Status';
+  targetAudience: 'All Users' | 'Selected Users' | 'Admins Only';
+  targetMode?: NotificationTargetMode;
+  targetValue?: string; // User ID, Stream, Qualification, or District Name
+  attachmentName?: string;
+  attachmentUrl?: string;
+  priority: 'High' | 'Medium' | 'Low';
+  sendOption?: 'Send Now' | 'Schedule';
+  scheduledDate?: string;
+  sentDate: string;
+  status: 'Sent' | 'Scheduled' | 'Draft';
+  createdBy: string;
+}
+
+export type AdminRole = 'Super Admin' | 'Admin' | 'Operator' | 'Maintenance';
+
+export interface AdminAccountRecord {
+  id: string;
+  name: string;
+  email: string;
+  role: AdminRole;
+  status: 'Active' | 'Inactive';
+  createdDate: string;
+  lastActive: string;
+  avatarUrl?: string;
+}
+
+export interface AdminSystemSettings {
+  appName: string;
+  appLogoUrl: string;
+  paymentMerchantName?: string;
+  themeMode: 'dark' | 'light' | 'system';
+  smtpHost: string;
+  smtpPort: string;
+  smtpEmail: string;
+  emailNotificationsEnabled: boolean;
+  twoFactorAuthRequired: boolean;
+  maintenanceMode: boolean;
+  autoBackupInterval: 'Daily' | 'Weekly' | 'Monthly' | 'Disabled';
+  lastBackupTimestamp?: string;
+  // Splash Screen Image Settings
+  splashEnabled?: boolean;
+  splashImageUrl?: string;
+  splashDurationSeconds?: number;
+  // Dynamic Razorpay Payment Gateway Settings (Managed strictly from Admin Panel -> Settings -> My Keys)
+  razorpayEnabled?: boolean;
+  razorpayMode?: 'test' | 'live';
+  razorpayKeyId?: string;
+  razorpayKeySecret?: string;
+  razorpayWebhookSecret?: string;
+  // Gemini AI & Resend API Keys (Managed directly from Admin Panel -> Settings -> My Keys)
+  geminiApiKey?: string;
+  resendApiKey?: string;
+  resendFromEmail?: string;
+}
+
+export interface AdminActivityLog {
+  id: string;
+  timestamp: string;
+  adminName: string;
+  adminEmail: string;
+  action: string;
+  category: 'User' | 'Document' | 'Service' | 'Form' | 'System' | 'Security';
+  details: string;
+  ipAddress: string;
+}
+
+export interface TransactionRecord {
+  id: string;
+  type: 'Credit' | 'Debit';
+  amount: number;
+  category:
+    | 'Service Fee'
+    | 'Govt Job Application'
+    | 'Admission Fee'
+    | 'Refund'
+    | 'Portal Expense'
+    | 'Commission'
+    | 'Other';
+  description: string;
+  applicantId?: string;
+  applicantName?: string;
+  applicantMobile?: string;
+  paymentMethod: 'UPI' | 'Cash' | 'Card' | 'NetBanking' | 'Wallet';
+  utrNumber?: string;
+  date: string;
+  status: 'Completed' | 'Pending' | 'Failed';
+  remarks?: string;
+}
+
+export type MaintenanceTaskStatus =
+  | 'Pending Assignment'
+  | 'Sent to Maintenance'
+  | 'In Progress'
+  | 'Completed'
+  | 'On Hold';
+
+export interface MaintenanceTaskRecord {
+  id: string;
+  taskNumber: string;
+  sourceType: 'Form Submission' | 'User Payment' | 'System Maintenance';
+  sourceId?: string; // Form ID or Txn ID
+  title: string;
+  applicantName?: string;
+  applicantMobile?: string;
+  applicantEmail?: string;
+  amount?: number;
+  assignedStaffId?: string;
+  assignedStaffName?: string;
+  assignedStaffRole?: string;
+  adminRemarks?: string;
+  staffRemarks?: string;
+  status: MaintenanceTaskStatus;
+  createdDate: string;
+  assignedDate?: string;
+  completedDate?: string;
+  priority: 'High' | 'Medium' | 'Low';
+}
+
+export interface MaintenanceStaffRecord {
+  id: string;
+  name: string;
+  username: string;
+  password?: string;
+  email: string;
+  phone: string;
+  role: 'Maintenance Specialist' | 'Data Entry Operator' | 'Form Verification Officer' | 'Staff Member';
+  activeTasksCount: number;
+  completedTasksCount: number;
+  status: 'Active' | 'Busy' | 'Offline';
+}
+
+export type AdminJobCategory = 'Odisha Govt' | 'Central Govt' | 'Private';
+
+export type AdminJobStatus = 'Active' | 'Inactive';
+
+export interface AdminJobRecord {
+  id: string;
+  title: string;
+  organization: string;
+  category: AdminJobCategory;
+  description: string;
+  qualification: string;
+  ageLimit?: string;
+  salary?: string;
+  applicationFee?: string;
+  applyLink?: string;
+  startDate: string;
+  lastDate: string;
+  requiredDocuments?: string[];
+  status: AdminJobStatus;
+  createdDate: string;
+  updatedDate?: string;
+}
+
+

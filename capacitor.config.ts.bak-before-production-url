@@ -1,0 +1,14 @@
+﻿import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'com.deepak.sff',
+  appName: 'Self Fill Forms',
+  webDir: 'dist',
+
+  server: {
+    url: 'http://10.179.131.194:3000',
+    cleartext: true
+  }
+};
+
+export default config;

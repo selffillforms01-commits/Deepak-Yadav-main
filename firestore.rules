@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+    match /admin_store/{docId} {
+      allow read, write: if true;
+    }
+    match /user_documents/{userId} {
+      allow read, write: if true;
+    }
+    match /service_requests/{requestId} {
+      allow read, write: if true;
+    }
+    match /notifications/{notifId} {
+      allow read, write: if true;
+    }
+    match /razorpay_orders/{orderId} {
+      allow read, write: if true;
+    }
+    match /razorpay_payments/{paymentId} {
+      allow read, write: if true;
+    }
+    match /processed_webhook_events/{eventId} {
+      allow read, write: if true;
+    }
+    match /payment_audit_logs/{auditId} {
+      allow read, write: if true;
+    }
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+

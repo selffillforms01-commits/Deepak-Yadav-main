@@ -1,0 +1,946 @@
+﻿import { Share } from '@capacitor/share';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  Home, 
+  FileText, 
+  Wrench, 
+  Bell, 
+  User, 
+  ShieldCheck, 
+  LogOut, 
+  Sparkles,
+  Search,
+  Bot,
+  ArrowLeft,
+  Sun,
+  Moon,
+  ClipboardList,
+  X,
+  Clock,
+  Globe,
+  Check,
+  Headphones,
+  MoreVertical,
+  Share2,
+  Info
+} from 'lucide-react';
+import { DashboardTab, UserProfile } from '../../types';
+import { useLanguage, Language } from '../../context/LanguageContext';
+import { HomePage } from './HomePage';
+import { DocumentsPage } from './DocumentsPage';
+import { ServicesPage, ServicesMainView } from './ServicesPage';
+import { NotificationsPage } from './NotificationsPage';
+import { ProfilePage } from './ProfilePage';
+import { AIAssistantPage } from './AIAssistantPage';
+import { HelpSupportModal } from '../HelpSupportModal';
+import { adminStore } from '../admin/adminStore';
+import { AdminFormRecord } from '../admin/AdminTypes';
+
+interface DashboardLayoutProps {
+  user: UserProfile;
+  currentTab: DashboardTab;
+  onTabChange: (tab: DashboardTab) => void;
+  onLogout: () => void;
+  onUpdateUser: (updated: UserProfile) => void;
+  logoUrl: string;
+  isImpersonating?: boolean;
+  onReturnToAdmin?: () => void;
+}
+
+interface NavState {
+  tab: DashboardTab;
+  servicesSubView?: ServicesMainView;
+  aiSubView?: 'chat' | 'analytics';
+}
+
+export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+  user,
+  currentTab,
+  onTabChange,
+  onLogout,
+  onUpdateUser,
+  logoUrl,
+  isImpersonating,
+  onReturnToAdmin,
+}) => {
+  const { language, setLanguage, t } = useLanguage();
+
+  const [navHistory, setNavHistory] = useState<NavState[]>([
+    { tab: currentTab, servicesSubView: 'main', aiSubView: 'chat' }
+  ]);
+
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showRequestsModal, setShowRequestsModal] = useState(false);
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const currentState = navHistory[navHistory.length - 1] || {
+    tab: currentTab,
+    servicesSubView: 'main',
+    aiSubView: 'chat'
+  };
+
+  const servicesSubView = currentState.servicesSubView || 'main';
+  const aiSubView = currentState.aiSubView || 'chat';
+
+  // HANDLE TAB CHANGE
+  const handleTabChange = (tab: DashboardTab) => {
+    setShowProfileMenu(false);
+    setShowRequestsModal(false);
+    setShowConnectModal(false);
+
+    if (tab !== currentTab || servicesSubView !== 'main' || aiSubView !== 'chat') {
+      const newState: NavState = { tab, servicesSubView: 'main', aiSubView: 'chat' };
+      setNavHistory((prev) => [...prev, newState]);
+      try {
+        window.history.pushState({ tab }, '');
+      } catch (e) {
+        // Safe fallback
+      }
+      onTabChange(tab);
+    }
+  };
+
+  // HANDLE SERVICES SUB VIEW CHANGE
+  const handleServicesViewChange = (view: ServicesMainView) => {
+    if (view !== servicesSubView) {
+      const newState: NavState = { tab: 'services', servicesSubView: view, aiSubView: 'chat' };
+      setNavHistory((prev) => [...prev, newState]);
+      try {
+        window.history.pushState({ tab: 'services', view }, '');
+      } catch (e) {
+        // Safe fallback
+      }
+    }
+  };
+
+  // HANDLE AI ASSISTANT SUB VIEW CHANGE
+  const handleAiViewChange = (view: 'chat' | 'analytics') => {
+    if (view !== aiSubView) {
+      const newState: NavState = { tab: 'ai-assistant', servicesSubView: 'main', aiSubView: view };
+      setNavHistory((prev) => [...prev, newState]);
+      try {
+        window.history.pushState({ tab: 'ai-assistant', view }, '');
+      } catch (e) {
+        // Safe fallback
+      }
+    }
+  };
+
+  // SHARE APP HANDLER
+  const handleShareApp = async () => {
+    try {
+      await Share.share({
+        title: 'SELF FILL FORMS',
+        text: 'SELF FILL FORMS - Odisha Government Services & Forms',
+        url: 'https://self-fill-forms.pages.dev/update/SELF-FILL-FORMS.apk',
+        dialogTitle: 'Share SELF FILL FORMS',
+      });
+    } catch (error) {
+      console.error('Share failed:', error);
+    }
+  };
+  // STEP BY STEP BACK BUTTON HANDLER
+  const handleBack = () => {
+    // 1. Close open modals first
+    if (showRequestsModal || showProfileMenu) {
+      setShowRequestsModal(false);
+      setShowProfileMenu(false);
+      return;
+    }
+
+    // 2. Step back through navigation history
+    if (navHistory.length > 1) {
+      const updatedHistory = [...navHistory];
+      updatedHistory.pop();
+      const prev = updatedHistory[updatedHistory.length - 1];
+      setNavHistory(updatedHistory);
+
+      if (prev.tab !== currentTab) {
+        onTabChange(prev.tab);
+      }
+    } else if (currentTab !== 'home' || servicesSubView !== 'main' || aiSubView !== 'chat') {
+      // Return to home tab root if stack is empty but we are not on main home
+      setNavHistory([{ tab: 'home', servicesSubView: 'main', aiSubView: 'chat' }]);
+      if (currentTab !== 'home') {
+        onTabChange('home');
+      }
+    }
+  };
+
+  // Listen to browser / device back button
+  useEffect(() => {
+    const onPopState = () => {
+      handleBack();
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => {
+      window.removeEventListener('popstate', onPopState);
+    };
+  }, [navHistory, showRequestsModal, showProfileMenu, currentTab, servicesSubView, aiSubView]);
+
+  const navItems: { id: DashboardTab; label: string; icon: React.FC<{ className?: string }> }[] = [
+    { id: 'home', label: t('nav.home', 'Home'), icon: Home },
+    { id: 'services', label: t('nav.services', 'Services'), icon: Wrench },
+    { id: 'notifications', label: t('nav.notifications', 'Notifications'), icon: Bell },
+    { id: 'ai-assistant', label: t('nav.aiAssistant', 'AI Assistant'), icon: Bot },
+    { id: 'profile', label: t('nav.profile', 'Profile'), icon: User },
+  ];
+
+  const PAGE_TITLES: Record<DashboardTab, string> = {
+    home: t('nav.home', 'Home'),
+    services: t('nav.services', 'Services & Forms'),
+    notifications: t('nav.notifications', 'Notifications'),
+    'ai-assistant': t('nav.aiAssistant', 'AI Assistant'),
+    profile: t('nav.profile', 'My Profile'),
+    documents: t('nav.documents', 'My Documents'),
+  };
+
+  interface UserRequestItem {
+    id: string;
+    formName: string;
+    date: string;
+    status: string;
+    statusColor: string;
+    remarks?: string;
+  }
+
+  const [allForms, setAllForms] = useState<AdminFormRecord[]>(() => adminStore.getForms());
+
+  useEffect(() => {
+    const loadForms = () => {
+      setAllForms(adminStore.getForms());
+    };
+    loadForms();
+    const unsubscribe = adminStore.subscribe(loadForms);
+    return () => unsubscribe();
+  }, []);
+
+  const uEmail = (user.email || '').toLowerCase().trim();
+  const uMobile = (user.mobile || '').toLowerCase().trim();
+  const uId = (user.sffUserId || user.userId || '').toLowerCase().trim();
+
+  const myForms = allForms.filter((f) => {
+    return (
+      (!!uEmail && f.applicantEmail.toLowerCase().includes(uEmail)) ||
+      (!!uMobile && f.applicantMobile.toLowerCase().includes(uMobile)) ||
+      (!!uId && f.applicantId.toLowerCase().includes(uId))
+    );
+  });
+
+  const userRequests: UserRequestItem[] = myForms.map((f) => {
+    let statusColor = 'bg-blue-50 text-[#0B3B8C] border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800';
+    if (f.status === 'Approved') statusColor = 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800';
+    if (f.status === 'Rejected') statusColor = 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800';
+    if (f.status === 'Under Review') statusColor = 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800';
+
+    return {
+      id: f.formNumber || f.id,
+      formName: f.serviceTitle || 'Application Request',
+      date: f.submissionDate ? new Date(f.submissionDate).toLocaleDateString('en-IN') : 'Recently',
+      status: f.status || 'Pending',
+      statusColor,
+      remarks: f.remarks,
+    };
+  });
+
+  const isAtRootHome = currentTab === 'home' && servicesSubView === 'main' && aiSubView === 'chat' && navHistory.length <= 1 && !showRequestsModal && !showProfileMenu;
+
+  return (
+    <div className={`min-h-screen flex flex-col font-sans selection:bg-[#0B3B8C] selection:text-white pb-24 w-full max-w-full overflow-x-hidden transition-colors duration-200 ${
+      isDarkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-900'
+    }`}>
+      {/* Admin Impersonation Mode Banner */}
+      {isImpersonating && (
+        <div className="bg-amber-400 dark:bg-amber-500 text-slate-950 px-4 py-1.5 text-xs font-bold flex flex-wrap items-center justify-between gap-2 shadow-md z-50 sticky top-0 border-b border-amber-600">
+          <div className="flex items-center gap-2 min-w-0">
+            <ShieldCheck className="w-5 h-5 text-slate-950 shrink-0" />
+            <p className="truncate">
+              <strong>Admin Mode Active:</strong> Logged in as <u className="font-black text-slate-950">{user.name || 'User'}</u> ({user.email || user.mobile || 'Citizen'}). Accessing full profile, uploaded documents & records.
+            </p>
+          </div>
+          <button
+            onClick={onReturnToAdmin}
+            className="px-3.5 py-1.5 bg-slate-950 hover:bg-slate-900 text-amber-300 rounded-xl text-xs font-black shadow-md transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+          >
+            <span>ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Return to Admin Panel ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â</span>
+          </button>
+        </div>
+      )}
+
+      {/* Top Header Bar */}
+      <header className={`fixed top-0 left-0 right-0 z-[100] pt-2 bg-clip-padding isolate backdrop-blur-md border-b shadow-xs px-3 sm:px-8 py-2 w-full max-w-full transition-colors ${
+        isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200/80'
+      }`}>
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
+          {/* Top Left: Logo when at root Home, Step-by-Step Back Button everywhere else */}
+          {isAtRootHome ? (
+            <div className="flex items-center gap-2.5 cursor-pointer shrink-0" onClick={() => handleTabChange('home')}>
+              <img
+                src={logoUrl}
+                alt="SFF Logo"
+                className="h-8 sm:h-9 w-auto object-contain shrink-0"
+                referrerPolicy="no-referrer"
+              />
+              <div className="hidden sm:block truncate">
+                <div className="text-xs font-bold text-[#0B3B8C] tracking-tight">{t('header.title', 'Self Fill Forms Portal')}</div>
+                <div className="text-[10px] text-slate-500 font-medium">{t('header.subtitle', 'Citizen Smart Assistant')}</div>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleBack}
+              className="flex items-center gap-2 px-3.5 py-1.5 bg-[#0B3B8C] hover:bg-blue-800 text-white rounded-full text-xs font-bold transition-all shadow-2xs cursor-pointer shrink-0"
+              title="Go Back Step-by-Step"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{t('header.back', 'Back')}</span>
+            </button>
+          )}
+
+          {/* Center Page Title */}
+          <div className="flex-1 text-center min-w-0 px-2">
+            <h1 className={`text-sm sm:text-base font-black tracking-tight truncate ${
+              isDarkMode ? 'text-blue-400' : 'text-[#0B3B8C]'
+            }`}>
+              {PAGE_TITLES[currentTab] || 'Dashboard'}
+            </h1>
+          </div>
+
+          {/* User Profile Pill with Dropdown */}
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className={`flex items-center gap-2 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer border ${
+                isDarkMode 
+                  ? 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700' 
+                  : 'bg-slate-100 hover:bg-slate-200/80 text-slate-700 border-slate-200/60'
+              }`}
+            >
+              <MoreVertical className="w-5 h-5" />
+            </button>
+
+            {/* Popup Menu */}
+            {showProfileMenu && (
+              <>
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setShowProfileMenu(false)} 
+                />
+                <div className={`absolute right-0 top-full mt-2 w-64 rounded-2xl shadow-2xl border py-1 z-50 overflow-hidden text-xs animate-in fade-in zoom-in-95 duration-150 ${
+                  isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-white border-slate-200 text-slate-800'
+                }`}>
+                  {/* User Info Header */}
+                  <div className={`px-4 py-1.5 border-b ${isDarkMode ? 'border-slate-700 bg-slate-800/50' : 'border-slate-100 bg-slate-50/80'}`}>
+                    <p className="font-bold truncate text-sm">{user.name || 'Citizen User'}</p>
+                    <p className={`text-[11px] font-semibold truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {user.mobileNumber || '+91 9692878746'}
+                    </p>
+                  </div>
+
+                  <div className="p-1 space-y-1">
+                    {/* 1. Dark & Light Theme Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsDarkMode(!isDarkMode);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                        isDarkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 font-bold">
+                        <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                          isDarkMode ? 'bg-amber-900/50 text-amber-300' : 'bg-amber-50 text-amber-600'
+                        }`}>
+                          {isDarkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                        </div>
+                        <div>
+                          <span className="block font-bold">{t('menu.theme', '1. Theme Mode')}</span>
+                          <span className={`text-[10px] font-normal block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                            {isDarkMode ? 'Dark Mode ON' : 'Light Mode ON'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className={`w-10 h-5 rounded-full p-0.5 transition-colors ${isDarkMode ? 'bg-blue-600' : 'bg-slate-300'} flex items-center shrink-0`}>
+                        <div className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform ${isDarkMode ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </div>
+                    </button>
+
+                    {/* 2. My Requests */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        setShowRequestsModal(true);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                        isDarkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 font-bold">
+                        <div className="w-7 h-7 rounded-lg bg-blue-50 text-[#0B3B8C] flex items-center justify-center shrink-0">
+                          <ClipboardList className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <span className="block font-bold">{t('menu.requests', '2. My Requests')}</span>
+                          <span className={`text-[10px] font-normal block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                            {t('menu.requestsSub', 'Application status')}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-bold bg-blue-50 text-[#0B3B8C] px-2 py-0.5 rounded-md border border-blue-200 shrink-0">
+                        {userRequests.length} {t('active', 'Active')}
+                      </span>
+                    </button>
+
+                    {/* 3. Connect / Help & Support */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        setShowConnectModal(true);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left rounded-xl flex items-center justify-between transition-colors cursor-pointer ${
+                        isDarkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 font-bold">
+                        <div className="w-7 h-7 rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-400 flex items-center justify-center shrink-0">
+                          <Headphones className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <span className="block font-bold">{t('menu.connect', '3. Connect / Support')}</span>
+                          <span className={`text-[10px] font-normal block ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                            {t('menu.connectSub', 'Helpline, Admin & Support')}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-bold bg-teal-50 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300 px-2 py-0.5 rounded-md border border-teal-200 dark:border-teal-800 shrink-0">
+                        Help
+                      </span>
+                    </button>
+
+                    {/* 4. Language Selection */}
+                    <div className={`p-2.5 rounded-xl border my-1 ${
+                      isDarkMode
+                        ? 'bg-slate-800/80 border-slate-700'
+                        : 'bg-slate-50/80 border-slate-200/80'
+                    }`}>
+                      <div className="flex items-center gap-2 mb-2 font-bold text-xs text-[#0B3B8C] dark:text-blue-400">
+                        <div className="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                          <Globe className="w-3.5 h-3.5" />
+                        </div>
+
+                        <div>
+                          <span className="block">4. Language</span>
+                          <span className={`text-[10px] font-normal ${
+                            isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                          }`}>
+                            Select your preferred language
+                          </span>
+                        </div>
+                      </div>
+
+                      <select
+                        value={language}
+                        onChange={(e) => {
+                          setLanguage(e.target.value as Language);
+                        }}
+                        className={`w-full h-10 px-3 rounded-xl border text-xs font-bold outline-none cursor-pointer transition-all ${
+                          isDarkMode
+                            ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-500'
+                            : 'bg-white border-slate-200 text-slate-700 focus:border-[#0B3B8C]'
+                        }`}
+                      >
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                        <option value="or">Odia</option>
+                      </select>
+                    </div>
+
+
+                    <div className={`border-t my-1 ${isDarkMode ? 'border-slate-700' : 'border-slate-100'}`} />
+
+                    {/* 5. Share App */}
+                    <button
+                      type="button"
+                      onClick={handleShareApp}
+                      className="w-full px-3 py-1.5 text-left rounded-xl flex items-center gap-2.5 font-bold transition-colors cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700"
+                    >
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                        <Share2 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="block font-bold">5. Share App</span>
+                        <span className="text-[10px] font-normal block text-slate-500 dark:text-slate-400">
+                          Share SELF FILL FORMS with friends & family
+                        </span>
+                      </div>
+                    </button>
+
+                    {/* 6. About SFF */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        setShowAboutModal(true);
+                      }}
+                      className={`w-full px-3 py-1.5 text-left rounded-xl flex items-center gap-2.5 font-bold transition-colors cursor-pointer ${
+                        isDarkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                        isDarkMode
+                          ? 'bg-blue-950/60 text-blue-400'
+                          : 'bg-blue-50 text-[#0B3B8C]'
+                      }`}>
+                        <Info className="w-4 h-4" />
+                      </div>
+
+                      <div>
+                        <span className="block font-bold">6. About SFF</span>
+                        <span className={`text-[10px] font-normal block ${
+                          isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                        }`}>
+                          About SELF FILL FORMS & our services
+                        </span>
+                      </div>
+                    </button>
+
+                    {/* 6. Logout */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        onLogout();
+                      }}
+                      className="w-full px-3 py-1.5 text-left text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl flex items-center gap-2.5 font-bold transition-colors cursor-pointer"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-red-50 dark:bg-red-950/60 text-red-600 flex items-center justify-center shrink-0">
+                        <LogOut className="w-4 h-4" />
+                      </div>
+                      <span>{t('menu.logout', '7. Logout')}</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <main className="relative z-0 flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 pt-16 sm:pt-24 overflow-x-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {currentTab === 'home' && (
+              <HomePage user={user} userName={user.name} onNavigateTab={handleTabChange} logoUrl={logoUrl} />
+            )}
+            {currentTab === 'services' && (
+              <ServicesPage 
+                user={user} 
+                currentView={servicesSubView} 
+                onViewChange={handleServicesViewChange} 
+                onBack={handleBack}
+                onNavigateTab={handleTabChange}
+              />
+            )}
+            {currentTab === 'notifications' && <NotificationsPage user={user} />}
+            {currentTab === 'ai-assistant' && (
+              <AIAssistantPage 
+                user={user} 
+                onNavigateTab={handleTabChange} 
+                activeView={aiSubView} 
+                onActiveViewChange={handleAiViewChange} 
+                onBack={handleBack}
+              />
+            )}
+            {currentTab === 'documents' && (
+              <DocumentsPage user={user} onUpdateUser={onUpdateUser} />
+            )}
+            {currentTab === 'profile' && (
+              <ProfilePage user={user} onLogout={onLogout} onUpdateUser={onUpdateUser} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      {/* Fixed Bottom Navigation Bar */}
+      <nav className={`fixed bottom-0 left-0 right-0 z-40 backdrop-blur-xl border-t shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-2 sm:px-6 py-1 ${
+        isDarkMode ? 'bg-slate-900/95 border-slate-800' : 'bg-white/95 border-slate-200/90'
+      }`}>
+        <div className="max-w-md sm:max-w-2xl mx-auto flex items-center justify-around">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleTabChange(item.id)}
+                className={`relative flex flex-col items-center justify-center py-1 px-2 sm:px-4 rounded-2xl transition-all duration-200 group ${
+                  isActive
+                    ? 'text-[#0B3B8C] dark:text-blue-400'
+                    : isDarkMode ? 'text-slate-500 hover:text-slate-300' : 'text-slate-400 hover:text-slate-600'
+                }`}
+              >
+                {/* Active Pill Background Highlight */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTabBackground"
+                    className={`absolute inset-0 rounded-2xl border ${
+                      isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-blue-50/80 border-blue-100'
+                    }`}
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                  />
+                )}
+
+                <div className="relative z-10 flex flex-col items-center gap-0.5">
+                  <div className="relative">
+                    <Icon
+                      className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-200 ${
+                        isActive ? 'scale-110 text-[#0B3B8C] dark:text-blue-400' : 'group-hover:scale-105'
+                      }`}
+                    />
+                    {item.id === 'notifications' && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#E5A100] ring-2 ring-white dark:ring-slate-900" />
+                    )}
+                  </div>
+
+                  <span
+                    className={`text-[10px] sm:text-xs font-bold tracking-tight transition-colors ${
+                      isActive ? 'text-[#0B3B8C] dark:text-blue-400' : isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* MODAL 2: MY REQUESTS */}
+      {showRequestsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+          <div className={`w-full max-w-lg rounded-3xl p-5 shadow-2xl border ${
+            isDarkMode ? 'bg-slate-800 border-slate-700 text-slate-100' : 'bg-white border-slate-200 text-slate-900'
+          }`}>
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 font-black text-base text-[#0B3B8C] dark:text-blue-400">
+                <ClipboardList className="w-5 h-5" />
+                <span>My Requests & Form Submissions</span>
+              </div>
+              <button
+                onClick={() => setShowRequestsModal(false)}
+                className="p-1 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="my-4 space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+              {userRequests.length > 0 ? (
+                userRequests.map((req) => (
+                  <div key={req.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-700/60 border border-slate-200/80 dark:border-slate-700 flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono font-extrabold text-[#0B3B8C] dark:text-blue-300">{req.id}</span>
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${req.statusColor}`}>
+                        {req.status}
+                      </span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-800 dark:text-slate-100">{req.formName}</div>
+                    {req.remarks && (
+                      <div className="text-[11px] text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-600/60">
+                        <span className="font-bold text-slate-700 dark:text-slate-200">Admin Remarks:</span> {req.remarks}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-600">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" /> Submitted on {req.date}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowRequestsModal(false);
+                          handleTabChange('notifications');
+                        }}
+                        className="text-[#0B3B8C] dark:text-blue-400 font-bold hover:underline cursor-pointer"
+                      >
+                        Track Status ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8 space-y-2.5 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 px-4">
+                  <ClipboardList className="w-8 h-8 text-slate-300 dark:text-slate-500 mx-auto" />
+                  <p className="text-xs font-bold text-slate-700 dark:text-slate-200">No active requests or submissions</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mx-auto">
+                    You have not submitted any forms or applications yet. Your active form submissions will appear here for tracking.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={() => setShowRequestsModal(false)}
+              className="w-full py-1.5 bg-[#0B3B8C] text-white font-bold rounded-xl text-xs hover:bg-blue-800 transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ABOUT SFF MODAL */}
+      <AnimatePresence>
+        {showAboutModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowAboutModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 12 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className={`w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl border shadow-2xl ${
+                isDarkMode
+                  ? 'bg-slate-900 border-slate-700 text-white'
+                  : 'bg-white border-slate-200 text-slate-900'
+              }`}
+            >
+              {/* Header */}
+              <div className={`relative px-5 pt-5 pb-4 border-b ${
+                isDarkMode ? 'border-slate-700' : 'border-slate-100'
+              }`}>
+                <button
+                  type="button"
+                  onClick={() => setShowAboutModal(false)}
+                  className={`absolute right-4 top-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                    isDarkMode
+                      ? 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                  }`}
+                  aria-label="Close About SFF"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center gap-3 pr-8">
+                  <div className="w-14 h-14 rounded-2xl bg-[#0B3B8C] flex items-center justify-center shadow-lg overflow-hidden">
+                    <img
+                      src={logoUrl || '/sff-logo.svg'}
+                      alt="SELF FILL FORMS"
+                      className="w-11 h-11 object-contain"
+                    />
+                  </div>
+
+                  <div>
+                    <h2 className="text-lg font-black tracking-tight">
+                      SELF FILL FORMS
+                    </h2>
+                    <p className={`text-[11px] font-semibold ${
+                      isDarkMode ? 'text-blue-400' : 'text-[#0B3B8C]'
+                    }`}>
+                      SFF Student Forms Fill Service Portal
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-5 space-y-4">
+                <div className={`rounded-2xl p-4 ${
+                  isDarkMode
+                    ? 'bg-blue-950/40 border border-blue-900/50'
+                    : 'bg-blue-50 border border-blue-100'
+                }`}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[#0B3B8C] text-white flex items-center justify-center shrink-0">
+                      <ShieldCheck className="w-5 h-5" />
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-black">
+                        About SELF FILL FORMS
+                      </h3>
+                      <p className={`mt-1.5 text-xs leading-5 ${
+                        isDarkMode ? 'text-slate-300' : 'text-slate-600'
+                      }`}>
+                        SELF FILL FORMS (SFF) is a citizen-focused digital
+                        service platform designed to make government,
+                        application and document-related services easier to
+                        access and manage from one place.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className={`rounded-2xl p-3 border ${
+                    isDarkMode
+                      ? 'bg-slate-800/70 border-slate-700'
+                      : 'bg-slate-50 border-slate-200'
+                  }`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-wider ${
+                      isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                    }`}>
+                      Platform
+                    </p>
+                    <p className="mt-1 text-xs font-black">
+                      Students Forms Fill Services
+                    </p>
+                  </div>
+
+                  <div className={`rounded-2xl p-3 border ${
+                    isDarkMode
+                      ? 'bg-slate-800/70 border-slate-700'
+                      : 'bg-slate-50 border-slate-200'
+                  }`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-wider ${
+                      isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                    }`}>
+                      Region
+                    </p>
+                    <p className="mt-1 text-xs font-black">
+                      Odisha, India
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-black uppercase tracking-wider mb-2">
+                    What SFF Provides
+                  </h3>
+
+                  <div className="space-y-2">
+                    {[
+                      'Government & citizen service assistance',
+                      'Application and request tracking',
+                      'Secure document management',
+                      'Service notifications and application updates',
+                      'Dedicated support and assistance',
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className={`flex items-center gap-2.5 rounded-xl px-3 py-1.5 ${
+                          isDarkMode ? 'bg-slate-800/60' : 'bg-slate-50'
+                        }`}
+                      >
+                        <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span className="text-xs font-semibold">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={`rounded-2xl p-4 border ${
+                  isDarkMode
+                    ? 'bg-slate-800/50 border-slate-700'
+                    : 'bg-white border-slate-200'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className={`text-[10px] font-bold uppercase tracking-wider ${
+                        isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                      }`}>
+                        Application
+                      </p>
+                      <p className="text-xs font-black mt-1">
+                        SELF FILL FORMS (SFF)
+                      </p>
+                    </div>
+
+                    <div className={`px-2.5 py-1 rounded-lg text-[10px] font-black ${
+                      isDarkMode
+                        ? 'bg-emerald-950/50 text-emerald-400'
+                        : 'bg-emerald-50 text-emerald-700'
+                    }`}>
+                      Active
+                    </div>
+                  </div>
+
+                  <div className={`mt-3 pt-3 border-t text-[10px] ${
+                    isDarkMode
+                      ? 'border-slate-700 text-slate-400'
+                      : 'border-slate-100 text-slate-500'
+                  }`}>
+                    Please use the official SFF application interface for
+                    submitting information and accessing available services.
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowAboutModal(false)}
+                  className="w-full py-1 rounded-xl bg-[#0B3B8C] hover:bg-blue-800 text-white text-xs font-black transition-colors shadow-lg cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* CONNECT / HELP & SUPPORT MODAL */}
+      <HelpSupportModal
+        isOpen={showConnectModal}
+        onClose={() => setShowConnectModal(false)}
+      />
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

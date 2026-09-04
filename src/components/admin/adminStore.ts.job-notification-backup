@@ -1,0 +1,1204 @@
+import {
+  AdminUserRecord,
+  AdminDocumentRecord,
+  AdminServiceRecord,
+  AdminFormRecord,
+  AdminNotificationRecord,
+  AdminAccountRecord,
+  AdminSystemSettings,
+  AdminActivityLog,
+  TransactionRecord,
+  MaintenanceTaskRecord,
+  MaintenanceStaffRecord,
+  MaintenanceTaskStatus,
+  AdminJobRecord,
+} from './AdminTypes';
+import { db } from '../../lib/firebase';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  deleteDoc,
+  onSnapshot,
+  collection,
+  query,
+  orderBy,
+} from 'firebase/firestore';
+
+const STORAGE_KEYS = {
+  USERS: 'sff_admin_users',
+  DOCUMENTS: 'sff_admin_documents',
+  SERVICES: 'sff_admin_services',
+  FORMS: 'sff_admin_forms',
+  NOTIFICATIONS: 'sff_admin_notifications',
+  ADMINS: 'sff_admin_accounts',
+  SETTINGS: 'sff_admin_settings',
+  LOGS: 'sff_admin_activity_logs',
+  TRANSACTIONS: 'sff_admin_transactions',
+  MAINTENANCE_TASKS: 'sff_admin_maintenance_tasks',
+  MAINTENANCE_STAFF: 'sff_admin_maintenance_staff',
+  JOBS: 'sff_admin_jobs',
+};
+
+// Initial default settings if empty
+const DEFAULT_SETTINGS: AdminSystemSettings = {
+  appName: 'SELF FILL FORMS (SFF)',
+  appLogoUrl: '/sff-logo.svg',
+  paymentMerchantName: 'DEEPAK YADAV',
+  themeMode: 'dark',
+  smtpHost: 'mail.gov.in',
+  smtpPort: '587',
+  smtpEmail: 'admin-notifications@sff.gov.in',
+  emailNotificationsEnabled: true,
+  twoFactorAuthRequired: true,
+  maintenanceMode: false,
+  autoBackupInterval: 'Daily',
+  lastBackupTimestamp: new Date().toISOString(),
+  splashEnabled: true,
+  splashImageUrl: '/sff-logo.svg',
+  splashDurationSeconds: 3,
+  razorpayEnabled: true,
+  razorpayMode: 'test',
+  razorpayKeyId: '',
+  razorpayKeySecret: '',
+  razorpayWebhookSecret: '',
+  geminiApiKey: '',
+  resendApiKey: '',
+  resendFromEmail: 'onboarding@resend.dev',
+};
+
+// Default system super admin if none present
+const DEFAULT_ADMINS: AdminAccountRecord[] = [
+  {
+    id: 'ADM-001',
+    name: 'Super Administrator',
+    email: 'admin@sff.gov.in',
+    role: 'Super Admin',
+    status: 'Active',
+    createdDate: new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0],
+    lastActive: new Date().toISOString(),
+  },
+];
+
+// Default System Services
+export const DEFAULT_SERVICES: AdminServiceRecord[] = [
+  {
+    id: 'SRV-001',
+    title: 'Income Certificate',
+    category: 'Revenue & Certificates',
+    description: 'Official Tehsil / Revenue income verification certificate for scholarship and welfare schemes.',
+    iconName: 'FileText',
+    processingDays: 7,
+    fee: 'Rs.30',
+    enabled: true,
+    totalSubmissions: 42,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-002',
+    title: 'Caste Certificate',
+    category: 'Revenue & Certificates',
+    description: 'Official community category verification certificate (SC/ST/OBC/SEBC/General).',
+    iconName: 'FileCheck',
+    processingDays: 7,
+    fee: 'Rs.30',
+    enabled: true,
+    totalSubmissions: 38,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-003',
+    title: 'Residence Certificate',
+    category: 'Revenue & Certificates',
+    description: 'Official domicile & permanent resident certificate issued by District Revenue Office.',
+    iconName: 'Home',
+    processingDays: 7,
+    fee: 'Rs.30',
+    enabled: true,
+    totalSubmissions: 56,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-004',
+    title: 'Pan Card',
+    category: 'Tax & Identity',
+    description: 'New NSDL / UTITSL Permanent Account Number (PAN) Card application and correction.',
+    iconName: 'CreditCard',
+    processingDays: 10,
+    fee: 'Rs.150',
+    enabled: true,
+    totalSubmissions: 89,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-005',
+    title: 'Driving License',
+    category: 'Transport & Driving',
+    description: 'Learner & Permanent RTO Driving License online application filing and slot booking.',
+    iconName: 'Car',
+    processingDays: 15,
+    fee: 'Rs.30',
+    enabled: true,
+    totalSubmissions: 27,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-006',
+    title: 'Character Certificate',
+    category: 'Police & Verification',
+    description: 'District Police Verification & Good Conduct Character Certificate.',
+    iconName: 'ShieldCheck',
+    processingDays: 10,
+    fee: 'Rs.100',
+    enabled: true,
+    totalSubmissions: 19,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-007',
+    title: 'Employment Exchange',
+    category: 'Employment',
+    description: 'State Employment Exchange Registration & Renewal for Job Seekers.',
+    iconName: 'Briefcase',
+    processingDays: 5,
+    fee: 'Rs.50',
+    enabled: true,
+    totalSubmissions: 34,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-008',
+    title: 'Birth Certificate',
+    category: 'Civil Registration',
+    description: 'Municipal Corporation / Gram Panchayat official Birth registration & certificate.',
+    iconName: 'Baby',
+    processingDays: 5,
+    fee: 'Rs.50',
+    enabled: true,
+    totalSubmissions: 15,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-009',
+    title: 'EWS Certificate',
+    category: 'Revenue & Certificates',
+    description: 'Economically Weaker Section reservation eligibility certificate for 10% quota.',
+    iconName: 'Award',
+    processingDays: 7,
+    fee: 'Rs.50',
+    enabled: true,
+    totalSubmissions: 24,
+    createdDate: '2026-01-01',
+  },
+  {
+    id: 'SRV-010',
+    title: 'Labour Card',
+    category: 'Social Welfare',
+    description: 'Construction & Unorganized Workers Welfare Board Registration & renewal.',
+    iconName: 'HardHat',
+    processingDays: 7,
+    fee: 'Rs.30',
+    enabled: true,
+    totalSubmissions: 31,
+    createdDate: '2026-01-01',
+  },
+];
+
+const DEFAULT_MAINTENANCE_STAFF: MaintenanceStaffRecord[] = [];
+
+type StoreListener = () => void;
+
+class AdminStore {
+  private listeners: Set<StoreListener> = new Set();
+  private lastLocalUpdate: Record<string, number> = {};
+
+  constructor() {
+    this.initFirestoreSync();
+  }
+
+  private initFirestoreSync(): void {
+  try {
+    // Sync admin_store data
+    const keysToSync = [
+      STORAGE_KEYS.SETTINGS,
+      STORAGE_KEYS.NOTIFICATIONS,
+      STORAGE_KEYS.FORMS,
+      STORAGE_KEYS.SERVICES,
+      STORAGE_KEYS.DOCUMENTS,
+      STORAGE_KEYS.TRANSACTIONS,
+      STORAGE_KEYS.MAINTENANCE_TASKS,
+      STORAGE_KEYS.MAINTENANCE_STAFF,
+      STORAGE_KEYS.JOBS,
+      STORAGE_KEYS.LOGS,
+      STORAGE_KEYS.ADMINS,
+    ];
+
+    keysToSync.forEach((key) => {
+      onSnapshot(
+        doc(db, 'admin_store', key),
+        (snapshot) => {
+          if (!snapshot.exists()) return;
+
+          const data = snapshot.data();
+
+          if (data && data.value !== undefined) {
+            const firestoreTs =
+            data.updatedTimestamp ||
+            data.updatedAt || 
+            0;
+            const localTs = this.lastLocalUpdate[key] || 0;
+
+            if (firestoreTs >= localTs) {
+              try {
+                localStorage.setItem(
+                  key,
+                  JSON.stringify(data.value)
+                );
+
+                this.notify();
+              } catch (e) {
+                console.warn(
+                  `Error applying ${key} snapshot:`,
+                  e
+                );
+              }
+            }
+          }
+        },
+        (err) => {
+          console.warn(
+            `Firestore snapshot error on ${key}:`,
+            err
+          );
+        }
+      );
+    });
+
+    // IMPORTANT:
+    // Real users come from Firestore users collection.
+    onSnapshot(
+      collection(db, 'users'),
+      (snapshot) => {
+        console.log('?? FIRESTORE USERS COUNT:', snapshot.size);
+        const users: AdminUserRecord[] = snapshot.docs.map(
+          (userDoc) => {
+            const data = userDoc.data();
+
+           return {
+  id: data.sffUserId || data.userId || userDoc.id,
+  uid: data.uid || userDoc.id,
+
+  name: data.fullName || data.name || '',
+  email: data.email || '',
+  mobile: data.mobileNumber || data.mobile || '',
+
+  status:
+    data.accountStatus === 'blocked'
+      ? 'Blocked'
+      : 'Active',
+
+  registrationDate:
+    data.createdAt?.toDate?.()?.toISOString?.() ||
+    data.createdAt ||
+    new Date().toISOString(),
+
+  lastLogin:
+    data.lastLogin?.toDate?.()?.toISOString?.() ||
+    data.lastLogin ||
+    data.updatedAt?.toDate?.()?.toISOString?.() ||
+    data.updatedAt ||
+    new Date().toISOString(),
+
+  createdDate:
+    data.createdAt?.toDate?.()?.toISOString?.() ||
+    data.createdAt ||
+    new Date().toISOString(),
+
+  lastActive:
+    data.updatedAt?.toDate?.()?.toISOString?.() ||
+    data.updatedAt ||
+    new Date().toISOString(),
+} as AdminUserRecord;
+          }
+        );
+
+        localStorage.setItem(
+          STORAGE_KEYS.USERS,
+          JSON.stringify(users)
+        );
+
+        this.notify();
+      },
+      (err) => {
+        console.warn(
+          'Firestore users snapshot error:',
+          err
+        );
+      }
+    );
+
+  } catch (e) {
+    console.warn(
+      'Failed to initialize Firestore adminStore sync:',
+      e
+    );
+  }
+}
+
+  private getItem<T>(key: string, defaultValue: T): T {
+    try {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
+  private setItem<T>(key: string, value: T): void {
+    try {
+      const now = Date.now();
+      this.lastLocalUpdate[key] = now;
+      localStorage.setItem(key, JSON.stringify(value));
+      this.notify();
+      // Asynchronously sync to Cloud Firestore
+      const sanitizedValue = JSON.parse(JSON.stringify(value ?? null));
+      setDoc(
+        doc(db, 'admin_store', key),
+        { value: sanitizedValue, updatedAt: new Date().toISOString(), updatedTimestamp: now },
+        { merge: false }
+      ).catch((e) => {
+        console.warn('Failed to sync adminStore key to Firestore:', key, e);
+      });
+    } catch (e) {
+      console.error('Failed to save to localStorage:', e);
+    }
+  }
+
+  public subscribe(listener: StoreListener): () => void {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  private notify(): void {
+    queueMicrotask(() => {
+      this.listeners.forEach((l) => l());
+    });
+  }
+
+  // --- USERS ---
+  public getUsers(): AdminUserRecord[] {
+    return this.getItem<AdminUserRecord[]>(STORAGE_KEYS.USERS, []);
+  }
+
+  public saveUser(user: AdminUserRecord): void {
+  const users = this.getUsers();
+
+  const normalizedId = (user.id || '').trim().toLowerCase();
+  const normalizedEmail = (user.email || '').trim().toLowerCase();
+  const normalizedMobile = (user.mobile || '').replace(/\D/g, '');
+
+  const index = users.findIndex((u) => {
+    const existingId = (u.id || '').trim().toLowerCase();
+    const existingEmail = (u.email || '').trim().toLowerCase();
+    const existingMobile = (u.mobile || '').replace(/\D/g, '');
+
+    return (
+      (normalizedId && existingId === normalizedId) ||
+      (normalizedEmail && existingEmail === normalizedEmail) ||
+      (normalizedMobile && existingMobile === normalizedMobile)
+    );
+  });
+
+  if (index >= 0) {
+    users[index] = {
+      ...users[index],
+      ...user,
+    };
+  } else {
+    users.unshift(user);
+  }
+
+  this.setItem(STORAGE_KEYS.USERS, users);
+}
+
+  public updateUserStatus(userId: string, status: AdminUserRecord['status']): void {
+    const users = this.getUsers();
+    const updated = users.map((u) => (u.id === userId ? { ...u, status } : u));
+    this.setItem(STORAGE_KEYS.USERS, updated);
+    this.addLog('User', `Updated status of user ID ${userId} to ${status}`);
+  }
+
+  public deleteUser(userId: string): void {
+    const targetUser = this.getUsers().find((u) => u.id === userId || u.email === userId || u.mobile === userId);
+    const users = this.getUsers().filter((u) => u.id !== userId && u.email !== userId && u.mobile !== userId);
+    this.setItem(STORAGE_KEYS.USERS, users);
+    this.addLog('User', `Deleted user ID ${userId}`);
+
+    // Permanently remove from Firestore collections and local user caches
+    try {
+      const keysToDelete = [userId, targetUser?.email, targetUser?.mobile].filter(Boolean) as string[];
+      keysToDelete.forEach((key) => {
+        deleteDoc(doc(db, 'users', key)).catch(() => {});
+        deleteDoc(doc(db, 'user_documents', key)).catch(() => {});
+        deleteDoc(doc(db, 'user_profile', key)).catch(() => {});
+        const safeKey = key.replace(/[^a-zA-Z0-9_.-]/g, '_').toLowerCase();
+        localStorage.removeItem(`sff_user_profile_${safeKey}`);
+        localStorage.removeItem(`sff_user_documents_${safeKey}`);
+      });
+    } catch (e) {
+      console.warn('Failed to delete user Firestore documents:', e);
+    }
+  }
+
+  // --- DOCUMENTS ---
+  public getDocuments(): AdminDocumentRecord[] {
+    return this.getItem<AdminDocumentRecord[]>(STORAGE_KEYS.DOCUMENTS, []);
+  }
+
+  public addDocument(doc: AdminDocumentRecord): void {
+    const docs = this.getDocuments();
+    docs.unshift(doc);
+    this.setItem(STORAGE_KEYS.DOCUMENTS, docs);
+  }
+
+  public deleteDocument(docId: string): void {
+    const docs = this.getDocuments().filter((d) => d.id !== docId);
+    this.setItem(STORAGE_KEYS.DOCUMENTS, docs);
+    this.addLog('Document', `Deleted document ID ${docId}`);
+  }
+
+  public updateDocumentStatus(docId: string, status: AdminDocumentRecord['status']): void {
+    const docs = this.getDocuments();
+    const updated = docs.map((d) => (d.id === docId ? { ...d, status } : d));
+    this.setItem(STORAGE_KEYS.DOCUMENTS, updated);
+    this.addLog('Document', `Updated status of document ID ${docId} to ${status}`);
+  }
+
+  // --- SERVICES ---
+  public getServices(): AdminServiceRecord[] {
+    const services = this.getItem<AdminServiceRecord[]>(STORAGE_KEYS.SERVICES, []);
+    let list = services;
+    if (!list || list.length === 0) {
+      list = DEFAULT_SERVICES;
+    }
+    // Deduplicate by ID and Title
+    const seen = new Set<string>();
+    const cleanList: AdminServiceRecord[] = [];
+    list.forEach((s) => {
+      const key = (s.title || s.id || '').trim().toLowerCase();
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        cleanList.push(s);
+      }
+    });
+    return cleanList;
+  }
+
+  public resetDefaultServices(): void {
+    this.setItem(STORAGE_KEYS.SERVICES, DEFAULT_SERVICES);
+    this.addLog('Service', 'Reset catalog to default system services');
+  }
+
+  public saveService(service: AdminServiceRecord): void {
+    const services = this.getServices();
+    const index = services.findIndex((s) => s.id === service.id);
+    if (index >= 0) {
+      services[index] = service;
+      this.addLog('Service', `Updated service "${service.title}"`);
+    } else {
+      services.unshift(service);
+      this.addLog('Service', `Created new service "${service.title}"`);
+    }
+    this.setItem(STORAGE_KEYS.SERVICES, services);
+  }
+
+  public deleteService(serviceId: string): void {
+    const services = this.getServices();
+    const target = services.find((s) => s.id === serviceId);
+    const filtered = services.filter((s) => s.id !== serviceId);
+    this.setItem(STORAGE_KEYS.SERVICES, filtered);
+    if (target) {
+      this.addLog('Service', `Deleted service "${target.title}"`);
+    }
+  }
+
+  public toggleServiceStatus(serviceId: string): void {
+    const services = this.getServices();
+    const updated = services.map((s) =>
+      s.id === serviceId ? { ...s, enabled: !s.enabled } : s
+    );
+    this.setItem(STORAGE_KEYS.SERVICES, updated);
+    this.addLog('Service', `Toggled availability status of service ID ${serviceId}`);
+  }
+
+  // --- JOBS ---
+  public getJobs(): AdminJobRecord[] {
+    const jobs = this.getItem<AdminJobRecord[]>(
+      STORAGE_KEYS.JOBS,
+      []
+    );
+
+    return jobs
+      .filter((job) => job && job.id)
+      .sort((a, b) => {
+        const dateA = new Date(a.lastDate).getTime() || 0;
+        const dateB = new Date(b.lastDate).getTime() || 0;
+        return dateA - dateB;
+      });
+  }
+
+  public saveJob(job: AdminJobRecord): void {
+    const jobs = this.getJobs();
+    const index = jobs.findIndex((j) => j.id === job.id);
+
+    const updatedJob: AdminJobRecord = {
+      ...job,
+      updatedDate: new Date().toISOString(),
+    };
+
+    if (index >= 0) {
+      jobs[index] = updatedJob;
+      this.addLog('Service', `Updated job "${job.title}"`);
+    } else {
+      jobs.unshift(updatedJob);
+      this.addLog('Service', `Created new job "${job.title}"`);
+    }
+
+    this.setItem(STORAGE_KEYS.JOBS, jobs);
+  }
+
+  public deleteJob(jobId: string): void {
+    const jobs = this.getJobs();
+    const target = jobs.find((job) => job.id === jobId);
+
+    const filteredJobs = jobs.filter(
+      (job) => job.id !== jobId
+    );
+
+    this.setItem(STORAGE_KEYS.JOBS, filteredJobs);
+
+    if (target) {
+      this.addLog('Service', `Deleted job "${target.title}"`);
+    }
+  }
+
+  public toggleJobStatus(jobId: string): void {
+    const jobs = this.getJobs();
+
+    const updatedJobs = jobs.map((job) =>
+      job.id === jobId
+        ? {
+            ...job,
+            status:
+              job.status === 'Active'
+                ? 'Inactive'
+                : 'Active',
+            updatedDate: new Date().toISOString(),
+          }
+        : job
+    );
+
+    this.setItem(STORAGE_KEYS.JOBS, updatedJobs);
+
+    const target = jobs.find(
+      (job) => job.id === jobId
+    );
+
+    if (target) {
+      this.addLog(
+        'Service',
+        `Toggled job "${target.title}" status`
+      );
+    }
+  }
+  // --- FORMS ---
+  public getForms(): AdminFormRecord[] {
+    const forms = this.getItem<AdminFormRecord[]>(STORAGE_KEYS.FORMS, []);
+    const seen = new Set<string>();
+    const cleanForms: AdminFormRecord[] = [];
+    forms.forEach((f) => {
+      const key = f.id || f.formNumber;
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        cleanForms.push(f);
+      }
+    });
+    return cleanForms.sort((a, b) => {
+      const timeA = new Date(a.submissionDate).getTime() || 0;
+      const timeB = new Date(b.submissionDate).getTime() || 0;
+      return timeB - timeA;
+    });
+  }
+
+  public saveForm(form: AdminFormRecord): void {
+    const forms = this.getForms();
+    const index = forms.findIndex((f) => f.id === form.id || f.formNumber === form.formNumber);
+    if (index >= 0) {
+      forms[index] = form;
+    } else {
+      forms.unshift(form);
+    }
+    this.setItem(STORAGE_KEYS.FORMS, forms);
+  }
+
+  public updateFormStatus(
+  formId: string,
+  status: AdminFormRecord['status'],
+  remarks?: string,
+  reviewedBy: string = 'Super Admin'
+): void {
+  const forms = this.getForms();
+
+  const matchedForm = forms.find((f) => f.id === formId);
+
+  if (!matchedForm) return;
+
+  const updated = forms.map((f) =>
+    f.id === formId
+      ? {
+          ...f,
+          status,
+          remarks: remarks || f.remarks,
+          reviewedBy,
+          reviewedAt: new Date().toISOString(),
+        }
+      : f
+  );
+
+  this.setItem(STORAGE_KEYS.FORMS, updated);
+  this.addLog('Form', `Form #${formId} set to status "${status}"`);
+
+  const recipient =
+    matchedForm.applicantEmail ||
+    matchedForm.applicantMobile ||
+    matchedForm.applicantId;
+
+  this.saveNotification({
+    id: `NTF-STATUS-${Date.now()}`,
+    title: `?? Application Status Update: ${matchedForm.serviceTitle || 'Form Submission'}`,
+    message: `Admin (${reviewedBy}) has updated your application #${matchedForm.formNumber || formId} status to "${status}". ${
+      remarks ? `Admin Remarks: "${remarks}"` : ""
+    }`,
+    notificationType: "Application Status",
+    targetAudience: "Selected Users",
+    targetMode: "Single User",
+    targetValue: recipient,
+    priority: status === "Approved" ? "High" : "Medium",
+    sentDate: new Date().toISOString(),
+    status: "Sent",
+    createdBy: reviewedBy,
+  });
+}
+  public deleteForm(formId: string): void {
+    const forms = this.getForms().filter((f) => f.id !== formId);
+    this.setItem(STORAGE_KEYS.FORMS, forms);
+    this.addLog('Form', `Deleted form submission ID ${formId}`);
+
+    deleteDoc(doc(db, 'forms', formId)).catch(() => {});
+    deleteDoc(doc(db, 'form_requests', formId)).catch(() => {});
+  }
+
+  public bulkDeleteForms(formIds: string[]): void {
+    const idSet = new Set(formIds);
+    const forms = this.getForms().filter((f) => !idSet.has(f.id));
+    this.setItem(STORAGE_KEYS.FORMS, forms);
+    this.addLog('Form', `Bulk deleted ${formIds.length} form submission(s)`);
+
+    formIds.forEach((id) => {
+      deleteDoc(doc(db, 'forms', id)).catch(() => {});
+      deleteDoc(doc(db, 'form_requests', id)).catch(() => {});
+    });
+  }
+
+  // --- NOTIFICATIONS ---
+  public getNotifications(): AdminNotificationRecord[] {
+    return this.getItem<AdminNotificationRecord[]>(STORAGE_KEYS.NOTIFICATIONS, []);
+  }
+
+  public saveNotification(notification: AdminNotificationRecord): void {
+    const notifications = this.getNotifications();
+    const index = notifications.findIndex((n) => n.id === notification.id);
+    if (index >= 0) {
+      notifications[index] = notification;
+      this.addLog('System', `Updated notification "${notification.title}"`);
+    } else {
+      notifications.unshift(notification);
+      this.addLog('System', `Created new notification "${notification.title}"`);
+    }
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+  }
+
+  public deleteNotification(id: string): void {
+    const notifications = this.getNotifications().filter((n) => n.id !== id);
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+    this.addLog('System', `Deleted notification ID ${id}`);
+
+    deleteDoc(doc(db, 'notifications', id)).catch(() => {});
+    deleteDoc(doc(db, 'admin_notifications', id)).catch(() => {});
+  }
+
+  public bulkDeleteNotifications(ids: string[]): void {
+    const idSet = new Set(ids);
+    const notifications = this.getNotifications().filter((n) => !idSet.has(n.id));
+    this.setItem(STORAGE_KEYS.NOTIFICATIONS, notifications);
+    this.addLog('System', `Bulk deleted ${ids.length} notification(s)`);
+
+    ids.forEach((id) => {
+      deleteDoc(doc(db, 'notifications', id)).catch(() => {});
+      deleteDoc(doc(db, 'admin_notifications', id)).catch(() => {});
+    });
+  }
+
+  // --- ADMIN ACCOUNTS ---
+  public getAdminAccounts(): AdminAccountRecord[] {
+    return this.getItem<AdminAccountRecord[]>(STORAGE_KEYS.ADMINS, DEFAULT_ADMINS);
+  }
+
+  public saveAdminAccount(account: AdminAccountRecord): void {
+    const accounts = this.getAdminAccounts();
+    const index = accounts.findIndex((a) => a.id === account.id || a.email === account.email);
+    if (index >= 0) {
+      accounts[index] = account;
+      this.addLog('Security', `Updated admin account ${account.email}`);
+    } else {
+      accounts.unshift(account);
+      this.addLog('Security', `Created new admin account ${account.email} with role ${account.role}`);
+    }
+    this.setItem(STORAGE_KEYS.ADMINS, accounts);
+  }
+
+  public deleteAdminAccount(id: string): void {
+    const accounts = this.getAdminAccounts().filter((a) => a.id !== id);
+    this.setItem(STORAGE_KEYS.ADMINS, accounts);
+    this.addLog('Security', `Deleted admin account ID ${id}`);
+  }
+
+  // --- SETTINGS ---
+  public getSettings(): AdminSystemSettings {
+    return this.getItem<AdminSystemSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+  }
+
+  public updateSettings(settings: Partial<AdminSystemSettings>): void {
+    const current = this.getSettings();
+    const updated = { ...current, ...settings };
+    this.setItem(STORAGE_KEYS.SETTINGS, updated);
+    this.addLog('System', 'Updated system administration configurations');
+  }
+
+  // --- TRANSACTIONS / ACCOUNTS ---
+  public getTransactions(): TransactionRecord[] {
+    const txns = this.getItem<TransactionRecord[]>(STORAGE_KEYS.TRANSACTIONS, []);
+    const seen = new Set<string>();
+    const cleanTxns: TransactionRecord[] = [];
+
+    txns.forEach((txn) => {
+      if (!txn || !txn.id || seen.has(txn.id)) return;
+      seen.add(txn.id);
+      cleanTxns.push(txn);
+    });
+
+    return cleanTxns;
+  }
+
+  public saveTransaction(transaction: TransactionRecord): void {
+    const txns = this.getTransactions();
+    const index = txns.findIndex((t) => t.id === transaction.id);
+
+    if (index >= 0) {
+      txns[index] = transaction;
+    } else {
+      txns.unshift(transaction);
+    }
+
+    this.setItem(STORAGE_KEYS.TRANSACTIONS, txns);
+  }
+
+  public deleteTransaction(id: string): void {
+    const txns = this.getTransactions().filter((t) => t.id !== id);
+    this.setItem(STORAGE_KEYS.TRANSACTIONS, txns);
+    this.addLog('System', `Deleted transaction ID ${id}`);
+  }
+
+  public bulkDeleteTransactions(ids: string[]): void {
+    const idSet = new Set(ids);
+    const txns = this.getTransactions().filter((t) => !idSet.has(t.id));
+    this.setItem(STORAGE_KEYS.TRANSACTIONS, txns);
+    this.addLog('System', `Bulk deleted ${ids.length} transaction(s)`);
+  }
+
+  public clearAllTransactions(): void {
+    this.setItem(STORAGE_KEYS.TRANSACTIONS, []);
+    this.addLog('System', 'Cleared all transaction records');
+  }
+
+  public deleteTransactionsByType(type: TransactionRecord['type']): void {
+    const txns = this.getTransactions().filter((t) => t.type !== type);
+    this.setItem(STORAGE_KEYS.TRANSACTIONS, txns);
+    this.addLog('System', `Deleted all ${type} transaction records`);
+  }
+
+  // --- MAINTENANCE TASKS ---
+  public getMaintenanceTasks(): MaintenanceTaskRecord[] {
+    const tasks = this.getItem<MaintenanceTaskRecord[]>(
+      STORAGE_KEYS.MAINTENANCE_TASKS,
+      []
+    );
+
+    const forms = this.getForms();
+
+    // Remove legacy User Payment tasks when the same payment already
+    // has a corresponding Form Submission task. This cleans up old
+    // duplicate tasks created before the duplicate-payment fix.
+    const formPaymentIds = new Set(
+      forms
+        .map((f) => String(
+          f.formData?.paymentTransactionId ||
+          f.formData?.transactionId ||
+          ''
+        ).trim())
+        .filter(Boolean)
+    );
+
+    const cleanedTasks = tasks.filter((t) => {
+      if (t.sourceType !== 'User Payment') return true;
+      const sourceId = String(t.sourceId || '').trim();
+      return !sourceId || !formPaymentIds.has(sourceId);
+    });
+
+    if (cleanedTasks.length !== tasks.length) {
+      this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, cleanedTasks);
+    }
+
+    const existingSourceIds = new Set(
+      cleanedTasks.map((t) => t.sourceId).filter(Boolean)
+    );
+
+    const autoGenerated: MaintenanceTaskRecord[] = [];
+
+    forms.forEach((f) => {
+      const paymentStatus = String(
+        f.formData?.paymentStatus || ''
+      ).toLowerCase();
+
+      const hasPaymentTracking =
+        !!f.formData?.paymentTransactionId ||
+        !!f.formData?.utrNumber ||
+        !!f.formData?.paymentMethod ||
+        f.formData?.feePaid !== undefined;
+
+      // Payment-linked forms enter Maintenance only after Admin verification.
+      if (hasPaymentTracking && paymentStatus !== 'completed') {
+        return;
+      }
+
+      // Do not create another task for an existing form.
+      if (
+        existingSourceIds.has(f.id) ||
+        existingSourceIds.has(f.formNumber)
+      ) {
+        return;
+      }
+
+      autoGenerated.push({
+        id: `TASK-F-${f.id}`,
+        taskNumber: `MNT-${f.formNumber}`,
+        sourceType: 'Form Submission',
+        sourceId: f.id,
+        title: `Form Processing: ${f.serviceTitle}`,
+        applicantName: f.applicantName,
+        applicantMobile: f.applicantMobile,
+        applicantEmail: f.applicantEmail,
+        amount: f.formData?.feePaid || 30,
+        status: f.status === 'Approved'
+          ? 'Completed'
+          : 'Pending Assignment',
+        adminRemarks:
+          f.remarks ||
+          'New application submitted. Ready for form processing.',
+        createdDate: f.submissionDate,
+        priority: 'High',
+      });
+    });
+
+    // IMPORTANT:
+    // Do NOT create a separate "User Payment" maintenance task.
+    // A verified payment already creates/updates its Form.
+    // That Form becomes the single Maintenance & Work task.
+
+    if (autoGenerated.length > 0) {
+      const merged = [...cleanedTasks, ...autoGenerated];
+      this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, merged);
+      return merged;
+    }
+
+    return tasks;
+  }
+
+  public saveMaintenanceTask(task: MaintenanceTaskRecord): void {
+    const tasks = this.getItem<MaintenanceTaskRecord[]>(
+      STORAGE_KEYS.MAINTENANCE_TASKS,
+      []
+    );
+
+    const idx = tasks.findIndex(
+      (t) => t.id === task.id || t.taskNumber === task.taskNumber
+    );
+
+    if (idx >= 0) {
+      tasks[idx] = task;
+    } else {
+      tasks.unshift(task);
+    }
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, tasks);
+  }
+
+  public bulkAssignMaintenanceTasks(
+    taskIds: string[],
+    staffId: string,
+    staffName: string,
+    remarks: string,
+    priority: 'High' | 'Medium' | 'Low' = 'High'
+  ): void {
+    const tasks = this.getMaintenanceTasks();
+    const now = new Date().toISOString();
+
+    const updated = tasks.map((t) => {
+      if (!taskIds.includes(t.id)) return t;
+
+      return {
+        ...t,
+        assignedStaffId: staffId,
+        assignedStaffName: staffName,
+        adminRemarks: remarks
+          ? `${t.adminRemarks ? t.adminRemarks + ' | ' : ''}Sent to Maintenance: ${remarks}`
+          : t.adminRemarks,
+        status: 'Sent to Maintenance' as MaintenanceTaskStatus,
+        assignedDate: now,
+        priority,
+      };
+    });
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, updated);
+
+    this.saveNotification({
+      id: `NOTIF-MNT-${Date.now()}`,
+      title: `${taskIds.length} Task(s) Assigned to Maintenance Staff`,
+      message:
+        `Admin assigned ${taskIds.length} work item(s) to ${staffName}. ` +
+        `Remark: "${remarks || 'Sent to Maintenance'}".`,
+      targetAudience: 'Admins Only',
+      priority: 'High',
+      sentDate: now,
+      status: 'Sent',
+      createdBy: 'Super Admin',
+    });
+
+    this.addLog(
+      'System',
+      `Assigned ${taskIds.length} maintenance task(s) to ${staffName}`
+    );
+  }
+
+  public updateMaintenanceTaskStatus(
+    taskId: string,
+    status: MaintenanceTaskStatus,
+    staffRemarks?: string
+  ): void {
+    const tasks = this.getMaintenanceTasks();
+
+    const updated = tasks.map((t) => {
+      if (t.id !== taskId) return t;
+
+      return {
+        ...t,
+        status,
+        staffRemarks: staffRemarks || t.staffRemarks,
+        completedDate:
+          status === 'Completed'
+            ? new Date().toISOString()
+            : t.completedDate,
+      };
+    });
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, updated);
+    this.addLog(
+      'System',
+      `Updated maintenance task ${taskId} status to "${status}"`
+    );
+  }
+
+  public deleteMaintenanceTask(id: string): void {
+    const tasks = this.getMaintenanceTasks().filter(
+      (t) => t.id !== id
+    );
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, tasks);
+    this.addLog('System', `Deleted maintenance task ID ${id}`);
+  }
+
+  public bulkDeleteMaintenanceTasks(ids: string[]): void {
+    const tasks = this.getMaintenanceTasks().filter(
+      (t) => !ids.includes(t.id)
+    );
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, tasks);
+    this.addLog(
+      'System',
+      `Bulk deleted ${ids.length} maintenance tasks`
+    );
+  }
+
+  public clearDemoMaintenanceTasks(): void {
+    const tasks = this.getMaintenanceTasks().filter(
+      (t) =>
+        t.sourceType === 'Form Submission' ||
+        t.sourceType === 'User Payment'
+    );
+
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, tasks);
+    this.addLog(
+      'System',
+      'Cleared demo/system maintenance tasks'
+    );
+  }
+
+  public clearAllMaintenanceTasks(): void {
+    this.setItem(STORAGE_KEYS.MAINTENANCE_TASKS, []);
+    this.addLog('System', 'Cleared all maintenance tasks');
+  }
+
+  // --- MAINTENANCE STAFF ---
+  public getMaintenanceStaff(): MaintenanceStaffRecord[] {
+    return this.getItem<MaintenanceStaffRecord[]>(
+      STORAGE_KEYS.MAINTENANCE_STAFF,
+      []
+    );
+  }
+
+  public saveMaintenanceStaff(
+    staff: MaintenanceStaffRecord
+  ): void {
+    const staffList = this.getMaintenanceStaff();
+
+    const index = staffList.findIndex(
+      (s) => s.id === staff.id || s.username === staff.username
+    );
+
+    if (index >= 0) {
+      staffList[index] = staff;
+    } else {
+      staffList.unshift(staff);
+    }
+
+    this.setItem(
+      STORAGE_KEYS.MAINTENANCE_STAFF,
+      staffList
+    );
+  }
+
+  public deleteMaintenanceStaff(id: string): void {
+    const staffList = this.getMaintenanceStaff().filter(
+      (s) => s.id !== id
+    );
+
+    this.setItem(
+      STORAGE_KEYS.MAINTENANCE_STAFF,
+      staffList
+    );
+
+    this.addLog(
+      'Security',
+      `Deleted maintenance staff ID ${id}`
+    );
+  }
+
+  public validateMaintenanceStaffLogin(
+    username: string,
+    password: string
+  ): MaintenanceStaffRecord | null {
+    const staff = this.getMaintenanceStaff();
+
+    const matched = staff.find(
+      (s) =>
+        s.username === username &&
+        s.password === password &&
+        s.status !== 'Offline'
+    );
+
+    return matched || null;
+  }
+  // --- LOGS ---
+  public getLogs(): AdminActivityLog[] {
+    return this.getItem<AdminActivityLog[]>(STORAGE_KEYS.LOGS, []);
+  }
+
+  public addLog(
+    category: AdminActivityLog['category'],
+    details: string,
+    adminName: string = 'Super Admin',
+    adminEmail: string = 'admin@sff.gov.in'
+  ): void {
+    const logs = this.getLogs();
+    const newLog: AdminActivityLog = {
+      id: `LOG-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      adminName,
+      adminEmail,
+      action: details,
+      category,
+      details,
+      ipAddress: '192.168.1.1',
+    };
+    logs.unshift(newLog);
+    // limit to 100 logs
+    if (logs.length > 100) logs.pop();
+    this.setItem(STORAGE_KEYS.LOGS, logs);
+  }
+
+  public clearLogs(): void {
+    this.setItem(STORAGE_KEYS.LOGS, []);
+  }
+
+  public clearTotalDatabase(): void {
+    try {
+      Object.values(STORAGE_KEYS).forEach((key) => {
+        localStorage.removeItem(key);
+        try {
+          setDoc(
+  doc(db, 'admin_store', key),
+  {
+    value: [],
+    updatedAt: new Date().toISOString(),
+    updatedTimestamp: Date.now(),
+  }
+).catch(() => {});
+
+        } catch (e) {
+          // ignore
+        }
+      });
+      localStorage.removeItem('sff_logged_user');
+      localStorage.removeItem('sff_user');
+      localStorage.removeItem('sff_auth');
+      localStorage.removeItem('sff_user_documents');
+      localStorage.removeItem('sff_current_user_profile');
+      this.notify();
+      this.addLog('System', 'TOTAL DATABASE WIPED: All users, forms, documents, and records deleted successfully.');
+    } catch (e) {
+      console.error('Failed to wipe database:', e);
+    }
+  }
+}
+
+export const adminStore = new AdminStore();
+
+
+
+
+
+
+
+
+
+

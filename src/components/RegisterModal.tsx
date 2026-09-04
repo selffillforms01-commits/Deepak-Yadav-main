@@ -1,0 +1,825 @@
+﻿import React, { useState, useEffect } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  X,
+  User,
+  Mail,
+  Phone,
+  Lock,
+  Eye,
+  EyeOff,
+  UserPlus,
+  CheckCircle2,
+  AlertCircle,
+  RefreshCw,
+  Send,
+  ShieldCheck,
+  Check,
+  ArrowRight,
+  Smartphone,
+  KeyRound,
+  Zap
+} from 'lucide-react';
+import { UserProfile } from '../types';
+import {
+  registerUserWithFirebaseNew,
+  checkUserAlreadyRegistered
+} from '../lib/firestoreService';
+
+const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://self-fill-forms.pages.dev' : '';
+
+interface RegisterModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  logoUrl: string;
+  onRegisterSuccess?: (registeredUser: UserProfile) => void;
+}
+
+export const RegisterModal: React.FC<RegisterModalProps> = ({
+  isOpen,
+  onClose,
+  logoUrl,
+  onRegisterSuccess
+}) => {
+  // Form Input States
+  const [fullName, setFullName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  // UI Control States
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Field Touched / Focus tracking for inline error messages
+  const [touched, setTouched] = useState<{
+    fullName?: boolean;
+    mobileNumber?: boolean;
+    email?: boolean;
+    password?: boolean;
+    confirmPassword?: boolean;
+  }>({});
+
+  // Operational States
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Email OTP Verification States
+  const [otpScreen, setOtpScreen] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [otpNotice, setOtpNotice] = useState<{
+    type: 'info' | 'error' | 'success';
+    text: string;
+  } | null>(null);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [createdProfile, setCreatedProfile] = useState<UserProfile | null>(null);
+
+  // Reset form when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setFullName('');
+      setMobileNumber('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setShowPassword(false);
+      setShowConfirmPassword(false);
+      setTouched({});
+      setLoading(false);
+      setErrorMessage('');
+      setOtpScreen(false);
+      setOtpCode('');
+      setResendCooldown(0);
+      setOtpNotice(null);
+      setVerifyingOtp(false);
+      setRegistrationSuccess(false);
+      setCreatedProfile(null);
+    }
+  }, [isOpen]);
+
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown((prev) => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
+
+  // --- VALIDATION RULES ---
+  // 1. Full Name (Required, cannot be empty)
+  const isFullNameValid = fullName.trim().length > 0;
+
+  // 2. Email Address (Required - Primary Head Field)
+  const emailTrimmed = email.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isEmailValid = emailTrimmed !== '' && emailRegex.test(emailTrimmed);
+
+  // 3. Mobile Number (Required, Indian 10-digit format starting 6-9)
+  const mobileClean = mobileNumber.trim().replace(/\D/g, '');
+  const mobileRegex = /^[6-9]\d{9}$/;
+  const isMobileValid = mobileRegex.test(mobileClean);
+
+  // 4. Password (Required: at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char)
+  const passLength = password.length >= 8;
+  const passUpper = /[A-Z]/.test(password);
+  const passLower = /[a-z]/.test(password);
+  const passNumber = /\d/.test(password);
+  const passSpecial = /[@$!%*?&#^()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+  const isPasswordValid = passLength && passUpper && passLower && passNumber && passSpecial;
+
+  // 5. Confirm Password (Required, must match Password)
+  const isConfirmPasswordValid = confirmPassword.length > 0 && confirmPassword === password;
+
+  const isFormValid =
+    isFullNameValid &&
+    isEmailValid &&
+    isMobileValid &&
+    isPasswordValid &&
+    isConfirmPasswordValid;
+
+  const markTouched = (field: keyof typeof touched) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
+  // --- STEP 1: SEND EMAIL OTP VIA RESEND ---
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setOtpNotice(null);
+
+    if (!isFormValid) {
+      setTouched({
+        fullName: true,
+        email: true,
+        mobileNumber: true,
+        password: true,
+        confirmPassword: true
+      });
+      setErrorMessage('Please correct all highlighted fields before submitting.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(API_BASE_URL + "/api/auth/send-email-otp", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: emailTrimmed
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Unable to send Email OTP.');
+      }
+
+      setOtpNotice({
+        type: 'info',
+        text: `A 6-digit verification OTP has been sent to ${emailTrimmed}. Please check your email.`
+      });
+
+      setOtpCode('');
+      setOtpScreen(true);
+      setResendCooldown(30);
+    } catch (err: any) {
+      console.error('Email OTP Send Error:', err);
+      setOtpNotice({
+        type: 'error',
+        text: err?.message || 'Unable to send Email OTP. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --- STEP 2: RESEND EMAIL OTP ---
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0) return;
+
+    setOtpNotice(null);
+    setLoading(true);
+
+    try {
+      const response = await fetch(API_BASE_URL + "/api/auth/send-email-otp", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: emailTrimmed
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to resend Email OTP.');
+      }
+
+      setOtpCode('');
+      setOtpNotice({
+        type: 'success',
+        text: `A new 6-digit OTP has been sent to ${emailTrimmed}.`
+      });
+      setResendCooldown(30);
+    } catch (err: any) {
+      console.error('Resend Email OTP Error:', err);
+
+      setOtpNotice({
+        type: 'error',
+        text: err?.message || 'Failed to resend Email OTP. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // --- STEP 3: VERIFY EMAIL OTP & CREATE FIRESTORE USER RECORD ---
+  const handleVerifyOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const cleanOtp = otpCode.trim();
+
+    if (!/^\d{6}$/.test(cleanOtp)) {
+      setOtpNotice({
+        type: 'error',
+        text: 'Please enter the complete 6-digit OTP code.'
+      });
+      return;
+    }
+
+    setVerifyingOtp(true);
+    setOtpNotice(null);
+
+    try {
+      // Verify Email OTP through SFF server / Resend OTP system
+      const verifyResponse = await fetch(API_BASE_URL + "/api/auth/verify-email-otp", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: emailTrimmed,
+          otp: cleanOtp
+        })
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyResponse.ok || !verifyData.success || !verifyData.verified) {
+        throw new Error(verifyData.error || 'Email OTP verification failed.');
+      }
+
+      // Email OTP verified — now create the user account/profile
+      const { profile } = await registerUserWithFirebaseNew({
+        fullName: fullName.trim(),
+        mobileNumber: mobileClean,
+        email: emailTrimmed,
+        password: password
+      });
+
+      setVerifyingOtp(false);
+      setRegistrationSuccess(true);
+      setCreatedProfile(profile);
+
+      if (onRegisterSuccess) {
+        onRegisterSuccess(profile);
+      }
+    } catch (err: any) {
+      setVerifyingOtp(false);
+
+      console.error('Email OTP Verification / Registration Error:', err);
+
+      setOtpNotice({
+        type: 'error',
+        text: err?.message || 'Email OTP verification failed. Please check the code and try again.'
+      });
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto bg-slate-950/60 backdrop-blur-md">
+        {/* Hidden reCAPTCHA container */}
+        <div id="recaptcha-container"></div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="relative w-full max-w-lg bg-white/95 backdrop-blur-2xl rounded-[28px] sm:rounded-[32px] shadow-[0_25px_60px_rgba(11,59,140,0.18)] border border-white/80 overflow-hidden my-auto"
+        >
+          {/* Header Banner */}
+          <div className="relative bg-gradient-to-r from-[#0B3B8C] via-[#104db8] to-[#0B3B8C] px-6 py-5 text-white flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner">
+                <img
+                  src={logoUrl}
+                  alt="SFF Logo"
+                  className="h-7 w-auto object-contain"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+                  {registrationSuccess
+                    ? 'Registration Complete'
+                    : otpScreen
+                    ? 'Email OTP Verification'
+                    : 'New User Registration'}
+                </h2>
+                <p className="text-xs text-blue-100 font-medium">
+                  Self Fill Forms
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+              aria-label="Close Modal"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Modal Body */}
+          <div className="p-6 sm:p-8 max-h-[82vh] overflow-y-auto space-y-5">
+            {!otpScreen && !registrationSuccess ? (
+              /* ==================== REGISTRATION FORM ==================== */
+              <form onSubmit={handleRegisterSubmit} className="space-y-4" noValidate>
+                <div className="text-center sm:text-left space-y-1 pb-1">
+                  <h3 className="text-base font-bold text-slate-800">
+                    Create New User Account
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Enter your registration details below. Email Address and Password are required.
+                  </p>
+                </div>
+
+                {/* Global Error Message */}
+                {errorMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs space-y-2 shadow-sm"
+                  >
+                    <div className="flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                      <span className="font-medium leading-relaxed">{errorMessage}</span>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Field 1: Full Name */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Full Name <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      onBlur={() => markTouched('fullName')}
+                      placeholder="Enter your full legal name"
+                      className={`w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-slate-50/70 rounded-xl border ${
+                        touched.fullName && !isFullNameValid
+                          ? 'border-rose-400 focus:ring-rose-200'
+                          : touched.fullName && isFullNameValid
+                          ? 'border-emerald-400 focus:ring-emerald-200'
+                          : 'border-slate-200 focus:border-[#0B3B8C] focus:ring-blue-100'
+                      } text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all`}
+                    />
+                    {touched.fullName && isFullNameValid && (
+                      <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
+                    )}
+                  </div>
+                  {touched.fullName && !isFullNameValid && (
+                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1 pl-1">
+                      <AlertCircle className="w-3 h-3" /> Full Name is required and cannot be empty.
+                    </p>
+                  )}
+                </div>
+
+                {/* Field 2: Email Address (Primary Head Field) */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Email Address <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onBlur={() => markTouched('email')}
+                      placeholder="name@example.com"
+                      className={`w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-slate-50/70 rounded-xl border ${
+                        touched.email && !isEmailValid
+                          ? 'border-rose-400 focus:ring-rose-200'
+                          : touched.email && isEmailValid
+                          ? 'border-emerald-400 focus:ring-emerald-200'
+                          : 'border-slate-200 focus:border-[#0B3B8C] focus:ring-blue-100'
+                      } text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all`}
+                    />
+                    {touched.email && isEmailValid && (
+                      <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
+                    )}
+                  </div>
+                  {touched.email && !isEmailValid && (
+                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1 pl-1">
+                      <AlertCircle className="w-3 h-3" /> Valid email address is required for account registration.
+                    </p>
+                  )}
+                </div>
+
+                {/* Field 3: Mobile Number (Required) */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Mobile Number <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-slate-500 text-xs font-semibold select-none border-r border-slate-200 pr-2">
+                      <Phone className="w-3.5 h-3.5 text-slate-400" />
+                      <span>+91</span>
+                    </div>
+                    <input
+                      type="tel"
+                      maxLength={10}
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
+                      onBlur={() => markTouched('mobileNumber')}
+                      placeholder="10-digit mobile number"
+                      className={`w-full pl-20 pr-4 py-2.5 text-xs sm:text-sm bg-slate-50/70 rounded-xl border ${
+                        touched.mobileNumber && !isMobileValid
+                          ? 'border-rose-400 focus:ring-rose-200'
+                          : touched.mobileNumber && isMobileValid
+                          ? 'border-emerald-400 focus:ring-emerald-200'
+                          : 'border-slate-200 focus:border-[#0B3B8C] focus:ring-blue-100'
+                      } text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all`}
+                    />
+                    {touched.mobileNumber && isMobileValid && (
+                      <CheckCircle2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
+                    )}
+                  </div>
+                  {touched.mobileNumber && !isMobileValid && (
+                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1 pl-1">
+                      <AlertCircle className="w-3 h-3" /> Valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9) is required.
+                    </p>
+                  )}
+                </div>
+
+                {/* Field 4: Password */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Password <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onBlur={() => markTouched('password')}
+                      placeholder="Create account password"
+                      className={`w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-slate-50/70 rounded-xl border ${
+                        touched.password && !isPasswordValid
+                          ? 'border-rose-400 focus:ring-rose-200'
+                          : touched.password && isPasswordValid
+                          ? 'border-emerald-400 focus:ring-emerald-200'
+                          : 'border-slate-200 focus:border-[#0B3B8C] focus:ring-blue-100'
+                      } text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+
+                  {/* Password Requirements List */}
+                  <div className="p-3 bg-slate-50/90 rounded-xl border border-slate-100 space-y-1.5 text-[11px]">
+                    <p className="font-semibold text-slate-600 text-[10px] uppercase tracking-wider">
+                      Password Requirements:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-slate-600">
+                      <div className={`flex items-center gap-1.5 ${passLength ? 'text-emerald-600 font-medium' : ''}`}>
+                        <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${passLength ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>At least 8 characters</span>
+                      </div>
+
+                      <div className={`flex items-center gap-1.5 ${passUpper ? 'text-emerald-600 font-medium' : ''}`}>
+                        <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${passUpper ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>1 Uppercase letter (A-Z)</span>
+                      </div>
+
+                      <div className={`flex items-center gap-1.5 ${passLower ? 'text-emerald-600 font-medium' : ''}`}>
+                        <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${passLower ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>1 Lowercase letter (a-z)</span>
+                      </div>
+
+                      <div className={`flex items-center gap-1.5 ${passNumber ? 'text-emerald-600 font-medium' : ''}`}>
+                        <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${passNumber ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>1 Number (0-9)</span>
+                      </div>
+
+                      <div className={`flex items-center gap-1.5 ${passSpecial ? 'text-emerald-600 font-medium' : ''} sm:col-span-2`}>
+                        <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${passSpecial ? 'bg-emerald-500 text-white' : 'bg-slate-200'}`}>
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                        <span>1 Special character (!@#$%^&*)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Field 5: Confirm Password */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-slate-700">
+                    Confirm Password <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      onBlur={() => markTouched('confirmPassword')}
+                      placeholder="Re-enter password to confirm"
+                      className={`w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-slate-50/70 rounded-xl border ${
+                        touched.confirmPassword && !isConfirmPasswordValid
+                          ? 'border-rose-400 focus:ring-rose-200'
+                          : touched.confirmPassword && isConfirmPasswordValid
+                          ? 'border-emerald-400 focus:ring-emerald-200'
+                          : 'border-slate-200 focus:border-[#0B3B8C] focus:ring-blue-100'
+                      } text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors"
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {touched.confirmPassword && !isConfirmPasswordValid && (
+                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1 pl-1">
+                      <AlertCircle className="w-3 h-3" /> Confirm Password must match Password.
+                    </p>
+                  )}
+                </div>
+
+                {/* Submit Register Button */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm text-white shadow-lg flex items-center justify-center gap-2 transition-all ${
+                      !isFormValid || loading
+                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
+                        : 'bg-gradient-to-r from-[#0B3B8C] to-[#1453c2] hover:from-[#082d6b] hover:to-[#0B3B8C] hover:shadow-xl active:scale-[0.99]'
+                    }`}
+                  >
+                    {loading ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        <span>Processing Registration...</span>
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="w-4 h-4" />
+                        <span>Complete Registration</span>
+                      </>
+                    )}
+                  </button>
+
+                  {!isFormValid && (
+                    <p className="text-[11px] text-center text-slate-400 font-medium mt-2">
+                      Please complete Full Name, Email Address, Mobile Number, Password and Confirm Password correctly to proceed.
+                    </p>
+                  )}
+                </div>
+              </form>
+            ) : otpScreen && !registrationSuccess ? (
+              /* ==================== PHONE OTP VERIFICATION SCREEN ==================== */
+              <motion.form
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                onSubmit={handleVerifyOtpSubmit}
+                className="space-y-5 text-center"
+              >
+                {/* Header Graphic */}
+                <div className="space-y-2">
+                  <div className="w-14 h-14 mx-auto rounded-2xl bg-blue-50 border border-blue-200 text-[#0B3B8C] flex items-center justify-center shadow-sm">
+                    <KeyRound className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    Enter Verification OTP
+                  </h3>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                    An OTP was sent to your email address:
+                    <br />
+                    <strong className="text-slate-800 font-semibold text-sm">
+                      +91 {mobileClean}
+                    </strong>
+                  </p>
+                </div>
+
+                {/* Notice Banner */}
+                {otpNotice && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-3.5 rounded-2xl text-xs flex items-start gap-2.5 text-left shadow-sm ${
+                      otpNotice.type === 'error'
+                        ? 'bg-rose-50 border border-rose-200 text-rose-700'
+                        : otpNotice.type === 'success'
+                        ? 'bg-emerald-50 border border-emerald-200 text-emerald-800'
+                        : 'bg-blue-50 border border-blue-200 text-blue-800'
+                    }`}
+                  >
+                    {otpNotice.type === 'error' ? (
+                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                    ) : (
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                    )}
+                    <span className="font-medium leading-relaxed">{otpNotice.text}</span>
+                  </motion.div>
+                )}
+
+                {/* OTP Input Field */}
+                <div className="space-y-2 pt-1">
+                  <label className="block text-xs font-semibold text-slate-700 text-left">
+                    6-Digit Mobile Verification Code <span className="text-rose-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                    placeholder="Enter 6-digit OTP"
+                    className="w-full text-center tracking-[0.35em] text-lg font-mono font-bold py-3 bg-slate-50 rounded-2xl border border-slate-300 focus:border-[#0B3B8C] focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all placeholder:tracking-normal placeholder:font-sans placeholder:text-slate-400 placeholder:text-xs"
+                    autoFocus
+                  />
+                  <p className="text-[11px] text-slate-400 text-left">
+                    Please check your SMS messages for the code.
+                  </p>
+                </div>
+
+                {/* Verification Action Buttons */}
+                <div className="space-y-3 pt-2">
+                  <button
+                    type="submit"
+                    disabled={verifyingOtp || otpCode.trim().length < 6}
+                    className={`w-full py-3.5 px-5 rounded-2xl font-bold text-xs sm:text-sm text-white shadow-lg flex items-center justify-center gap-2 transition-all ${
+                      verifyingOtp || otpCode.trim().length < 6
+                        ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
+                        : 'bg-gradient-to-r from-[#0B3B8C] to-[#1453c2] hover:from-[#082d6b] hover:to-[#0B3B8C] hover:shadow-xl active:scale-[0.99]'
+                    }`}
+                  >
+                    {verifyingOtp ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        <span>Verifying OTP & Creating Account...</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4" />
+                        <span>Verify OTP & Complete Registration</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="flex items-center justify-between pt-1 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setOtpScreen(false)}
+                      className="text-slate-500 hover:text-slate-800 font-medium transition-colors"
+                    >
+                      â† Back to edit details
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleResendOtp}
+                      disabled={resendCooldown > 0 || loading}
+                      className={`font-semibold flex items-center gap-1.5 transition-colors ${
+                        resendCooldown > 0 || loading
+                          ? 'text-slate-400 cursor-not-allowed'
+                          : 'text-[#0B3B8C] hover:underline'
+                      }`}
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>
+                        {resendCooldown > 0 ? `Resend OTP in ${resendCooldown}s` : 'Resend OTP'}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </motion.form>
+            ) : (
+              /* ==================== REGISTRATION SUCCESS VIEW ==================== */
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-6 text-center py-2"
+              >
+                <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                  <CheckCircle2 className="w-9 h-9" />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-full">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>SFF User ID: {createdProfile?.sffUserId || 'SFF-U-000001'}</span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-slate-900">
+                    Registration Successful!
+                  </h3>
+                  <p className="text-xs text-slate-600 max-w-sm mx-auto">
+                    Welcome to Self Fill Forms, <strong>{fullName}</strong>! Your account has been verified and activated.
+                  </p>
+                </div>
+
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-2 text-xs text-slate-700">
+                  <div className="flex justify-between py-1 border-b border-slate-200">
+                    <span className="text-slate-500 font-medium">SFF User ID:</span>
+                    <strong className="font-semibold text-slate-900">{createdProfile?.sffUserId}</strong>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-slate-200">
+                    <span className="text-slate-500 font-medium">Full Name:</span>
+                    <strong className="font-semibold text-slate-900">{fullName}</strong>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-slate-200">
+                    <span className="text-slate-500 font-medium">Mobile Number:</span>
+                    <strong className="font-semibold text-slate-900">+91 {mobileClean}</strong>
+                  </div>
+                  {emailTrimmed && (
+                    <div className="flex justify-between py-1">
+                      <span className="text-slate-500 font-medium">Email Address:</span>
+                      <strong className="font-semibold text-slate-900">{emailTrimmed}</strong>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-full py-3.5 px-6 bg-gradient-to-r from-[#0B3B8C] to-[#1453c2] hover:from-[#082d6b] hover:to-[#0B3B8C] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg hover:shadow-xl active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Proceed to Citizen Login</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

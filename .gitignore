@@ -1,0 +1,14 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Local/user data
+firebase-users.json
+users.csv
+server-errors.txt
+.idea/
