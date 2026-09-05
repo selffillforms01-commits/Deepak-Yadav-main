@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { resolveFileUrl } from '../../lib/firestoreService';
 
 interface SmartImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -50,3 +50,4 @@ export const SmartImage: React.FC<SmartImageProps> = ({
     />
   );
 };
+

@@ -1,0 +1,15 @@
+﻿{
+  "android": {
+    "package": "com.anonymous.reactexample"
+  },
+  "plugins": [
+    [
+      "expo-build-properties",
+      {
+        "android": {
+          "kotlinVersion": "2.2.0"
+        }
+      }
+    ]
+  ]
+}

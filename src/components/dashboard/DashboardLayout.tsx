@@ -1,4 +1,4 @@
-﻿import { Share } from '@capacitor/share';
+import { Share } from '@capacitor/share';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -32,7 +32,7 @@ import { DocumentsPage } from './DocumentsPage';
 import { ServicesPage, ServicesMainView } from './ServicesPage';
 import { NotificationsPage } from './NotificationsPage';
 import { ProfilePage } from './ProfilePage';
-import { AIAssistantPage } from './AIAssistantPage';
+import PersonalAIPage from './PersonalAIPage';
 import { HelpSupportModal } from '../HelpSupportModal';
 import { adminStore } from '../admin/adminStore';
 import { AdminFormRecord } from '../admin/AdminTypes';
@@ -116,26 +116,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }
   };
 
-  // HANDLE AI ASSISTANT SUB VIEW CHANGE
-  const handleAiViewChange = (view: 'chat' | 'analytics') => {
-    if (view !== aiSubView) {
-      const newState: NavState = { tab: 'ai-assistant', servicesSubView: 'main', aiSubView: view };
-      setNavHistory((prev) => [...prev, newState]);
-      try {
-        window.history.pushState({ tab: 'ai-assistant', view }, '');
-      } catch (e) {
-        // Safe fallback
-      }
-    }
-  };
-
   // SHARE APP HANDLER
   const handleShareApp = async () => {
     try {
       await Share.share({
         title: 'SELF FILL FORMS',
         text: 'SELF FILL FORMS - Odisha Government Services & Forms',
-        url: 'https://self-fill-forms.pages.dev/update/SELF-FILL-FORMS.apk',
+        url: 'https://github.com/selffillforms01-commits/Deepak-Yadav-main/releases/latest/download/app-release.apk',
         dialogTitle: 'Share SELF FILL FORMS',
       });
     } catch (error) {
@@ -185,17 +172,17 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     { id: 'home', label: t('nav.home', 'Home'), icon: Home },
     { id: 'services', label: t('nav.services', 'Services'), icon: Wrench },
     { id: 'notifications', label: t('nav.notifications', 'Notifications'), icon: Bell },
-    { id: 'ai-assistant', label: t('nav.aiAssistant', 'AI Assistant'), icon: Bot },
     { id: 'profile', label: t('nav.profile', 'Profile'), icon: User },
+    { id: 'ai', label: 'Personal AI', icon: Bot },
   ];
 
   const PAGE_TITLES: Record<DashboardTab, string> = {
     home: t('nav.home', 'Home'),
     services: t('nav.services', 'Services & Forms'),
     notifications: t('nav.notifications', 'Notifications'),
-    'ai-assistant': t('nav.aiAssistant', 'AI Assistant'),
     profile: t('nav.profile', 'My Profile'),
     documents: t('nav.documents', 'My Documents'),
+    ai: 'Personal AI',
   };
 
   interface UserRequestItem {
@@ -249,8 +236,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const isAtRootHome = currentTab === 'home' && servicesSubView === 'main' && aiSubView === 'chat' && navHistory.length <= 1 && !showRequestsModal && !showProfileMenu;
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans selection:bg-[#0B3B8C] selection:text-white pb-24 w-full max-w-full overflow-x-hidden transition-colors duration-200 ${
-      isDarkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-900'
+    <div className={`min-h-screen flex flex-col font-sans selection:bg-[#0B3B8C] selection:text-white w-full max-w-full overflow-x-hidden transition-colors duration-200 ${
+      isDarkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-900'} ${currentTab === 'ai' ? 'pb-0 overflow-hidden' : 'pb-24'}
     }`}>
       {/* Admin Impersonation Mode Banner */}
       {isImpersonating && (
@@ -265,13 +252,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             onClick={onReturnToAdmin}
             className="px-3.5 py-1.5 bg-slate-950 hover:bg-slate-900 text-amber-300 rounded-xl text-xs font-black shadow-md transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
           >
-            <span>ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Return to Admin Panel ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â</span>
+            <span>ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Return to Admin Panel ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â</span>
           </button>
         </div>
       )}
 
       {/* Top Header Bar */}
-      <header className={`fixed top-0 left-0 right-0 z-[100] pt-2 bg-clip-padding isolate backdrop-blur-md border-b shadow-xs px-3 sm:px-8 py-2 w-full max-w-full transition-colors ${
+      <header className={`fixed top-[env(safe-area-inset-top)] left-0 right-0 z-[100] pt-2 bg-clip-padding isolate backdrop-blur-md border-b shadow-xs px-3 sm:px-8 py-2 w-full max-w-full transition-colors ${
         isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200/80'
       }`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
@@ -534,7 +521,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       </header>
 
       {/* Main Content Area */}
-      <main className="relative z-0 flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 pt-16 sm:pt-24 overflow-x-hidden">
+      <main className={`relative z-0 flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 pt-24 sm:pt-28 overflow-x-hidden ${currentTab === 'ai' ? 'overflow-hidden min-h-0' : ''}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentTab}
@@ -556,20 +543,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               />
             )}
             {currentTab === 'notifications' && <NotificationsPage user={user} />}
-            {currentTab === 'ai-assistant' && (
-              <AIAssistantPage 
-                user={user} 
-                onNavigateTab={handleTabChange} 
-                activeView={aiSubView} 
-                onActiveViewChange={handleAiViewChange} 
-                onBack={handleBack}
-              />
-            )}
             {currentTab === 'documents' && (
               <DocumentsPage user={user} onUpdateUser={onUpdateUser} />
             )}
             {currentTab === 'profile' && (
               <ProfilePage user={user} onLogout={onLogout} onUpdateUser={onUpdateUser} />
+            )}
+            {currentTab === 'ai' && (
+              <PersonalAIPage />
             )}
           </motion.div>
         </AnimatePresence>
@@ -662,7 +643,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <div className="text-xs font-bold text-slate-800 dark:text-slate-100">{req.formName}</div>
                     {req.remarks && (
                       <div className="text-[11px] text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-600/60">
-                        <span className="font-bold text-slate-700 dark:text-slate-200">Admin Remarks:</span> {req.remarks}
+                        <span className="font-bold text-slate-700 dark:text-slate-200">SFF Remarks:</span> {req.remarks}
                       </div>
                     )}
                     <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-200/50 dark:border-slate-600">
@@ -677,7 +658,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         }}
                         className="text-[#0B3B8C] dark:text-blue-400 font-bold hover:underline cursor-pointer"
                       >
-                        Track Status ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢
+                        Track Status
                       </button>
                     </div>
                   </div>
@@ -906,6 +887,23 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,364 @@
+﻿C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:47: applicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:126: applicantName: newTxn.applicantName || 'Direct Payment',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:143: applicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:231: serviceTitle: txn.description || txn.category || 'Service Application',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:233: applicantName: txn.applicantName || 'Applicant',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:250: title: 'Payment Verified Successfully',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:304: title: 'Payment Rejected',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:452: applicantName: 'Admin Expense Entry',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:474: applicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:1042: onChange={(e) => setNewTxn((prev) => ({ ...prev, applicantName: e.target.value }))}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:224: title: 'Total Users',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:233: title: 'Total Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:242: title: 'Total Forms Submitted',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:251: title: 'Pending Requests',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:260: title: 'Approved Requests',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:269: title: 'Rejected Requests',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:278: title: 'Active Users',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:460: <p className="text-xs text-slate-400">Service: {selectedForm.serviceTitle}</p>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:577: Service: <strong className="text-slate-100">{reviewModalForm.serviceTitle}</strong>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminJobs.tsx:23: title: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminJobs.tsx:81: title: modalJob.title.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminJobs.tsx:393: title: e.target.value,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:173: name: selectedStaffForAssign,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:199: name: newStaffName.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:200: username: generatedUser,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:217: alert(`Maintenance Staff "${newStaff.name}" created successfully!\n\nðŸ”‘ Username: ${generatedUser}\nðŸ”’ Password: ${generatedPass}`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:229: title: customTitle.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminMaintenance.tsx:230: applicantName: customApplicant.trim() || 'Portal Request',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminManagement.tsx:61: name: modalAdmin.name,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminManagement.tsx:91: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminManagement.tsx:106: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminManagement.tsx:251: onChange={(e) => setModalAdmin({ ...modalAdmin, name: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:96: recruitmentTitle: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:221: finalMessage = `ðŸ“‹ Job Title: ${jobData.recruitmentTitle}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:240: title: finalTitle,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:247: attachmentName: attachmentName || undefined,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:268: recruitmentTitle: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:292: title: target?.title || id,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:310: title: target ? `${target.serviceTitle} (${target.applicantId || target.applicantName})` : id,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:934: { mode: 'Single User' as const, label: 'Single User', icon: <User className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:935: { mode: 'All Users' as const, label: 'All Users', icon: <Users className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:936: { mode: 'Stream Wise' as const, label: 'Stream Wise', icon: <BookOpen className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:937: { mode: 'Qualification Wise' as const, label: 'Qualification Wise', icon: <GraduationCap className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:938: { mode: 'District Wise' as const, label: 'District Wise', icon: <MapPin className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:939: { mode: 'Category Wise' as const, label: 'Category / Caste', icon: <CheckSquare className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:940: { mode: 'Job Category Wise' as const, label: 'Job Sector Wise', icon: <Briefcase className="w-3.5 h-3.5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:1157: onChange={(e) => setJobData((prev) => ({ ...prev, recruitmentTitle: e.target.value }))}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:107: { name: 'Approved', value: approvedCount || (forms.length === 0 ? 1 : 0), color: '#10B981' },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:108: { name: 'Pending / Review', value: pendingCount || (forms.length === 0 ? 0 : 0), color: '#F59E0B' },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:109: { name: 'Rejected', value: rejectedCount || (forms.length === 0 ? 0 : 0), color: '#EF4444' },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:27: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:32: iconName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:35: title: 'Income Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:40: iconName: 'FileText',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:43: title: 'Caste Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:48: iconName: 'FileCheck',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:51: title: 'Residence Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:56: iconName: 'Home',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:59: title: 'Pan Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:64: iconName: 'CreditCard',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:67: title: 'Driving License',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:72: iconName: 'Car',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:75: title: 'Character Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:80: iconName: 'ShieldCheck',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:83: title: 'Employment Exchange',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:88: iconName: 'Briefcase',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:91: title: 'Birth Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:96: iconName: 'Baby',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:99: title: 'EWS Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:104: iconName: 'Award',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:107: title: 'Labour Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:112: iconName: 'HardHat',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:115: title: 'Passport Application',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:120: iconName: 'Globe',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:184: title: modalService.title.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:187: iconName: modalService.iconName || 'Wrench',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:203: title: preset.title,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:208: iconName: preset.iconName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:240: title: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:322: title: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:466: onChange={(e) => setModalService({ ...modalService, title: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSettings.tsx:311: onChange={(e) => setFormData({ ...formData, appName: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:34: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:49: { id: 'dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:50: { id: 'users', label: 'Users', icon: <Users className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:51: { id: 'services', label: 'Services', icon: <Wrench className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:52: { id: 'jobs', label: 'Jobs', icon: <FileText className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:55: label: 'Forms',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:61: label: 'Maintenance & Work',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:64: { id: 'notifications', label: 'Notifications', icon: <Bell className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:65: { id: 'reports', label: 'Reports & Analytics', icon: <BarChart2 className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:66: { id: 'accounts', label: 'Accounts & Passbook', icon: <Wallet className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:67: { id: 'admins', label: 'Admin Management', icon: <ShieldCheck className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:68: { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:45: appName: 'SELF FILL FORMS (SFF)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:47: paymentMerchantName: 'DEEPAK YADAV',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:74: name: 'Super Administrator',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:87: title: 'Income Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:90: iconName: 'FileText',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:99: title: 'Caste Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:102: iconName: 'FileCheck',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:111: title: 'Residence Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:114: iconName: 'Home',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:123: title: 'Pan Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:126: iconName: 'CreditCard',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:135: title: 'Driving License',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:138: iconName: 'Car',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:147: title: 'Character Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:150: iconName: 'ShieldCheck',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:159: title: 'Employment Exchange',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:162: iconName: 'Briefcase',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:171: title: 'Birth Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:174: iconName: 'Baby',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:183: title: 'EWS Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:186: iconName: 'Award',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:195: title: 'Labour Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:198: iconName: 'HardHat',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:291: name: data.fullName || data.name || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:502: public saveService(service: AdminServiceRecord): void {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:574: title: `JOB ALERT: ${updatedJob.title}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:708: title: `?? Application Status Update: ${matchedForm.serviceTitle || 'Form Submission'}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:937: title: `Form Processing: ${f.serviceTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:938: applicantName: f.applicantName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:989: staffName: string,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:1002: assignedStaffName: staffName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:1016: title: `${taskIds.length} Task(s) Assigned to Maintenance Staff`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:1147: username: string,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:1169: adminName: string = 'Super Admin',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:22: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:55: userName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:58: fileName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:67: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:70: iconName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:84: serviceTitle: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:86: applicantName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:108: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:128: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:138: appName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:169: adminName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:212: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:231: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:232: username: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:248: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:79: const [previewMediaModal, setPreviewMediaModal] = useState<{ title: string; url: string } | null>(null);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:119: fatherName: profile.fatherName || prev.fatherName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:120: motherName: profile.motherName || prev.motherName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:195: name: data.fullName || data.name || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:299: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:710: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Passport Photo`, url: selectedUser.photoUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:727: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Passport Photo`, url: selectedUser.photoUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:747: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Digital Signature`, url: selectedUser.signatureUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:764: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Digital Signature`, url: selectedUser.signatureUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:784: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Thumb Impression`, url: selectedUser.thumbImpressionUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:801: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - Thumb Impression`, url: selectedUser.thumbImpressionUrl! })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:834: name: d.fileName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:847: name: d.name || d.title || 'Document',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:896: onClick={() => setPreviewMediaModal({ title: `${selectedUser.name} - ${docItem.name}`, url: docItem.url })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:939: onChange={(e) => setSelectedUser({ ...selectedUser, name: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:974: onChange={(e) => setSelectedUser({ ...selectedUser, fatherName: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:985: onChange={(e) => setSelectedUser({ ...selectedUser, motherName: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1233: userName: selectedUser.name,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1236: fileName: docFileName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1270: fullName: updatedUser.name,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1286: name: docFileName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1454: onChange={(e) => setEditUser({ ...editUser, name: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1492: onChange={(e) => setEditUser({ ...editUser, fatherName: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1503: onChange={(e) => setEditUser({ ...editUser, motherName: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:1799: title: msgTitle.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:35: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:72: label: getProfileButtonLabel(language),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:239: label: language === 'hi' ? 'à¤¸à¥‡à¤µà¤¾à¤à¤‚ à¤¦à¥‡à¤–à¥‡à¤‚ (Services)' : language === 'or' ? 'à¬¸à­‡à¬¬à¬¾ à¬¦à­‡à¬–à¬¨à­à¬¤à­' : 'Explore Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:277: label: language === 'hi' ? 'à¤œà¥‰à¤¬à¥à¤¸ à¤¦à¥‡à¤–à¥‡à¤‚ (Jobs)' : language === 'or' ? 'à¬œà¬¬à­à¬¸ à¬¦à­‡à¬–à¬¨à­à¬¤à­' : 'Open Jobs',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:299: label: eduCheck.isComplete ? 'à¤…à¤—à¤²à¥‡ à¤¸à¥‡à¤•à¥à¤¶à¤¨ (Bank Details) à¤ªà¤° à¤œà¤¾à¤à¤ â†’' : 'Education Details à¤ªà¥‚à¤°à¤¾ à¤•à¤°à¥‡à¤‚',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:322: label: bankCheck.isComplete ? 'à¤…à¤—à¤²à¥‡ à¤¸à¥‡à¤•à¥à¤¶à¤¨ (Other Certificates) à¤ªà¤° à¤œà¤¾à¤à¤ â†’' : 'Bank Details à¤ªà¥‚à¤°à¤¾ à¤•à¤°à¥‡à¤‚',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:343: label: certCheck.isComplete ? 'à¤¸à¤­à¥€ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤° à¤ªà¥‚à¤°à¥‡ à¤¹à¥ˆà¤‚ âœ…' : 'Other Certificates à¤ªà¥‚à¤°à¤¾ à¤•à¤°à¥‡à¤‚',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:363: label: pCheck.isComplete ? 'à¤…à¤—à¤²à¥‡ à¤¸à¥‡à¤•à¥à¤¶à¤¨ (Education Details) à¤ªà¤° à¤œà¤¾à¤à¤ â†’' : 'Personal Information à¤ªà¥‚à¤°à¤¾ à¤•à¤°à¥‡à¤‚',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:387: label: step2Full.allComplete ? 'à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤² à¤¦à¥‡à¤–à¥‡à¤‚' : 'à¤…à¤§à¥‚à¤°à¥€ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€ à¤ªà¥‚à¤°à¥€ à¤•à¤°à¥‡à¤‚',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:404: label: language === 'hi' ? 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ à¤–à¥‹à¤²à¥‡à¤‚' : language === 'or' ? 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬–à­‹à¬²à¬¨à­à¬¤à­' : 'Open Documents',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:421: label: language === 'hi' ? 'à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤² à¤¦à¥‡à¤–à¥‡à¤‚' : language === 'or' ? 'à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¦à­‡à¬–à¬¨à­à¬¤à­' : 'View Profile',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:554: label: getProfileButtonLabel(language),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:35: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:72: label: getProfileButtonLabel(language),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:229: label: language === 'hi' ? 'सेवाएं देखें (Services)' : language === 'or' ? 'ସେବା ଦେଖନ୍ତୁ' : 'Explore Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:267: label: language === 'hi' ? 'जॉब्स देखें (Jobs)' : language === 'or' ? 'ଜବ୍ସ ଦେଖନ୍ତୁ' : 'Open Jobs',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:289: label: eduCheck.isComplete ? 'अगले सेक्शन (Bank Details) पर जाएँ →' : 'Education Details पूरा करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:312: label: bankCheck.isComplete ? 'अगले सेक्शन (Other Certificates) पर जाएँ →' : 'Bank Details पूरा करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:333: label: certCheck.isComplete ? 'सभी प्रमाण पत्र पूरे हैं ✅' : 'Other Certificates पूरा करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:353: label: pCheck.isComplete ? 'अगले सेक्शन (Education Details) पर जाएँ →' : 'Personal Information पूरा करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:377: label: step2Full.allComplete ? 'प्रोफ़ाइल देखें' : 'अधूरी जानकारी पूरी करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:394: label: language === 'hi' ? 'दस्तावेज़ खोलें' : language === 'or' ? 'ଦସ୍ତାବିଜ ଖୋଲନ୍ତୁ' : 'Open Documents',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:411: label: language === 'hi' ? 'प्रोफ़ाइल देखें' : language === 'or' ? 'ପ୍ରୋଫାଇଲ୍ ଦେଖନ୍ତୁ' : 'View Profile',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:544: label: getProfileButtonLabel(language),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:136: title: 'SELF FILL FORMS',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:139: dialogTitle: 'Share SELF FILL FORMS',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:184: const navItems: { id: DashboardTab; label: string; icon: React.FC<{ className?: string }> }[] = [
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:185: { id: 'home', label: t('nav.home', 'Home'), icon: Home },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:186: { id: 'services', label: t('nav.services', 'Services'), icon: Wrench },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:187: { id: 'notifications', label: t('nav.notifications', 'Notifications'), icon: Bell },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:188: { id: 'ai-assistant', label: t('nav.aiAssistant', 'AI Assistant'), icon: Bot },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:189: { id: 'profile', label: t('nav.profile', 'Profile'), icon: User },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:203: formName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:241: formName: f.serviceTitle || 'Application Request',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:48: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:87: name: 'Aadhaar Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:102: name: 'PAN Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:118: name: 'Driving Licence',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:134: name: 'Passport',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:157: name: '10th Marksheet',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:169: name: '10th Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:193: name: '12th Marksheet',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:205: name: '12th Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:225: name: 'Diploma Marksheet',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:237: name: 'Diploma Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:257: name: 'Graduation Marksheet',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:269: name: 'Graduation Degree Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:289: name: 'Post Graduation Marksheet',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:301: name: 'Post Graduation Degree Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:340: name: 'Income Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:356: name: 'Caste Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:370: name: 'Residence Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:384: name: 'Disability Certificate',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:485: name: 'PAN Card',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:494: name: 'Driving Licence',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:503: name: 'Passport',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:512: name: 'Other Document (Custom Upload)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:589: name: customDocNameInput.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:610: name: targetType.name,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:642: const handleRemoveDoc = (docId: string, docName: string) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:978: { id: 'all', label: 'All Documents', count: categoryCounts.all },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:979: { id: 'identity', label: '1. Identity Docs', count: categoryCounts.identity },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:980: { id: 'educational', label: '2. Educational Docs', count: categoryCounts.educational },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:981: { id: 'income-caste', label: '3. Income / Caste / Residence', count: categoryCounts['income-caste'] },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:982: { id: 'other', label: '4. Other Documents', count: categoryCounts.other },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:54: title: t('nav.aiAssistant', 'AI Assistant'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:62: title: t('nav.services', 'Services'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:70: title: t('nav.notifications', 'Notifications'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:78: title: t('nav.profile', 'Profile'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\NotificationsPage.tsx:75: title: n.title || 'Notification',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\NotificationsPage.tsx:89: attachmentName: n.attachmentName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\NotificationsPage.tsx:225: title: n.title,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\NotificationsPage.tsx:229: attachmentName: n.attachmentName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:227: return { name: 'QUALIFICATION LEVEL', certNo: 'Below 10th (N/A)' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:230: return { name: '12TH CERTIFICATE NO.', certNo: p.twelfthCertNumber || p.twelfthRollNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:233: return { name: 'DIPLOMA CERTIFICATE NO.', certNo: p.diplomaCertNumber || p.diplomaRollNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:236: return { name: 'DEGREE CERTIFICATE NO.', certNo: p.degreeCertNumber || p.degreeRollNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:239: return { name: 'PG CERTIFICATE NO.', certNo: p.pgCertNumber || p.pgRollNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:242: return { name: 'PHD CERTIFICATE NO.', certNo: p.phdCertNumber || p.phdRegNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:244: return { name: '10TH CERTIFICATE NO.', certNo: p.tenthCertNumber || p.tenthRollNumber || '----' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:280: return { show10th, show12th, showDiploma, showGraduation, showPG, showPhD, isBelow10th, qualLabel: qual || '10th' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:305: name: name || user.fullName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:412: bankName: bankName || prev.bankName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:428: bankName: fallbackBank || prev.bankName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:449: bankName: fallbackBank || prev.bankName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:473: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:491: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:597: name: newCert.name.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:608: setNewCert({ name: '', number: '', issuingAuthority: '', issueDate: '' });
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:788: title: 'Passport Photo',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:843: title: 'Digital Signature',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:896: title: 'Left Thumb Impression',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:940: <InputField label="FULL NAME" value={editBuffer.name || ''} onChange={(val) => setEditBuffer({ ...editBuffer, name: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:944: <InputField label="FATHER'S NAME" value={editBuffer.fatherName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, fatherName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:951: <InputField label="MOTHER'S NAME" value={editBuffer.motherName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, motherName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1439: <InputField label="BOARD NAME" value={editBuffer.tenthBoardName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, tenthBoardName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1440: <InputField label="SCHOOL NAME" value={editBuffer.tenthSchoolName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, tenthSchoolName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1495: <InputField label="SCHOOL / COLLEGE NAME" value={editBuffer.twelfthSchoolCollegeName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, twelfthSchoolCollegeName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1546: <InputField label="COURSE / TRADE NAME" value={editBuffer.diplomaCourseName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, diplomaCourseName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1547: <InputField label="INSTITUTE / COLLEGE NAME" value={editBuffer.diplomaCollegeName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, diplomaCollegeName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1590: <InputField label="COLLEGE NAME" value={editBuffer.degreeCollegeName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, degreeCollegeName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1591: <InputField label="UNIVERSITY NAME" value={editBuffer.degreeUniversityName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, degreeUniversityName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1592: <InputField label="COURSE / DEGREE NAME" value={editBuffer.degreeCourseName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, degreeCourseName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1646: <InputField label="PG DEGREE NAME" value={editBuffer.pgDegreeName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, pgDegreeName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1647: <InputField label="COLLEGE NAME" value={editBuffer.pgCollegeName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, pgCollegeName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1648: <InputField label="UNIVERSITY NAME" value={editBuffer.pgUniversityName || ''} onChange={(val) => setEditBuffer({ ...editBuffer, pgUniversityName: val })} />
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1969: onChange={(val) => setEditBuffer({ ...editBuffer, bankAccountHolderName: val })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:1975: onChange={(val) => setEditBuffer({ ...editBuffer, bankName: val })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2026: { id: 'income', title: 'INCOME CERTIFICATE', icon: FileText },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2027: { id: 'caste', title: 'CASTE CERTIFICATE', icon: ShieldCheck },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2028: { id: 'residence', title: 'RESIDENCE CERTIFICATE', icon: MapPin },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2029: { id: 'handicap', title: 'HANDICAP CERTIFICATE (PWD)', icon: Award },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2266: onChange={(val) => setNewCert({ ...newCert, name: val })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2385: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2386: subtitle: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2440: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2518: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2536: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:2558: const DisplayField: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ResumeBuilder.tsx:45: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ResumeBuilder.tsx:63: label: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:84: title: '+2 Admission' | '+3 Admission' | '';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:97: title: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:101: otherApplicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:113: serviceName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:126: serviceName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:130: otherApplicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:409: serviceName: service.title,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:413: otherApplicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:454: onClick={() => setAdmissionModal({ isOpen: true, title: '+2 Admission', fee: 230, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:478: onClick={() => setAdmissionModal({ isOpen: true, title: '+3 Admission', fee: 330, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:502: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Nursing Admission', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:526: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Computer Courses', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:550: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'ITI', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:583: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Scholarship', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:804: serviceName: `${job.title} Application`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:808: otherApplicantName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:869: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Private Job Enquiry', amount: 40, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1240: onChange={(e) => setAdmissionModal(prev => ({ ...prev, otherApplicantName: e.target.value }))}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1411: serviceTitle: sTitle,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1413: applicantName: uName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1421: otherName: admissionModal.otherApplicantName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1436: applicantName: uName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1447: title: `Payment Submitted: ${sTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1580: onClick={() => setSffCallModal({ isOpen: false, serviceName: '', amount: 30, step: 'select_applicant', applicantType: 'Self', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1821: onChange={(e) => setSffCallModal(prev => ({ ...prev, otherApplicantName: e.target.value }))}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1988: userName: uName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1990: serviceTitle: sTitle,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1998: otherApplicantName: sffCallModal.otherApplicantName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2013: applicantName: uName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2024: title: `Payment Submitted: ${sTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2107: <span>Service Name:</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2127: onClick={() => setSffCallModal({ isOpen: false, serviceName: '', amount: 30, step: 'select_applicant', applicantType: 'Self', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:557: <span className="text-slate-400">Name:</span>{' '}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:633: title: `Form Processing: ${f.serviceTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:634: applicantName: f.applicantName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:696: <span className="text-slate-400">Title / Service:</span>{' '}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:700: <span className="text-slate-400">Applicant Name:</span>{' '}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\AdminLoginPlaceholder.tsx:12: onEnterMaintenance?: (userName: string) => void;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:15: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:42: serviceTitle: `[Support Grievance] ${form.issueType}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:44: applicantName: form.name,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:75: setForm({ name: '', email: '', issueType: 'login-issue', message: '' });
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:182: onChange={(e) => setForm({ ...form, name: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\LoginPage.tsx:26: onLoginSuccess?: (username: string, registeredProfile?: UserProfile) => void;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\LoginPage.tsx:94: name: fbUser.displayName || form.usernameOrEmail.split('@')[0],
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\RegisterModal.tsx:156: fullName: true,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\RegisterModal.tsx:284: fullName: fullName.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\RegisterModal.tsx:776: <span className="text-slate-500 font-medium">Full Name:</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\data\indiaStatesDistricts.ts:855: export function getDistrictsForState(stateName: string): string[] {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:52: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:71: userName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:73: serviceTitle: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:86: title: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:523: fullName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:552: displayName: cleanName
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:561: fullName: cleanName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:562: name: cleanName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:678: fullName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:735: await updateProfile(fbUser, { displayName: cleanName }).catch(() => {});
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:767: await updateProfile(fbUser, { displayName: cleanName }).catch(() => {});
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:801: fullName: cleanName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:802: name: cleanName,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:879: fullName: profile.name || profile.fullName || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:971: displayName: existingProfile.fullName || existingProfile.name || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:986: name: fbUser.displayName || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:8: name: adminUser.name || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:23: fatherName: adminUser.fatherName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:24: motherName: adminUser.motherName || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\App.tsx:58: name: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\App.tsx:82: name: fbUser.displayName || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\App.tsx:115: const handleLoginSuccess = async (username: string, registeredProfile?: UserProfile) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\App.tsx:130: name: username.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || 'Citizen User',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\types.ts:9: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\types.ts:20: name: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\types.ts:244: name: string;

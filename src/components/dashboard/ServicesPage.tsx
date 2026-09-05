@@ -55,6 +55,12 @@ interface ServicesPageProps {
   onNavigateTab?: (tab: DashboardTab) => void;
 }
 
+const isSffServiceEnabled = (title: string): boolean => {
+  const service = adminStore.getServices().find(
+    (s) => s.title.trim().toLowerCase() === title.trim().toLowerCase()
+  );
+  return service?.enabled !== false;
+};
 export const ServicesPage: React.FC<ServicesPageProps> = ({ 
   user, 
   currentView, 
@@ -67,6 +73,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   const [showLockModal, setShowLockModal] = useState(false);
   const [adminServices, setAdminServices] = useState(() => adminStore.getServices());
   const [adminJobs, setAdminJobs] = useState(() => adminStore.getJobs());
+const [serviceUnavailableMessage, setServiceUnavailableMessage] = useState<string | null>(null);
+
 
   useEffect(() => {
     const updateServices = () => {
@@ -179,7 +187,48 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   };
 
   return (
-    <div className="space-y-6 pb-20 w-full max-w-4xl mx-auto">
+    <>
+      <AnimatePresence>
+        {serviceUnavailableMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+            onClick={() => setServiceUnavailableMessage(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 10 }}
+              className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-slate-200 p-6 text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-red-600 text-2xl">
+                !
+              </div>
+
+              <h2 className="text-xl font-black text-slate-900">
+                Service Not Available Today
+              </h2>
+
+              <p className="mt-2 text-sm text-slate-500">
+                This service is currently unavailable. Please try again later.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setServiceUnavailableMessage(null)}
+                className="mt-5 w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white"
+              >
+                OK
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="space-y-6 pb-20 w-full max-w-4xl mx-auto">
       {/* SERVICE ACCESS & PROFILE COMPLETION ADVISORY BANNER (NON-BLOCKING) */}
       {completionPercentage < 80 ? (
         <div className="bg-gradient-to-r from-amber-500/10 via-indigo-500/5 to-amber-500/10 border border-amber-400/80 dark:border-amber-500/50 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -384,8 +433,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                 const displayFee = service.fee
                   ? service.fee.startsWith('?')
                     ? service.fee
-                    : `Rs.${service.fee}`
-                  : '?30';
+                    : `Rs ${service.fee}`
+                  : 'Rs 30';
 
                 // Pick friendly emoji icon based on title/category
                 let icon = '';
@@ -417,7 +466,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                         isPaying: false,
                       })
                     }
-                    className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+                    className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -451,8 +500,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
             {/* Option 1: +2 Admission */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setAdmissionModal({ isOpen: true, title: '+2 Admission', fee: 230, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => { if (!isSffServiceEnabled('+2 Admission')) { setServiceUnavailableMessage('Service Not Available Today'); return; } setAdmissionModal({ isOpen: true, title: '+2 Admission', fee: 230, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -463,20 +512,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     +2 Admission
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Fee: Rs.230/-
+                    Fee: Rs 230/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 font-extrabold text-[10px] border border-amber-200 shrink-0">
-                Apply Rs.230
+                Apply Rs 230
               </span>
             </motion.div>
 
             {/* Option 2: +3 Admission */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setAdmissionModal({ isOpen: true, title: '+3 Admission', fee: 330, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => { if (!isSffServiceEnabled('+3 Admission')) { setServiceUnavailableMessage('Service Not Available Today'); return; } setAdmissionModal({ isOpen: true, title: '+3 Admission', fee: 330, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -487,20 +536,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     +3 Admission
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Fee: Rs.330/-
+                    Fee: Rs 330/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-800 font-extrabold text-[10px] border border-blue-200 shrink-0">
-                Apply Rs.330
+                Apply Rs 330
               </span>
             </motion.div>
 
             {/* Option 3: Nursing Admission */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Nursing Admission', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => { if (!isSffServiceEnabled('Nursing Admission')) { setServiceUnavailableMessage('Service Not Available Today'); return; } setSffCallModal({ isOpen: true, serviceName: 'Nursing Admission', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -511,20 +560,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     Nursing Admission
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Processing Charge: Rs.30/-
+                    Processing Charge: Rs 30/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-extrabold text-[10px] border border-emerald-200 shrink-0">
-                Pay Rs.30
+                Pay Rs 30
               </span>
             </motion.div>
 
             {/* Option 4: Computer Cources */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Computer Courses', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => { if (!isSffServiceEnabled('Computer Courses')) { setServiceUnavailableMessage('Service Not Available Today'); return; } setSffCallModal({ isOpen: true, serviceName: 'Computer Courses', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -535,20 +584,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     Computer Cources
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Processing Charge: Rs.30/-
+                    Processing Charge: Rs 30/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-extrabold text-[10px] border border-emerald-200 shrink-0">
-                Pay Rs.30
+                Pay Rs 30
               </span>
             </motion.div>
 
             {/* Option 5: ITI  */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setSffCallModal({ isOpen: true, serviceName: 'ITI', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => { if (!isSffServiceEnabled('ITI')) { setServiceUnavailableMessage('Service Not Available Today'); return; } setSffCallModal({ isOpen: true, serviceName: 'ITI', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -559,12 +608,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     ITI
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Processing Charge: Rs.30/-
+                    Processing Charge: Rs 30/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-extrabold text-[10px] border border-emerald-200 shrink-0">
-                Pay Rs.30
+                Pay Rs 30
               </span>
             </motion.div>
           </div>
@@ -580,8 +629,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
             {/* Option 1: Scholarship */}
             <motion.div
               whileHover={{ y: -2 }}
-              onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Scholarship', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
-              className="bg-white border border-slate-200 hover:border-emerald-600 rounded-xl p-3.5 shadow-2xs hover:shadow-md transition-all flex items-center justify-between group cursor-pointer"
+              onClick={() => {
+  setSffCallModal({ isOpen: true, serviceName: 'Scholarship', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false });
+}}
+              className={`bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs transition-all flex items-center justify-between group hover:border-emerald-600 hover:shadow-md cursor-pointer`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-sm shrink-0">
@@ -592,12 +643,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     Scholarship
                   </h3>
                   <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 truncate">
-                    Processing Charge: Rs.30/-
+                    Processing Charge: Rs 30/-
                   </p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-extrabold text-[10px] border border-emerald-200 shrink-0">
-                Pay Rs.30
+                Pay Rs 30
               </span>
             </motion.div>
           </div>
@@ -672,7 +723,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     </h4>
 
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      New job notifications will appear here when added by Admin.
+                      New job notifications will appear here when added by SFF.
                     </p>
                   </div>
 
@@ -814,7 +865,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                               }
                               className="flex-1 px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-[11px] font-black transition-all"
                             >
-                              Apply via SFF 40
+                              Apply by SFF 40
                             </button>
 
                           </div>
@@ -845,7 +896,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     Private Jobs Managed Manually by SFF Menmber
                   </h4>
                   <p className="text-xs text-amber-900 dark:text-amber-300 leading-relaxed font-medium">
-                    Private job listings are managed and updated manually by Admin. 
+                    Private job listings are managed and updated manually by SFF. 
                   </p>
                 </div>
               </div>
@@ -861,7 +912,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     No Private Jobs Listed Currently
                   </h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-                    [Jobs][Jobs][Info] [Jobs] [Info] [Info] [Jobs][Jobs][Info] [Jobs][Info] [Jobs][Jobs] [Jobs]? [Info] [Jobs][Info] [Info] [Jobs]Please enter the required details[Jobs] [Info] [Jobs][Jobs][Info] [Jobs] [Jobs][Jobs][Jobs] [Info] [Jobs] [Info] [Jobs] [Info] [Jobs][Jobs] [Info] [Jobs]? [Jobs]?
+
                   </p>
                 </div>
 
@@ -869,7 +920,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                   onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Private Job Enquiry', amount: 40, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
                   className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Enquire for Private Jobs (?40 Service Charge)</span>
+                  <span>Enquire for Private Jobs (40 Service Charge)</span>
                 </button>
               </div>
             </div>
@@ -990,7 +1041,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       {admissionModal.title} Portal
                     </h3>
                     <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                      Application Fee: <span className="text-emerald-600 dark:text-emerald-400 font-bold">Rs.{admissionModal.fee}/-</span>
+                      Application Fee: <span className="text-emerald-600 dark:text-emerald-400 font-bold">Rs {admissionModal.fee}/-</span>
                     </p>
                   </div>
                 </div>
@@ -1032,7 +1083,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                             1. Self
                           </div>
                           <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                            Apply using stored profile. Fee: <strong className="text-emerald-600 dark:text-emerald-400">Rs.{admissionModal.fee}/-</strong>
+                            Apply using stored profile. Fee: <strong className="text-emerald-600 dark:text-emerald-400">Rs {admissionModal.fee}/-</strong>
                           </p>
                         </div>
                       </div>
@@ -1155,7 +1206,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       </p>
 
                       <p className="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">
-                        ₹{sffCallModal.amount || 40}/-
+                        Rs {sffCallModal.amount || 40}/-
                       </p>
                     </div>
                   )}
@@ -1306,7 +1357,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                         {admissionModal.title} Fee Breakdown
                       </span>
                       <span className="px-2.5 py-0.5 rounded-full bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 font-mono font-black text-xs">
-                        Rs.{admissionModal.fee}/-
+                        Rs {admissionModal.fee}/-
                       </span>
                     </div>
                     <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1 border-t border-emerald-200/80 dark:border-emerald-800/80 pt-2 font-medium">
@@ -1316,11 +1367,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       </div>
                       <div className="flex justify-between">
                         <span>Service & Auto-Fill Processing:</span>
-                        <span className="font-bold">?30</span>
+                        <span className="font-bold">Rs 30</span>
                       </div>
                       <div className="flex justify-between font-black text-slate-900 dark:text-white pt-1 border-t border-emerald-200 dark:border-emerald-800 text-sm">
                         <span>Total Payable Amount:</span>
-                        <span className="text-emerald-700 dark:text-emerald-400">Rs.{admissionModal.fee}/-</span>
+                        <span className="text-emerald-700 dark:text-emerald-400">Rs {admissionModal.fee}/-</span>
                       </div>
                     </div>
                   </div>
@@ -1354,7 +1405,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     </div>
 
                     <div className="text-center text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                      Scan QR ? Pay Rs.{admissionModal.fee}/- ? Enter UTR
+                      Scan QR ? Pay Rs {admissionModal.fee}/- ? Enter UTR
                     </div>
 
                     <input
@@ -1439,7 +1490,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                             utrNumber: utr,
                             date: new Date().toISOString(),
                             status: 'Pending',
-                            remarks: `UPI QR payment submitted for admin verification. UTR: ${utr}`,
+                            remarks: `UPI QR payment submitted for SFF verification. UTR: ${utr}`,
                           });
 
                           adminStore.saveNotification({
@@ -1544,7 +1595,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       Payment Successful!
                     </h4>
                     <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold">
-                      Rs.{admissionModal.fee}/- Payment Received for {admissionModal.title}
+                      Rs {admissionModal.fee}/- Payment Received for {admissionModal.title}
                     </p>
                   </div>
 
@@ -1736,7 +1787,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       </p>
 
                       <p className="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">
-                        ₹{sffCallModal.amount || 40}/-
+                        Rs {sffCallModal.amount || 40}/-
                       </p>
                     </div>
                   )}
@@ -1889,7 +1940,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       {sffCallModal.serviceName}
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                      Pay ₹{sffCallModal.amount || 40}/- processing charge for instant form submission & 30-min callback
+                      Pay Rs {sffCallModal.amount || 40}/- processing charge for instant form submission & 30-min callback
                     </p>
                   </div>
 
@@ -1897,11 +1948,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                   <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-2xl space-y-2">
                     <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
                       <span>Service Charge Fee:</span>
-                      <span className="font-mono text-slate-900 dark:text-white">?{sffCallModal.amount || 40}/-</span>
+                      <span className="font-mono text-slate-900 dark:text-white">Rs {sffCallModal.amount || 40}/-</span>
                     </div>
                     <div className="flex items-center justify-between font-black text-emerald-900 dark:text-emerald-300 text-sm border-t border-emerald-200 dark:border-emerald-800/80 pt-1.5">
                       <span>Total Payable:</span>
-                      <span className="text-emerald-700 dark:text-emerald-400 font-mono">?{sffCallModal.amount || 40}/-</span>
+                      <span className="text-emerald-700 dark:text-emerald-400 font-mono">Rs {sffCallModal.amount || 40}/-</span>
                     </div>
                   </div>
 
@@ -1934,7 +1985,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     </div>
 
                     <div className="text-center text-[11px] font-bold text-slate-600 dark:text-slate-400">
-                      Scan QR → Pay ₹{sffCallModal.amount || 40}/- → Enter UTR
+                      Scan QR → Pay Rs {sffCallModal.amount || 40}/- → Enter UTR
                     </div>
 
                     <input
@@ -2016,7 +2067,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                             utrNumber: utr,
                             date: new Date().toISOString(),
                             status: 'Pending',
-                            remarks: `UPI QR payment submitted for admin verification. UTR: ${utr}`,
+                            remarks: `UPI QR payment submitted for SFF verification. UTR: ${utr}`,
                           });
 
                           adminStore.saveNotification({
@@ -2090,7 +2141,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                       {sffCallModal.serviceName}
                     </h3>
                     <div className="inline-block px-3 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-extrabold text-[11px] border border-emerald-200 dark:border-emerald-800">
-                      ?{sffCallModal.amount || 40}/- Processing Charge Paid ?
+                      Rs {sffCallModal.amount || 40}/- Processing Charge Paid ✓
                     </div>
                   </div>
 
@@ -2119,7 +2170,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                     )}
                     <div className="flex justify-between font-medium">
                       <span>Payment Status:</span>
-                      <strong className="text-emerald-600 dark:text-emerald-400 font-extrabold">?{sffCallModal.amount || 40}/- Received</strong>
+                      <strong className="text-emerald-600 dark:text-emerald-400 font-extrabold">Rs {sffCallModal.amount || 40}/- Received</strong>
                     </div>
                   </div>
 
@@ -2136,9 +2187,25 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         )}
       </AnimatePresence>
 
-    </div>
+      </div>
+    </>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

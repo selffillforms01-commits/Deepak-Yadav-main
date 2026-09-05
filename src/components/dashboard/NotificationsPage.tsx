@@ -1,4 +1,4 @@
-import { getUserNotificationsFromFirestore } from '../../lib/firestoreService';
+﻿import { getUserNotificationsFromFirestore } from '../../lib/firestoreService';
 import React, { useState, useEffect } from 'react';
 import {
   Bell,
@@ -55,10 +55,10 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ user }) =>
   // Load notifications from adminStore
   // Load admin notifications + current user's personal notifications
 const loadData = async () => {
-  // ADMIN notifications — untouched
+  // ADMIN notifications â€” untouched
   const adminNotifs = adminStore.getNotifications();
 
-  // Forms — untouched
+  // Forms â€” untouched
   const allForms = adminStore.getForms();
 
   // Personal notifications for current logged-in user
@@ -484,6 +484,7 @@ const loadData = async () => {
     </div>
   );
 };
+
 
 
 

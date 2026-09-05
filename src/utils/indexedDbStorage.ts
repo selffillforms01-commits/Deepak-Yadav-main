@@ -1,4 +1,4 @@
-// IndexedDB helper to store and retrieve large files (PDFs, high-MB images) 
+﻿// IndexedDB helper to store and retrieve large files (PDFs, high-MB images) 
 // safely in the browser without 1MB Firestore or 5MB localStorage limits.
 
 const DB_NAME = 'SFF_LargeFiles_DB';
@@ -93,3 +93,4 @@ export async function deleteFileFromIndexedDB(key: string): Promise<void> {
     console.warn('IndexedDB delete failed:', err);
   }
 }
+

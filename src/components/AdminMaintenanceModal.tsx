@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ShieldAlert, Wrench, ArrowRight, Lock, Sparkles } from 'lucide-react';
 import { PortalRoute } from '../types';
@@ -114,3 +114,4 @@ export const AdminMaintenanceModal: React.FC<AdminMaintenanceModalProps> = ({
     </AnimatePresence>
   );
 };
+

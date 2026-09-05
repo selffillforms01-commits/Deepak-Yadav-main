@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Search,
   Bell,
@@ -216,7 +216,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                 }}
                 className="w-full py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 font-bold text-xs rounded-xl transition-colors cursor-pointer text-center block"
               >
-                Manage Notifications →
+                Manage Notifications â†’
               </button>
             </div>
           )}
@@ -301,3 +301,5 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     </header>
   );
 };
+
+

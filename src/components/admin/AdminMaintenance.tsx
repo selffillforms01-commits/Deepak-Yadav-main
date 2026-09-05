@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Wrench,
   UserCheck,
@@ -214,7 +214,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
     setNewStaffPassword('');
     setNewStaffPhone('');
     setNewStaffEmail('');
-    alert(`Maintenance Staff "${newStaff.name}" created successfully!\n\n🔑 Username: ${generatedUser}\n🔒 Password: ${generatedPass}`);
+    alert(`Maintenance Staff "${newStaff.name}" created successfully!\n\nðŸ”‘ Username: ${generatedUser}\nðŸ”’ Password: ${generatedPass}`);
   };
 
   // Handle Create Custom Task
@@ -416,7 +416,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
             }`}
           >
             <option value="All">All Task Sources</option>
-            <option value="Original (Forms & Payments)">✨ Original (Forms & Payments Only)</option>
+            <option value="Original (Forms & Payments)">âœ¨ Original (Forms & Payments Only)</option>
             <option value="Form Submission">Form Submissions</option>
             <option value="User Payment">User Payments</option>
             <option value="System Maintenance">System / Manual Tasks</option>
@@ -556,7 +556,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                       </td>
 
                       <td className="p-3.5 font-black text-emerald-400 whitespace-nowrap">
-                        ₹{t.amount || 30}
+                        Rs {t.amount || 30}
                       </td>
 
                       <td className="p-3.5 whitespace-nowrap">
@@ -772,7 +772,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                   />
                 </div>
                 <div className="col-span-2 text-[10px] text-amber-300/80">
-                  ⚡ Staff member will use this exact Username and Password to log into the Maintenance Portal.
+                  âš¡ Staff member will use this exact Username and Password to log into the Maintenance Portal.
                 </div>
               </div>
 
@@ -884,7 +884,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
               </div>
 
               <div>
-                <label className="block font-bold text-slate-300 mb-1">Amount (₹)</label>
+                <label className="block font-bold text-slate-300 mb-1">Amount (Rs )</label>
                 <input
                   type="number"
                   placeholder="30"
@@ -1007,7 +1007,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
             <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-300 text-xs font-bold flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 shrink-0 text-amber-400" />
               <span>
-                Maintenance staff can only log into the Maintenance Portal using the Username & Password generated here by Admin.
+                Maintenance staff can only log into the Maintenance Portal using the Username & Password generated here by SFF.
               </span>
             </div>
 
@@ -1027,8 +1027,8 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                         </span>
                       </div>
                       <p className="text-xs text-slate-400 flex items-center gap-3">
-                        <span>📞 {staff.phone}</span>
-                        <span>✉️ {staff.email}</span>
+                        <span>ðŸ“ž {staff.phone}</span>
+                        <span>âœ‰ï¸ {staff.email}</span>
                       </p>
                     </div>
 
@@ -1043,7 +1043,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                       <div className="text-xs">
                         <div className="text-[10px] text-slate-400 font-bold uppercase">Password</div>
                         <div className="font-mono font-black text-emerald-400 text-xs">
-                          {showPass ? staff.password || 'staff123' : '••••••••'}
+                          {showPass ? staff.password || 'staff123' : 'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢'}
                         </div>
                       </div>
 
@@ -1113,3 +1113,6 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
     </div>
   );
 };
+
+
+

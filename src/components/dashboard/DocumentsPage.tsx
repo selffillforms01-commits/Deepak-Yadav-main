@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Fingerprint, 
@@ -48,7 +48,7 @@ export interface DocumentItem {
   name: string;
   category: 'identity' | 'educational' | 'income-caste' | 'other';
   iconType: 'aadhaar' | 'pan' | 'licence' | 'passport' | 'marksheet' | 'degree' | 'income' | 'caste' | 'residence' | 'ews' | 'disability' | 'other';
-  status: 'Verified' | 'Pending Verification' | 'Not Uploaded';
+  status: 'Uploaded' | 'Not Uploaded';
   uploadDate: string;
   fileSize: string;
   fileType: 'pdf' | 'jpg' | 'png';
@@ -87,9 +87,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Aadhaar Card',
       category: 'identity',
       iconType: 'aadhaar',
-      status: hasAadhaar ? 'Verified' : 'Not Uploaded',
-      uploadDate: hasAadhaar ? 'e-KYC Verified' : '-',
-      fileSize: hasAadhaar ? 'Digital Copy' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: aadhaarNo,
       issuingAuthority: 'UIDAI - Govt. of India',
@@ -102,9 +102,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'PAN Card',
       category: 'identity',
       iconType: 'pan',
-      status: 'Verified',
-      uploadDate: 'e-KYC Verified',
-      fileSize: 'Digital Copy',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'jpg',
       documentNumber: p.panNumber,
       issuingAuthority: 'Income Tax Dept. of India',
@@ -118,9 +118,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Driving Licence',
       category: 'identity',
       iconType: 'licence',
-      status: 'Verified',
-      uploadDate: 'e-KYC Verified',
-      fileSize: 'Digital Copy',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: p.drivingLicenceNumber,
       issuingAuthority: 'Ministry of Road Transport & Highways',
@@ -134,9 +134,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Passport',
       category: 'identity',
       iconType: 'passport',
-      status: 'Verified',
-      uploadDate: 'e-KYC Verified',
-      fileSize: 'Digital Copy',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: p.passportNumber,
       issuingAuthority: 'Passport Seva - Ministry of External Affairs',
@@ -157,9 +157,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: '10th Marksheet',
       category: 'educational',
       iconType: 'marksheet',
-      status: has10thM ? 'Verified' : 'Not Uploaded',
-      uploadDate: has10thM ? 'Verified' : '-',
-      fileSize: has10thM ? 'Verified' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: p.tenthRollNumber || undefined,
       issuingAuthority: p.tenthBoard || p.tenthBoardName || 'Board of Secondary Education',
@@ -169,9 +169,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: '10th Certificate',
       category: 'educational',
       iconType: 'degree',
-      status: has10thC ? 'Verified' : 'Not Uploaded',
-      uploadDate: has10thC ? 'Verified' : '-',
-      fileSize: has10thC ? 'Verified' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: p.tenthCertNumber || undefined,
       issuingAuthority: p.tenthBoard || p.tenthBoardName || 'Board of Secondary Education',
@@ -193,9 +193,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: '12th Marksheet',
         category: 'educational',
         iconType: 'marksheet',
-        status: has12thM ? 'Verified' : 'Not Uploaded',
-        uploadDate: has12thM ? 'Verified' : '-',
-        fileSize: has12thM ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.twelfthRollNumber || undefined,
         issuingAuthority: p.twelfthCouncilBoard || 'Council of Higher Secondary Education',
@@ -205,9 +205,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: '12th Certificate',
         category: 'educational',
         iconType: 'degree',
-        status: has12thC ? 'Verified' : 'Not Uploaded',
-        uploadDate: has12thC ? 'Verified' : '-',
-        fileSize: has12thC ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.twelfthCertNumber || undefined,
         issuingAuthority: p.twelfthCouncilBoard || 'Council of Higher Secondary Education',
@@ -225,9 +225,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Diploma Marksheet',
         category: 'educational',
         iconType: 'marksheet',
-        status: hasDipM ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasDipM ? 'Verified' : '-',
-        fileSize: hasDipM ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.diplomaRollNumber || undefined,
         issuingAuthority: p.diplomaBoardUniversity || 'State Council for Technical Education',
@@ -237,9 +237,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Diploma Certificate',
         category: 'educational',
         iconType: 'degree',
-        status: hasDipC ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasDipC ? 'Verified' : '-',
-        fileSize: hasDipC ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.diplomaCertNumber || undefined,
         issuingAuthority: p.diplomaBoardUniversity || 'State Council for Technical Education',
@@ -257,9 +257,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Graduation Marksheet',
         category: 'educational',
         iconType: 'marksheet',
-        status: hasDegM ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasDegM ? 'Verified' : '-',
-        fileSize: hasDegM ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.degreeRollNumber || undefined,
         issuingAuthority: p.degreeUniversityName || 'University',
@@ -269,9 +269,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Graduation Degree Certificate',
         category: 'educational',
         iconType: 'degree',
-        status: hasDegC ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasDegC ? 'Verified' : '-',
-        fileSize: hasDegC ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.degreeCertNumber || undefined,
         issuingAuthority: p.degreeUniversityName || 'University',
@@ -289,9 +289,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Post Graduation Marksheet',
         category: 'educational',
         iconType: 'marksheet',
-        status: hasPgM ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasPgM ? 'Verified' : '-',
-        fileSize: hasPgM ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.pgRollNumber || undefined,
         issuingAuthority: 'University',
@@ -301,9 +301,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
         name: 'Post Graduation Degree Certificate',
         category: 'educational',
         iconType: 'degree',
-        status: hasPgC ? 'Verified' : 'Not Uploaded',
-        uploadDate: hasPgC ? 'Verified' : '-',
-        fileSize: hasPgC ? 'Verified' : '-',
+        status: 'Not Uploaded',
+        uploadDate: '-',
+        fileSize: '-',
         fileType: 'pdf',
         documentNumber: p.pgCertNumber || undefined,
         issuingAuthority: 'University',
@@ -327,8 +327,8 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
   const isDisabilityYes = Boolean(
     p.disabilityStatus &&
       (p.disabilityStatus.trim().toLowerCase() === 'yes' ||
-        p.disabilityStatus.includes('हाँ') ||
-        p.disabilityStatus.includes('ହଁ'))
+        p.disabilityStatus.includes('à¤¹à¤¾à¤') ||
+        p.disabilityStatus.includes('à¬¹à¬'))
   );
 
   const disNo = findCertNo(['disability']);
@@ -340,9 +340,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Income Certificate',
       category: 'income-caste',
       iconType: 'income',
-      status: hasInc ? 'Verified' : 'Not Uploaded',
-      uploadDate: hasInc ? 'Verified' : '-',
-      fileSize: hasInc ? 'Verified' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: incNo,
       issuingAuthority: 'Tahsildar / Revenue Department',
@@ -356,9 +356,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Caste Certificate',
       category: 'income-caste',
       iconType: 'caste',
-      status: hasCaste ? 'Verified' : 'Not Uploaded',
-      uploadDate: hasCaste ? 'Verified' : '-',
-      fileSize: hasCaste ? 'Verified' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: casteNo,
       issuingAuthority: 'Sub-Collector / Revenue Officer',
@@ -370,9 +370,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
     name: 'Residence Certificate',
     category: 'income-caste',
     iconType: 'residence',
-    status: hasRes ? 'Verified' : 'Not Uploaded',
-    uploadDate: hasRes ? 'Verified' : '-',
-    fileSize: hasRes ? 'Verified' : '-',
+    status: 'Not Uploaded',
+    uploadDate: '-',
+    fileSize: '-',
     fileType: 'pdf',
     documentNumber: resNo,
     issuingAuthority: 'Revenue Inspector / Tehsildar',
@@ -384,9 +384,9 @@ export const getDynamicDocumentsList = (user?: UserProfile): DocumentItem[] => {
       name: 'Disability Certificate',
       category: 'income-caste',
       iconType: 'disability',
-      status: hasDisability ? 'Verified' : 'Not Uploaded',
-      uploadDate: hasDisability ? 'Verified' : '-',
-      fileSize: hasDisability ? 'Verified' : '-',
+      status: 'Not Uploaded',
+      uploadDate: '-',
+      fileSize: '-',
       fileType: 'pdf',
       documentNumber: disNo,
       issuingAuthority: 'Medical Board / District Hospital',
@@ -410,8 +410,8 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         const isDisabilityYes = Boolean(
           user?.disabilityStatus &&
             (user.disabilityStatus.trim().toLowerCase() === 'yes' ||
-              user.disabilityStatus.includes('हाँ') ||
-              user.disabilityStatus.includes('ହଁ'))
+              user.disabilityStatus.includes('à¤¹à¤¾à¤') ||
+              user.disabilityStatus.includes('à¬¹à¬'))
         );
         const userCat = (user?.category || 'General').trim().toUpperCase();
         const isReservedCaste = userCat.includes('SC') || userCat.includes('ST') || userCat.includes('OBC') || userCat.includes('SEBC');
@@ -453,7 +453,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         if (!updatedMap.has(item.id)) {
           if (
             (item.category === 'identity' || item.category === 'other' || item.id.startsWith('doc-other-') || item.isOptional) &&
-            (item.status === 'Verified' || item.status === 'Pending Verification' || item.documentNumber || item.customFileUrl || item.isOptional)
+            (item.status === 'Uploaded' || item.documentNumber || item.customFileUrl || item.isOptional)
           ) {
             updatedMap.set(item.id, item);
           }
@@ -531,7 +531,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
     const ext = file.name.split('.').pop()?.toLowerCase();
     
     if (!validTypes.includes(file.type) && !['pdf', 'jpg', 'jpeg', 'png'].includes(ext || '')) {
-      showToast('⚠️ Invalid file! Please upload PDF, JPG, JPEG, or PNG files.');
+      showToast('âš ï¸ Invalid file! Please upload PDF, JPG, JPEG, or PNG files.');
       return;
     }
 
@@ -576,11 +576,11 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
 
     if (selectedDocType === 'other') {
       if (!customDocNameInput.trim()) {
-        showToast('⚠️ Please enter a Document Name!');
+        showToast('âš ï¸ Please enter a Document Name!');
         return;
       }
       if (customDocCount >= 10) {
-        showToast('⚠️ Limit reached! You can upload maximum 10 custom/other documents.');
+        showToast('âš ï¸ Limit reached! You can upload maximum 10 custom/other documents.');
         return;
       }
 
@@ -589,9 +589,9 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         name: customDocNameInput.trim(),
         category: 'other',
         iconType: 'other',
-        status: finalFileUrl || docNumberInput.trim() ? 'Verified' : 'Not Uploaded',
-        uploadDate: finalFileUrl || docNumberInput.trim() ? todayStr : '-',
-        fileSize: finalFileUrl ? finalFileSize : docNumberInput.trim() ? 'Verified' : '-',
+        status: finalFileUrl ? 'Uploaded' : 'Not Uploaded',
+        uploadDate: finalFileUrl ? todayStr : '-',
+        fileSize: finalFileUrl ? finalFileSize : '-',
         fileType: finalFileType,
         documentNumber: docNumberInput.trim() || undefined,
         issuingAuthority: 'Issued Document Authority',
@@ -600,7 +600,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
       };
 
       setDocuments(prev => [...prev, newCustomDoc]);
-      showToast(`✅ ${newCustomDoc.name} added to your Document Locker!`);
+      showToast(`âœ… ${newCustomDoc.name} added to your Document Locker!`);
     } else {
       const targetType = availableDocTypes.find(t => t.id === selectedDocType);
       if (!targetType) return;
@@ -610,9 +610,9 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         name: targetType.name,
         category: 'identity',
         iconType: targetType.iconType,
-        status: finalFileUrl || docNumberInput.trim() ? 'Verified' : 'Not Uploaded',
-        uploadDate: finalFileUrl || docNumberInput.trim() ? todayStr : '-',
-        fileSize: finalFileUrl ? finalFileSize : docNumberInput.trim() ? 'Verified' : '-',
+        status: finalFileUrl ? 'Uploaded' : 'Not Uploaded',
+        uploadDate: finalFileUrl ? todayStr : '-',
+        fileSize: finalFileUrl ? finalFileSize : '-',
         fileType: finalFileUrl ? finalFileType : targetType.fileType,
         documentNumber: docNumberInput.trim() || undefined,
         issuingAuthority: targetType.authority,
@@ -630,7 +630,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         onUpdateUser(updatedUser);
       }
 
-      showToast(`✅ ${targetType.name} added to your Document Locker!`);
+      showToast(`âœ… ${targetType.name} added to your Document Locker!`);
     }
 
     setShowAddDocModal(false);
@@ -648,7 +648,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
       if (docId === 'doc-passport') updatedUser.passportNumber = undefined;
       onUpdateUser(updatedUser);
     }
-    showToast(`🗑 ${docName} removed from locker`);
+    showToast(`ðŸ—‘ ${docName} removed from locker`);
   };
 
   // Filter & Search state
@@ -732,24 +732,17 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
 
   // Render Status Badge
   const renderStatusBadge = (status: DocumentItem['status']) => {
-    if (status === 'Verified') {
+    if (status === 'Uploaded') {
       return (
         <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-emerald-200 shadow-2xs">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Status: Verified</span>
+          <span>Status: Uploaded</span>
         </span>
       );
     }
-    if (status === 'Pending Verification') {
-      return (
-        <span className="px-2.5 py-1 bg-amber-100 text-amber-900 text-xs font-bold rounded-full flex items-center gap-1.5 border border-amber-200">
-          <Clock className="w-3.5 h-3.5 text-amber-700" />
-          <span>Status: Pending Verification</span>
-        </span>
-      );
-    }
+
     return (
-      <span className="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full flex items-center gap-1.5 border border-slate-200">
+      <span className="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-extrabold rounded-full flex items-center gap-1.5 border border-slate-200 shadow-2xs">
         <AlertCircle className="w-3.5 h-3.5 text-slate-400" />
         <span>Status: Not Uploaded</span>
       </span>
@@ -821,7 +814,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
           d.id === docId
             ? {
                 ...d,
-                status: 'Verified' as const,
+                status: 'Uploaded' as const,
                 uploadDate: formattedDate,
                 fileSize: displaySize,
                 fileType: fileTypeStr,
@@ -836,7 +829,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
 
       setUploadingDocId(null);
       setTargetDocToUpload(null);
-      showToast(`✅ ${docTitle} uploaded & saved successfully!`);
+      showToast(`${docTitle} uploaded successfully!`);
     }).catch((err) => {
       console.error('File processing error:', err);
       setUploadingDocId(null);
@@ -846,7 +839,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
 
   // Handle Download Action
   const handleDownload = async (doc: DocumentItem) => {
-    showToast(`⬇ Downloading ${doc.name}...`);
+    showToast(`â¬‡ Downloading ${doc.name}...`);
     
     if (doc.customFileUrl) {
       try {
@@ -865,19 +858,8 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         console.warn('Error downloading custom file:', e);
       }
     }
-
-    // Create simulated file content or trigger download fallback
-    const dummyContent = `OFFICIAL GOVERNMENT VERIFIED DOCUMENT\n\nDocument Name: ${doc.name}\nDocument ID: ${doc.documentNumber || 'VERIFIED-SFF-2026'}\nIssued By: ${doc.issuingAuthority || 'Government Authority'}\nVerification Status: ${doc.status}\nDate: ${doc.uploadDate}\n\nDigitally Signed by Self Fill Forms e-District Portal.`;
-    const blob = new Blob([dummyContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${doc.name.replace(/\s+/g, '_')}_Verified.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+    return;
+};
 
   // Filter Documents according to search and selected tab category
   const filteredDocs = documents.filter((doc) => {
@@ -915,10 +897,10 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
         <div className="relative z-10 space-y-2">
           <div className="flex items-center gap-2 text-amber-300 font-extrabold text-xs tracking-wider uppercase">
             <ShieldCheck className="w-4 h-4 text-amber-300" />
-            <span>Digital Document Locker • e-District Verified</span>
+            <span>Digital Document Locker</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            My Verified Documents
+            My Documents
           </h1>
           <p className="text-blue-100 text-xs sm:text-sm font-medium max-w-2xl">
             Upload, preview, download, and manage your official identity, educational marksheet certificates, and government certificates seamlessly in one secure repository.
@@ -1053,7 +1035,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
       {/* DOCUMENTS GRID LIST */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredDocs.map((doc) => {
-          const isUploaded = doc.status === 'Verified' || doc.status === 'Pending Verification';
+          const isUploaded = doc.status === 'Uploaded';
 
           return (
             <motion.div
@@ -1238,9 +1220,6 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                 <div>
                   <h3 className="font-extrabold text-white text-sm sm:text-base flex items-center gap-2">
                     <span>{previewDoc.name}</span>
-                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-extrabold rounded-full">
-                      VERIFIED
-                    </span>
                   </h3>
                   <p className="text-xs text-slate-400 font-semibold">
                     {previewDoc.documentNumber ? `DOCUMENT NO: ${previewDoc.documentNumber}` : 'NOT SPECIFIED'}
@@ -1303,18 +1282,15 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                     </div>
                     <div>
                       <h2 className="text-xs font-black text-[#0B3B8C] uppercase tracking-wider">
-                        GOVERNMENT OF INDIA • e-DISTRICT DIGITAL LOCKER
+                        GOVERNMENT OF INDIA â€¢ e-DISTRICT DIGITAL LOCKER
                       </h2>
                       <p className="text-[10px] font-bold text-slate-500 uppercase">
-                        {previewDoc.issuingAuthority || 'OFFICIAL VERIFIED REPOSITORY'}
+                        {previewDoc.issuingAuthority || '-'}
                       </p>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-extrabold text-[11px] rounded-lg border border-emerald-300">
-                      DIGITALLY SIGNED
-                    </span>
                   </div>
                 </div>
 
@@ -1349,7 +1325,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                       <div className="grid grid-cols-2 gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs">
                         <div>
                           <span className="text-[10px] font-bold text-slate-400 uppercase block">Document Number</span>
-                          <span className="font-mono font-bold text-slate-800">{previewDoc.documentNumber || 'VERIFIED'}</span>
+                          <span className="font-mono font-bold text-slate-800">{previewDoc.documentNumber || '-'}</span>
                         </div>
                         <div>
                           <span className="text-[10px] font-bold text-slate-400 uppercase block">Format & Size</span>
@@ -1366,7 +1342,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                       <div>
                         <span className="text-[10px] font-bold text-slate-400 uppercase block">Document ID / Roll No</span>
                         <span className="font-mono font-extrabold text-slate-900 text-xs">
-                          {previewDoc.documentNumber || 'VERIFIED-SFF-8812'}
+                          {previewDoc.documentNumber || '-'}
                         </span>
                       </div>
                       <div>
@@ -1386,12 +1362,6 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                       <ShieldCheck className="w-32 h-32 text-[#0B3B8C]" />
                     </div>
                     <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-                    <p className="text-xs font-extrabold text-slate-800 uppercase">
-                      AUTHENTICATED VIA e-DISTRICT & DIGILOCKER API
-                    </p>
-                    <p className="text-[11px] font-medium text-slate-500">
-                      This document is cryptographically verified and legally valid under IT Act 2000.
-                    </p>
                   </div>
                 </div>
 
@@ -1548,7 +1518,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                     <div className="truncate">
                       <span className="font-bold text-emerald-900 block truncate">{modalFileState.file.name}</span>
-                      <span className="text-[10px] text-emerald-700 font-semibold">{modalFileState.formattedSize} • {modalFileState.fileType.toUpperCase()}</span>
+                      <span className="text-[10px] text-emerald-700 font-semibold">{modalFileState.formattedSize} â€¢ {modalFileState.fileType.toUpperCase()}</span>
                     </div>
                   </div>
                   <button
@@ -1573,7 +1543,7 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
 
             {selectedDocType === 'other' && customDocCount >= 10 && (
               <div className="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs font-bold text-center">
-                ⚠️ Maximum limit of 10 custom documents reached.
+                âš ï¸ Maximum limit of 10 custom documents reached.
               </div>
             )}
 
@@ -1607,3 +1577,11 @@ export const DocumentsPage: React.FC<DocumentsPageProps> = ({ user, onUpdateUser
     </div>
   );
 };
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Wrench,
   Plus,
@@ -34,7 +34,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Income Certificate',
     category: 'Revenue & Certificates',
-    fee: '₹30',
+    fee: '30',
     processingDays: 7,
     description: 'Official Tehsil / Revenue income verification certificate for scholarship & welfare schemes.',
     iconName: 'FileText',
@@ -42,7 +42,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Caste Certificate',
     category: 'Revenue & Certificates',
-    fee: '₹30',
+    fee: '30',
     processingDays: 7,
     description: 'Official community category verification certificate (SC/ST/OBC/SEBC/General).',
     iconName: 'FileCheck',
@@ -50,7 +50,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Residence Certificate',
     category: 'Revenue & Certificates',
-    fee: '₹30',
+    fee: '30',
     processingDays: 7,
     description: 'Official domicile & permanent resident certificate issued by District Revenue Office.',
     iconName: 'Home',
@@ -58,7 +58,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Pan Card',
     category: 'Tax & Identity',
-    fee: '₹150',
+    fee: '150',
     processingDays: 10,
     description: 'New NSDL / UTITSL Permanent Account Number (PAN) Card application and correction.',
     iconName: 'CreditCard',
@@ -66,7 +66,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Driving License',
     category: 'Transport & Driving',
-    fee: '₹30',
+    fee: '30',
     processingDays: 15,
     description: 'Learner & Permanent RTO Driving License online application filing and slot booking.',
     iconName: 'Car',
@@ -74,7 +74,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Character Certificate',
     category: 'Police & Verification',
-    fee: '₹100',
+    fee: '100',
     processingDays: 10,
     description: 'District Police Verification & Good Conduct Character Certificate.',
     iconName: 'ShieldCheck',
@@ -82,7 +82,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Employment Exchange',
     category: 'Employment',
-    fee: '₹50',
+    fee: '50',
     processingDays: 5,
     description: 'State Employment Exchange Registration & Renewal for Job Seekers.',
     iconName: 'Briefcase',
@@ -90,7 +90,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Birth Certificate',
     category: 'Civil Registration',
-    fee: '₹50',
+    fee: '50',
     processingDays: 5,
     description: 'Municipal Corporation / Gram Panchayat official Birth registration & certificate.',
     iconName: 'Baby',
@@ -98,7 +98,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'EWS Certificate',
     category: 'Revenue & Certificates',
-    fee: '₹50',
+    fee: '50',
     processingDays: 7,
     description: 'Economically Weaker Section reservation eligibility certificate for 10% quota.',
     iconName: 'Award',
@@ -106,7 +106,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Labour Card',
     category: 'Social Welfare',
-    fee: '₹30',
+    fee: '30',
     processingDays: 7,
     description: 'Construction & Unorganized Workers Welfare Board Registration & renewal.',
     iconName: 'HardHat',
@@ -114,7 +114,7 @@ const SERVICE_PRESETS: Array<{
   {
     title: 'Passport Application',
     category: 'Travel & Identity',
-    fee: '₹100',
+    fee: '100',
     processingDays: 15,
     description: 'Official Ministry of External Affairs Passport appointment slot booking & form filling.',
     iconName: 'Globe',
@@ -174,9 +174,9 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
     }
 
     // Format Fee string nicely if user just entered numbers like "30" or "150"
-    let formattedFee = (modalService.fee || '₹0').trim();
-    if (formattedFee && !formattedFee.includes('₹') && !isNaN(Number(formattedFee))) {
-      formattedFee = `₹${formattedFee}`;
+    let formattedFee = (modalService.fee || 'Rs 0').trim();
+    if (formattedFee && !formattedFee.includes('Rs ') && !isNaN(Number(formattedFee))) {
+      formattedFee = `Rs ${formattedFee}`;
     }
 
     const record: AdminServiceRecord = {
@@ -220,7 +220,7 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
             <span>Government Services & Pricing Catalog</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Add or edit any user service, set application fee/amount in ₹, processing SLA, and enable/disable services without code changes.
+            Add or edit any user service, set application fee/amount in Rs , processing SLA, and enable/disable services without code changes.
           </p>
         </div>
 
@@ -241,7 +241,7 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
                 category: 'Revenue & Certificates',
                 description: '',
                 processingDays: 7,
-                fee: '₹30',
+                fee: '30',
                 enabled: true,
               })
             }
@@ -263,7 +263,7 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
           <Search className="w-4 h-4 text-slate-400 shrink-0" />
           <input
             type="text"
-            placeholder="Search service by title, category, or fee (e.g. Income, Pan Card, ₹30)..."
+            placeholder="Search service by title, category, or fee (e.g. Income, Pan Card, 30)..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className={`w-full text-xs outline-none bg-transparent font-medium ${
@@ -323,7 +323,7 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
                   category: 'Revenue & Certificates',
                   description: '',
                   processingDays: 7,
-                  fee: '₹30',
+                  fee: '30',
                   enabled: true,
                 })
               }
@@ -486,17 +486,17 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
                 <div>
                   <label className="block font-extrabold text-emerald-400 mb-1 flex items-center gap-1">
                     <IndianRupee className="w-3.5 h-3.5" />
-                    <span>Service Amount / Processing Charge (₹) *</span>
+                    <span>Service Amount / Processing Charge (Rs ) *</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. ₹30, ₹50, ₹150, or Free"
+                    placeholder="e.g. 30, 50, 150, or Free"
                     value={modalService.fee || ''}
                     onChange={(e) => setModalService({ ...modalService, fee: e.target.value })}
                     className="w-full p-2.5 rounded-xl border border-emerald-600/60 bg-[#1C2541] outline-none text-slate-100 font-bold text-sm"
                     required
                   />
-                  <p className="text-[10px] text-slate-400 mt-1">Enter amount in ₹ (e.g. 30, 50, 150)</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Enter amount in Rs  (e.g. 30, 50, 150)</p>
                 </div>
 
                 <div>
@@ -559,3 +559,6 @@ export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
     </div>
   );
 };
+
+
+

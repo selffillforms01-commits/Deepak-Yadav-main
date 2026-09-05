@@ -89,7 +89,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Official Tehsil / Revenue income verification certificate for scholarship and welfare schemes.',
     iconName: 'FileText',
     processingDays: 7,
-    fee: 'Rs.30',
+    fee: 'Rs 30',
     enabled: true,
     totalSubmissions: 42,
     createdDate: '2026-01-01',
@@ -101,7 +101,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Official community category verification certificate (SC/ST/OBC/SEBC/General).',
     iconName: 'FileCheck',
     processingDays: 7,
-    fee: 'Rs.30',
+    fee: 'Rs 30',
     enabled: true,
     totalSubmissions: 38,
     createdDate: '2026-01-01',
@@ -113,7 +113,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Official domicile & permanent resident certificate issued by District Revenue Office.',
     iconName: 'Home',
     processingDays: 7,
-    fee: 'Rs.30',
+    fee: 'Rs 30',
     enabled: true,
     totalSubmissions: 56,
     createdDate: '2026-01-01',
@@ -125,7 +125,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'New NSDL / UTITSL Permanent Account Number (PAN) Card application and correction.',
     iconName: 'CreditCard',
     processingDays: 10,
-    fee: 'Rs.150',
+    fee: 'Rs 150',
     enabled: true,
     totalSubmissions: 89,
     createdDate: '2026-01-01',
@@ -137,7 +137,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Learner & Permanent RTO Driving License online application filing and slot booking.',
     iconName: 'Car',
     processingDays: 15,
-    fee: 'Rs.30',
+    fee: 'Rs 30',
     enabled: true,
     totalSubmissions: 27,
     createdDate: '2026-01-01',
@@ -149,7 +149,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'District Police Verification & Good Conduct Character Certificate.',
     iconName: 'ShieldCheck',
     processingDays: 10,
-    fee: 'Rs.100',
+    fee: 'Rs 100',
     enabled: true,
     totalSubmissions: 19,
     createdDate: '2026-01-01',
@@ -158,10 +158,10 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     id: 'SRV-007',
     title: 'Employment Exchange',
     category: 'Employment',
-    description: 'State Employment Exchange Registration & Renewal for Job Seekers.',
+    description: 'State Employment Exchange Registration & Renewal for Job SeekeRs ',
     iconName: 'Briefcase',
     processingDays: 5,
-    fee: 'Rs.50',
+    fee: 'Rs 50',
     enabled: true,
     totalSubmissions: 34,
     createdDate: '2026-01-01',
@@ -173,7 +173,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Municipal Corporation / Gram Panchayat official Birth registration & certificate.',
     iconName: 'Baby',
     processingDays: 5,
-    fee: 'Rs.50',
+    fee: 'Rs 50',
     enabled: true,
     totalSubmissions: 15,
     createdDate: '2026-01-01',
@@ -185,7 +185,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Economically Weaker Section reservation eligibility certificate for 10% quota.',
     iconName: 'Award',
     processingDays: 7,
-    fee: 'Rs.50',
+    fee: 'Rs 50',
     enabled: true,
     totalSubmissions: 24,
     createdDate: '2026-01-01',
@@ -197,7 +197,7 @@ export const DEFAULT_SERVICES: AdminServiceRecord[] = [
     description: 'Construction & Unorganized Workers Welfare Board Registration & renewal.',
     iconName: 'HardHat',
     processingDays: 7,
-    fee: 'Rs.30',
+    fee: 'Rs 30',
     enabled: true,
     totalSubmissions: 31,
     createdDate: '2026-01-01',
@@ -707,7 +707,7 @@ class AdminStore {
     id: `NTF-STATUS-${Date.now()}`,
     title: `?? Application Status Update: ${matchedForm.serviceTitle || 'Form Submission'}`,
     message: `Admin (${reviewedBy}) has updated your application #${matchedForm.formNumber || formId} status to "${status}". ${
-      remarks ? `Admin Remarks: "${remarks}"` : ""
+      remarks ? `SFF Remarks: "${remarks}"` : ""
     }`,
     notificationType: "Application Status",
     targetAudience: "Selected Users",
@@ -1222,6 +1222,12 @@ class AdminStore {
 }
 
 export const adminStore = new AdminStore();
+
+
+
+
+
+
 
 
 

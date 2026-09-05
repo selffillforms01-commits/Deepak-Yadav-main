@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   User,
@@ -42,7 +42,7 @@ import { UserProfile, OtherCertificate } from '../../types';
 import { useLanguage } from '../../context/LanguageContext';
 import { calculateOverallProfileCompletion } from '../../utils/profileChecker';
 import { DocumentsPage } from './DocumentsPage';
-import { uploadDocumentToStorage, saveUserProfileToFirestore } from '../../lib/firestoreService';
+import { uploadDocumentToStorage, saveUserProfileToFirestore, getUserDocumentsFromFirestore } from '../../lib/firestoreService';
 import { ALL_INDIAN_STATES, getDistrictsForState } from '../../data/indiaStatesDistricts';
 import { compressImageFile } from '../../utils/imageCompressor';
 import { SmartImage } from '../common/SmartImage';
@@ -393,15 +393,15 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
     }
 
     setIfscLoading(true);
-    setIfscStatus({ success: true, message: 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Fetching Bank & Branch details...' });
+  setIfscStatus({ success: true, message: 'Fetching Bank & Branch details...' });
 
     try {
       const res = await fetch(`https://ifsc.razorpay.com/${cleanIfsc}`);
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as { BANK?: string; BRANCH?: string; DISTRICT?: string; CITY?: string; CENTRE?: string };
         const bankName = data.BANK || BANK_CODE_MAP[cleanIfsc.substring(0, 4)] || '';
-        const rawBranch = data.BRANCH || '';
         const cityOrDistrict = data.DISTRICT || data.CITY || data.CENTRE || '';
+        const rawBranch = data.BRANCH || '';
         const branchName = rawBranch
           ? `${rawBranch}${cityOrDistrict ? ` (${cityOrDistrict})` : ''}`
           : '';
@@ -415,7 +415,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
 
         setIfscStatus({
           success: true,
-          message: `ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ Auto-filled: ${bankName}${branchName ? ` - ${branchName}` : ''}`,
+          message: `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Auto-filled: ${bankName}${branchName ? ` - ${branchName}` : ''}`,
         });
       } else {
         // Fallback to local map
@@ -429,12 +429,12 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
           }));
           setIfscStatus({
             success: true,
-            message: `ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ Auto-filled Bank: ${fallbackBank} (Enter Branch manually)`,
+            message: `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Auto-filled Bank: ${fallbackBank} (Enter Branch manually)`,
           });
         } else {
           setIfscStatus({
             success: false,
-            message: 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Invalid IFSC or details not found. Please enter Bank & Branch manually.',
+            message: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Invalid IFSC or details not found. Please enter Bank & Branch manually.',
           });
         }
       }
@@ -450,12 +450,12 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
         }));
         setIfscStatus({
           success: true,
-          message: `ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ Auto-filled Bank: ${fallbackBank}`,
+          message: `ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Auto-filled Bank: ${fallbackBank}`,
         });
       } else {
         setIfscStatus({
           success: false,
-          message: 'ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Network issue. Please enter Bank Name & Branch manually.',
+          message: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Network issue. Please enter Bank Name & Branch manually.',
         });
       }
     } finally {
@@ -469,6 +469,34 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
   // Modal for manual certificate addition
   const [showAddCertModal, setShowAddCertModal] = useState(false);
   const [showMyDocumentsModal, setShowMyDocumentsModal] = useState(false);
+  const [profileDocuments, setProfileDocuments] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadProfileDocuments = async () => {
+      const userId = profileData.email || profileData.mobile;
+      if (!userId) {
+        setProfileDocuments([]);
+        return;
+      }
+
+      try {
+        const docs = await getUserDocumentsFromFirestore(userId);
+        setProfileDocuments(Array.isArray(docs) ? docs : []);
+      } catch (err) {
+        console.error('Failed to load profile document statuses:', err);
+        setProfileDocuments([]);
+      }
+    };
+
+    if (showMyDocumentsModal) {
+      loadProfileDocuments();
+    }
+  }, [profileData.email, profileData.mobile, showMyDocumentsModal]);
+
+  const getProfileDocumentStatus = (docId: string) => {
+    const doc = profileDocuments.find((item) => item?.id === docId);
+    return doc?.status === 'Uploaded' ? 'UPLOADED' : 'NOT UPLOADED';
+  };
   const [newCert, setNewCert] = useState<Partial<OtherCertificate>>({
     name: '',
     number: '',
@@ -539,7 +567,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
     if (field === 'photoUrl') setPhotoRotation((prev) => (prev + 90) % 360);
     if (field === 'signatureUrl') setSignatureRotation((prev) => (prev + 90) % 360);
     if (field === 'thumbImpressionUrl') setThumbRotation((prev) => (prev + 90) % 360);
-    triggerToast('Image rotated 90ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°', 'info');
+    triggerToast('Image rotated 90°', 'info');
   };
 
   // Completion percentage using unified 5-section rule (20% each)
@@ -581,15 +609,9 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
       setProfileData(updated);
       onUpdateUser(updated);
       await saveUserProfileToFirestore(userId, updated);
-
-      if (storageSuccess) {
-        triggerToast(`ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ${fieldLabel} uploaded to Firebase Storage!`);
-      } else {
-        triggerToast(`ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ ${fieldLabel} saved successfully!`);
-      }
+      triggerToast(`${fieldLabel} uploaded successfully!`);
     } catch (err) {
       console.error(`Error processing ${fieldLabel}:`, err);
-      triggerToast(`ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failed to process ${fieldLabel}. Please try another image.`, 'info');
     }
   };
 
@@ -782,7 +804,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                           type="button"
                           onClick={(e) => handleRotateMedia('photoUrl', e)}
                           className="p-1.5 bg-slate-800 text-white rounded-lg hover:bg-slate-700 cursor-pointer shadow-xs"
-                          title="Rotate 90ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
+                          title="Rotate 90ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
                         >
                           <RotateCw className="w-3.5 h-3.5" />
                         </button>
@@ -837,7 +859,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                             type="button"
                             onClick={(e) => handleRotateMedia('signatureUrl', e)}
                             className="p-1 bg-slate-800 text-white rounded-lg hover:bg-slate-700 cursor-pointer shadow-xs"
-                            title="Rotate 90ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
+                            title="Rotate 90ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
                           >
                             <RotateCw className="w-3 h-3" />
                           </button>
@@ -890,7 +912,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                             type="button"
                             onClick={(e) => handleRotateMedia('thumbImpressionUrl', e)}
                             className="p-1 bg-slate-800 text-white rounded-lg hover:bg-slate-700 cursor-pointer shadow-xs"
-                            title="Rotate 90ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
+                            title="Rotate 90ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°"
                           >
                             <RotateCw className="w-3 h-3" />
                           </button>
@@ -1008,7 +1030,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                             }}
                             className="px-3 py-2 rounded-lg border text-sm"
                           >
-                            ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢
+                            ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¹ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢
                           </button>
                         )}
                       </div>
@@ -1086,7 +1108,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                             }}
                             className="px-3 py-2 rounded-lg border text-sm"
                           >
-                            ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢
+                            ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¹ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢
                           </button>
                         )}
                       </div>
@@ -2001,7 +2023,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                 />
               </div>
               {editBuffer.bankAccountNumber && editBuffer.confirmBankAccountNumber && editBuffer.bankAccountNumber !== editBuffer.confirmBankAccountNumber && (
-                <p className="text-[11px] font-bold text-red-500">ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Account number and Confirm account number do not match!</p>
+                <p className="text-[11px] font-bold text-red-500">ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Account number and Confirm account number do not match!</p>
               )}
               <FormButtons onCancel={cancelEditing} />
             </form>
@@ -2143,7 +2165,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                     </span>
                   </div>
                   <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> VERIFIED
+                    {getProfileDocumentStatus('doc-aadhaar')}
                   </span>
                 </div>
               </div>
@@ -2164,7 +2186,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                     </span>
                   </div>
                   <span className="px-2 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-extrabold rounded-full flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> VERIFIED
+                    {getProfileDocumentStatus('doc-10th-cert')}
                   </span>
                 </div>
               </div>
@@ -2183,7 +2205,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                     </span>
                   </div>
                   <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> {profileData.otherCertificates?.find(c => c.name.toLowerCase().includes('income')) ? 'VALID' : 'NOT UPLOADED'}
+                    <CheckCircle2 className="w-3 h-3" /> {getProfileDocumentStatus('doc-income')}
                   </span>
                 </div>
               </div>
@@ -2202,7 +2224,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                     </span>
                   </div>
                   <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> {profileData.otherCertificates?.find(c => c.name.toLowerCase().includes('caste')) ? 'VALID' : 'NOT UPLOADED'}
+                    <CheckCircle2 className="w-3 h-3" /> {getProfileDocumentStatus('doc-caste')}
                   </span>
                 </div>
               </div>
@@ -2221,7 +2243,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                     </span>
                   </div>
                   <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-extrabold rounded-full flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> {(profileData.domicileCertNumber || profileData.otherCertificates?.find(c => c.name.toLowerCase().includes('residence') || c.name.toLowerCase().includes('domicile'))) ? 'VALID' : 'NOT UPLOADED'}
+                    <CheckCircle2 className="w-3 h-3" /> {getProfileDocumentStatus('doc-residence')}
                   </span>
                 </div>
               </div>
@@ -2350,7 +2372,7 @@ const [profileData, setProfileData] = useState<UserProfile>(() => {
                   className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl flex items-center gap-1.5 cursor-pointer"
                 >
                   <RotateCw className="w-3.5 h-3.5 text-[#0B3B8C]" />
-                  <span>Rotate 90ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°</span>
+                  <span>Rotate 90°</span>
                 </button>
                 <button
                   type="button"
@@ -2480,7 +2502,7 @@ const MultiSelectField: React.FC<{
         )}
 
         <span className="float-right">
-          {open ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼"}
+          {open ? "▲" : "▼"}
         </span>
       </button>
 
@@ -2588,6 +2610,20 @@ const FormButtons: React.FC<{ onCancel: () => void }> = ({ onCancel }) => (
     </button>
   </div>
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

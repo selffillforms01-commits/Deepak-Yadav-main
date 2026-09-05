@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, ShieldAlert, Wrench, Terminal, Lock, LogIn, ShieldCheck, Smartphone } from 'lucide-react';
 import { PortalRoute } from '../types';
@@ -120,8 +120,8 @@ export const AdminLoginPlaceholder: React.FC<AdminLoginPlaceholderProps> = ({
 
             <p className="text-xs text-slate-400 max-w-md mx-auto">
               {isAdmin
-                ? 'Desktop Workstation Admin Control Gateway â€” Authenticate with Admin ID & Password'
-                : 'Desktop Maintenance Gateway â€” Authenticate with Staff ID & Password created by Admin'}
+                ? 'Desktop Workstation Admin Control Gateway Ã¢â‚¬â€ Authenticate with Admin ID & Password'
+                : 'Desktop Maintenance Gateway Ã¢â‚¬â€ Authenticate with Staff ID & Password created by Admin'}
             </p>
           </div>
 
@@ -236,3 +236,4 @@ export const AdminLoginPlaceholder: React.FC<AdminLoginPlaceholderProps> = ({
     </DesktopGuard>
   );
 };
+

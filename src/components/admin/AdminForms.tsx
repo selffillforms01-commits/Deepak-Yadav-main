@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   ClipboardList,
   Search,
@@ -111,9 +111,9 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
 
     // Notice to Admin
     if (newStatus === 'Approved') {
-      setActionNotice(`✅ Application #${appNo} Approved! It has been moved to the Approved Applications section.`);
+      setActionNotice(`âœ… Application #${appNo} Approved! It has been moved to the Approved Applications section.`);
     } else {
-      setActionNotice(`❌ Application #${appNo} Rejected! It has been moved to the Rejected Applications section.`);
+      setActionNotice(`âŒ Application #${appNo} Rejected! It has been moved to the Rejected Applications section.`);
     }
 
     setTimeout(() => {
@@ -173,7 +173,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
           }`}
         >
           <Clock className="w-4 h-4" />
-          <span>⏱️ Pending Work (Bacha Hua Kaam)</span>
+          <span>â±ï¸ Pending Work (Bacha Hua Kaam)</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
             activeTab === 'PendingWork' ? 'bg-slate-950 text-amber-400' : 'bg-amber-500/20 text-amber-400'
           }`}>
@@ -190,7 +190,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
           }`}
         >
           <CheckCircle2 className="w-4 h-4" />
-          <span>✅ Approved Applications</span>
+          <span>âœ… Approved Applications</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
             activeTab === 'Approved' ? 'bg-slate-950 text-emerald-400' : 'bg-emerald-500/20 text-emerald-400'
           }`}>
@@ -207,7 +207,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
           }`}
         >
           <XCircle className="w-4 h-4" />
-          <span>❌ Rejected Applications</span>
+          <span>âŒ Rejected Applications</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
             activeTab === 'Rejected' ? 'bg-slate-950 text-rose-400' : 'bg-rose-500/20 text-rose-400'
           }`}>
@@ -224,7 +224,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
           }`}
         >
           <ClipboardList className="w-4 h-4" />
-          <span>📂 All Applications</span>
+          <span>ðŸ“‚ All Applications</span>
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${
             activeTab === 'All' ? 'bg-slate-950 text-cyan-400' : 'bg-cyan-500/20 text-cyan-400'
           }`}>
@@ -246,7 +246,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
         <AlertCircle className="w-4 h-4 shrink-0" />
         <span>
           {activeTab === 'PendingWork' && 'Showing pending work waiting for Admin action. Once approved or rejected, applications automatically move out of this list to eliminate confusion!'}
-          {activeTab === 'Approved' && 'Showing completed and verified applications approved by Admin.'}
+          {activeTab === 'Approved' && 'Showing completed and verified applications approved by SFF.'}
           {activeTab === 'Rejected' && 'Showing applications rejected with remarks.'}
           {activeTab === 'All' && 'Showing complete history of all form submissions.'}
         </span>
@@ -288,7 +288,7 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
           <ClipboardList className="w-12 h-12 text-slate-600 mx-auto mb-3" />
           <h3 className="text-base font-bold text-slate-200">
             {activeTab === 'PendingWork'
-              ? '🎉 Sabhi kaam poore hain! Koi pending application nahi hai.'
+              ? 'ðŸŽ‰ Sabhi kaam poore hain! Koi pending application nahi hai.'
               : 'Is section me koi form nahi hai.'}
           </h3>
           <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
@@ -626,6 +626,8 @@ export const AdminForms: React.FC<AdminFormsProps> = ({ darkMode, onImpersonateU
     </div>
   );
 };
+
+
 
 
 

@@ -1,0 +1,16 @@
+﻿export interface FormKnowledge {
+  id: string;
+  name: string;
+  description?: string;
+  steps: Array<{
+    id: string;
+    title: string;
+    fields: string[];
+  }>;
+}
+
+export const FORMS_DATABASE: FormKnowledge[] = [];
+
+export function getFormKnowledge(formId: string) {
+  return FORMS_DATABASE.find((form) => form.id === formId) || null;
+}

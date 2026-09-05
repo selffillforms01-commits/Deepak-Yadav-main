@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Briefcase,
@@ -849,7 +849,7 @@ export const MaintenanceDashboard: React.FC<MaintenanceDashboardProps> = ({
                           <div className="text-xs font-bold text-white">{item.title}</div>
                           <div className="text-[11px] text-slate-300 mt-0.5">{item.message}</div>
                           <div className="text-[10px] text-slate-500 mt-1">
-                            Audience: {item.targetAudience} • Sent By: {item.createdBy}
+                            Audience: {item.targetAudience} â€¢ Sent By: {item.createdBy}
                           </div>
                         </div>
                       </div>
@@ -932,10 +932,10 @@ export const MaintenanceDashboard: React.FC<MaintenanceDashboardProps> = ({
                   onChange={(e) => setJobStatus(e.target.value as MaintenanceTaskStatus)}
                   className="w-full bg-[#0b1120] border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
                 >
-                  <option value="In Progress">In Progress (कार्य प्रगति पर है)</option>
-                  <option value="Completed">Completed (कार्य पूरा हो गया है)</option>
-                  <option value="Sent to Maintenance">Sent to Maintenance (रखरखाव के लिए भेजा गया)</option>
-                  <option value="On Hold">On Hold (रोका गया)</option>
+                  <option value="In Progress">In Progress (à¤•à¤¾à¤°à¥à¤¯ à¤ªà¥à¤°à¤—à¤¤à¤¿ à¤ªà¤° à¤¹à¥ˆ)</option>
+                  <option value="Completed">Completed (à¤•à¤¾à¤°à¥à¤¯ à¤ªà¥‚à¤°à¤¾ à¤¹à¥‹ à¤—à¤¯à¤¾ à¤¹à¥ˆ)</option>
+                  <option value="Sent to Maintenance">Sent to Maintenance (à¤°à¤–à¤°à¤–à¤¾à¤µ à¤•à¥‡ à¤²à¤¿à¤ à¤­à¥‡à¤œà¤¾ à¤—à¤¯à¤¾)</option>
+                  <option value="On Hold">On Hold (à¤°à¥‹à¤•à¤¾ à¤—à¤¯à¤¾)</option>
                 </select>
               </div>
 
@@ -1038,3 +1038,4 @@ export const MaintenanceDashboard: React.FC<MaintenanceDashboardProps> = ({
     </DesktopGuard>
   );
 };
+

@@ -1,4 +1,4 @@
-﻿export type AdminTab =
+export type AdminTab =
   | 'dashboard'
   | 'users'
   | 'services'
@@ -259,4 +259,5 @@ export interface AdminJobRecord {
   createdDate: string;
   updatedDate?: string;
 }
+
 

@@ -3,6 +3,8 @@
   | 'users'
   | 'services'
   | 'jobs'
+  | 'admission'
+  | 'scholarship'
   | 'forms'
   | 'maintenance'
   | 'notifications'
@@ -261,5 +263,8 @@ export interface AdminJobRecord {
   createdDate: string;
   updatedDate?: string;
 }
+
+
+
 
 

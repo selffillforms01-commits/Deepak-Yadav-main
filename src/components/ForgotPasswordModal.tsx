@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Mail, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 
@@ -9,22 +9,93 @@ interface ForgotPasswordModalProps {
 
 export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [step, setStep] = useState<'email' | 'otp' | 'password' | 'success'>('email');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    setError('');
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail) {
+      setError('Please enter your registered email address.');
+      return;
+    }
+
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      const response = await fetch('/api/auth/send-password-reset-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: cleanEmail }),
+      });
+
+      const data: { error?: string } = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Unable to send OTP.');
+      }
+
+      setEmail(cleanEmail);
+      setStep('otp');
+    } catch (err: any) {
+      setError(err.message || 'Unable to send OTP. Please try again.');
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-    }, 800);
+    }
   };
 
-  const handleReset = () => {
-    setSubmitted(false);
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!otp.trim() || otp.trim().length !== 6) {
+      setError('Please enter the 6-digit OTP.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/verify-password-reset-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          otp: otp.trim(),
+        }),
+      });
+
+      const data: { error?: string } = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Invalid OTP.');
+      }
+
+      setStep('password');
+    } catch (err: any) {
+      setError(err.message || 'Invalid OTP. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
     setEmail('');
+    setOtp('');
+    setStep('email');
+    setError('');
+    setLoading(false);
     onClose();
   };
 
@@ -40,16 +111,16 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
           transition={{ duration: 0.2 }}
           className="relative w-full max-w-md bg-white rounded-[16px] shadow-2xl border border-slate-100 overflow-hidden"
         >
-          {/* Header */}
           <div className="px-6 pt-6 pb-4 bg-gradient-to-r from-[#0B3B8C] to-[#07265E] text-white flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-white/10 rounded-lg">
                 <ShieldCheck className="w-5 h-5 text-[#E5A100]" />
               </div>
-              <h3 className="text-lg font-bold">Reset Password</h3>
+              <h3 className="text-lg font-bold">Change Password</h3>
             </div>
+
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="p-1.5 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-colors"
             >
               <X className="w-5 h-5" />
@@ -57,54 +128,168 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
           </div>
 
           <div className="p-6">
-            {!submitted ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
+            {step === 'email' && (
+              <form onSubmit={handleSendOtp} className="space-y-4">
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  Enter your registered username or email address below. We will send a secure password reset link to your official inbox.
+                  Enter your registered email address. We will send a 6-digit OTP to your email.
                 </p>
 
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-                    Registered Email / Username
+                    Registered Email
                   </label>
+
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+
                     <input
-                      type="text"
+                      type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter registered email or username"
+                      placeholder="Enter registered email"
                       className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B3B8C] focus:bg-white transition-all"
                     />
                   </div>
                 </div>
 
+                {error && (
+                  <p className="text-sm text-red-600">{error}</p>
+                )}
+
                 <div className="pt-2 flex gap-3">
                   <button
                     type="button"
-                    onClick={onClose}
-                    className="flex-1 py-2.5 px-4 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+                    onClick={handleClose}
+                    className="flex-1 py-2.5 px-4 border border-slate-200 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50"
                   >
                     Cancel
                   </button>
+
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 py-2.5 px-4 bg-[#0B3B8C] hover:bg-[#082d6b] text-white rounded-xl text-sm font-semibold shadow-md shadow-blue-900/10 flex items-center justify-center gap-2 transition-all disabled:opacity-60"
+                    className="flex-1 py-2.5 px-4 bg-[#0B3B8C] hover:bg-[#082d6b] text-white rounded-xl text-sm font-semibold shadow-md flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {loading ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <>
-                        <span>Send Instructions</span>
+                        <span>Send OTP</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
                 </div>
               </form>
-            ) : (
+            )}
+
+            {step === 'otp' && (
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Enter the 6-digit OTP sent to <b>{email}</b>.
+                </p>
+
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Enter 6-digit OTP"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-lg tracking-[0.4em] font-bold focus:outline-none focus:ring-2 focus:ring-[#0B3B8C]"
+                />
+
+                {error && (
+                  <p className="text-sm text-red-600">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 bg-[#0B3B8C] hover:bg-[#082d6b] text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60"
+                >
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Verify OTP</span>
+                      <CheckCircle2 className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {step === 'password' && (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setError('');
+
+                  if (newPassword.length < 6) {
+                    setError('Password must be at least 6 characters.');
+                    return;
+                  }
+
+                  if (newPassword !== confirmPassword) {
+                    setError('Passwords do not match.');
+                    return;
+                  }
+
+                  setStep('success');
+                }}
+                className="space-y-4"
+              >
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  OTP verified successfully. Create your new password below.
+                </p>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B3B8C]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    minLength={6}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm new password"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#0B3B8C]"
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-sm text-red-600">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-2.5 bg-[#0B3B8C] hover:bg-[#082d6b] text-white rounded-xl text-sm font-semibold disabled:opacity-60"
+                >
+                  Change Password
+                </button>
+              </form>
+            )}
+
+            {step === 'success' && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -113,15 +298,20 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
                 <div className="w-12 h-12 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center">
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
-                <h4 className="text-base font-bold text-slate-800">Password Reset Sent</h4>
-                <p className="text-xs text-slate-600 leading-relaxed px-2">
-                  A verification link has been dispatched to <span className="font-semibold text-slate-800">{email}</span>. Please check your inbox and follow the steps.
+
+                <h4 className="text-base font-bold text-slate-800">
+                  OTP Verified
+                </h4>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Your email has been verified successfully.
                 </p>
+
                 <button
-                  onClick={handleReset}
-                  className="w-full py-2.5 bg-[#0B3B8C] text-white rounded-xl text-sm font-semibold hover:bg-[#082d6b] transition-all"
+                  onClick={handleClose}
+                  className="w-full py-2.5 bg-[#0B3B8C] text-white rounded-xl text-sm font-semibold hover:bg-[#082d6b]"
                 >
-                  Return to Login
+                  Continue
                 </button>
               </motion.div>
             )}
@@ -131,3 +321,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     </AnimatePresence>
   );
 };
+
+
+
+

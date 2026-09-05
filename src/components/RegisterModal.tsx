@@ -176,7 +176,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
         })
       });
 
-      const data = await response.json();
+      const data = await response.json() as { success?: boolean; error?: string };
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Unable to send Email OTP.');
@@ -219,7 +219,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
         })
       });
 
-      const data = await response.json();
+      const data = await response.json() as { success?: boolean; error?: string };
 
       if (!response.ok || !data.success) {
         throw new Error(data.error || 'Failed to resend Email OTP.');
@@ -273,7 +273,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
         })
       });
 
-      const verifyData = await verifyResponse.json();
+      const verifyData = await verifyResponse.json() as { success?: boolean; verified?: boolean; error?: string };
 
       if (!verifyResponse.ok || !verifyData.success || !verifyData.verified) {
         throw new Error(verifyData.error || 'Email OTP verification failed.');
@@ -721,7 +721,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                       onClick={() => setOtpScreen(false)}
                       className="text-slate-500 hover:text-slate-800 font-medium transition-colors"
                     >
-                      â† Back to edit details
+                      Back to edit details
                     </button>
 
                     <button
@@ -804,6 +804,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     </AnimatePresence>
   );
 };
+
+
 
 
 

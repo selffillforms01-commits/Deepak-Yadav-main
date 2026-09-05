@@ -1,4 +1,4 @@
-// Comprehensive list of Indian States and Union Territories with their Districts
+﻿// Comprehensive list of Indian States and Union Territories with their Districts
 export const INDIAN_STATES_AND_DISTRICTS: Record<string, string[]> = {
   "Andaman and Nicobar Islands": [
     "Nicobar",
@@ -508,7 +508,7 @@ export const INDIAN_STATES_AND_DISTRICTS: Record<string, string[]> = {
     "Siaha"
   ],
   "Nagaland": [
-    "Chümoukedima",
+    "ChÃ¼moukedima",
     "Dimapur",
     "Kiphire",
     "Kohima",
@@ -521,7 +521,7 @@ export const INDIAN_STATES_AND_DISTRICTS: Record<string, string[]> = {
     "Phek",
     "Shamator",
     "Tuensang",
-    "Tseminyü",
+    "TseminyÃ¼",
     "Wokha",
     "Zunheboto"
   ],
@@ -864,3 +864,4 @@ export function getDistrictsForState(stateName: string): string[] {
   );
   return matchedKey ? INDIAN_STATES_AND_DISTRICTS[matchedKey] : [];
 }
+

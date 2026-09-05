@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Settings,
   Shield,
@@ -25,15 +25,12 @@ import {
   ToggleLeft,
   ToggleRight,
   Sparkles,
-  Key,
-  ChevronRight,
 } from 'lucide-react';
 import { adminStore } from './adminStore';
 import { AdminSystemSettings } from './AdminTypes';
 import { wipeAllFirestoreCollections } from '../../lib/firestoreService';
 import { compressImageFile } from '../../utils/imageCompressor';
 import { SplashScreen } from '../SplashScreen';
-import { AdminMyKeys } from './AdminMyKeys';
 
 interface AdminSettingsProps {
   darkMode: boolean;
@@ -48,7 +45,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
   const [showWipeConfirm, setShowWipeConfirm] = useState(false);
   const [wipeSuccess, setWipeSuccess] = useState(false);
   const [showSplashPreview, setShowSplashPreview] = useState(false);
-  const [activeSubView, setActiveSubView] = useState<string>('general');
 
   const logs = adminStore.getLogs();
 
@@ -104,124 +100,8 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
     }, 1500);
   };
 
-  if (activeSubView === 'my-keys') {
-    return (
-      <AdminMyKeys
-        onBack={() => setActiveSubView('general')}
-        darkMode={darkMode}
-      />
-    );
-  }
-
   return (
-    <div className="space-y-6 pb-12">
-      
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-100 flex items-center gap-2">
-            <Settings className="w-6 h-6 text-blue-400" />
-            <span>Portal Settings & System Configurations</span>
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Configure application branding, SMTP mailer credentials, security parameters, database backups, and maintenance mode.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5 self-start sm:self-auto">
-          <button
-            onClick={() => setActiveSubView('my-keys')}
-            className="px-4 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 font-bold text-xs rounded-xl border border-amber-500/30 flex items-center gap-2 cursor-pointer transition-all shadow-md"
-          >
-            <Key className="w-4 h-4 text-amber-400" />
-            <span>My Keys</span>
-          </button>
-
-          <button
-            onClick={handleSaveSettings}
-            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer"
-          >
-            <Save className="w-4 h-4" />
-            <span>Save System Settings</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Sub-Navigation Tabs */}
-      <div className="flex items-center gap-2 p-1.5 bg-[#0B132B] border border-slate-800 rounded-2xl w-fit">
-        <button
-          onClick={() => setActiveSubView('general')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-            activeSubView === 'general'
-              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Settings className="w-3.5 h-3.5" />
-          <span>System Configurations</span>
-        </button>
-
-        <button
-          onClick={() => setActiveSubView('my-keys')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-            activeSubView === 'my-keys'
-              ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30 font-black'
-              : 'text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30'
-          }`}
-        >
-          <Key className="w-3.5 h-3.5" />
-          <span>My Keys</span>
-          <span className="text-[9px] px-1.5 py-0.2 bg-amber-400 text-slate-950 font-black rounded-full">
-            New
-          </span>
-        </button>
-      </div>
-
-      {savedSuccess && (
-        <div className="p-4 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-2xl text-xs font-bold flex items-center gap-2">
-          <CheckCircle2 className="w-5 h-5" /> System configurations saved successfully!
-        </div>
-      )}
-     
-      {/* Main Settings Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 🔑 "My Keys" Featured Card */}
-        <div
-          onClick={() => setActiveSubView('my-keys')}
-          className="p-6 rounded-2xl border bg-gradient-to-r from-[#0B132B] to-[#1C2541] border-amber-500/40 hover:border-amber-400/80 transition-all cursor-pointer shadow-xl lg:col-span-2 group relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Key className="w-32 h-32 text-amber-400" />
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-amber-500/20 border border-amber-500/40 rounded-2xl text-amber-400 group-hover:scale-105 transition-transform">
-                <Key className="w-6 h-6" />
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-base font-black text-slate-100 group-hover:text-amber-300 transition-colors">
-                    My Keys
-                  </h3>
-                  <span className="px-2.5 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-[10px] font-black uppercase tracking-wider">
-                    API & Security
-                  </span>
-                </div>
-                <p className="text-xs text-slate-400 max-w-xl leading-relaxed">
-                  Dedicated settings page to configure Razorpay Gateway, Gemini AI Key, and Resend Email Service Keys dynamically without touching source code.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs font-bold text-amber-400 bg-amber-500/10 group-hover:bg-amber-500/20 px-4 py-2.5 rounded-xl border border-amber-500/30 shrink-0 self-start sm:self-auto transition-all">
-              <span>Open My Keys Page</span>
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </div>
-        </div>
-
-        {/* 🖼️ Splash Screen Image Settings */}
+    <div className="space-y-6 pb-12">`n      {/* Splash Screen Image Settings */}
         <div className="p-6 rounded-2xl border bg-[#0B132B] border-amber-500/40 space-y-4 lg:col-span-2">
           <div className="flex items-center justify-between pb-3 border-b border-amber-500/30 text-amber-300 font-bold text-sm">
             <div className="flex items-center gap-2">
@@ -296,7 +176,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
                 </div>
                 <div className="flex flex-wrap items-center gap-2 text-[10px] text-slate-400 mt-2 font-medium">
                   <span className="px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700 font-mono">
-                    Recommended Size: 1080 × 1920 px
+                    Recommended Size: 1080 Ã— 1920 px
                   </span>
                   <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
                     Supported Formats: PNG, JPG, WEBP
@@ -623,8 +503,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
             )}
           </div>
         </div>
-      </div>
-
       {/* Wipe Database Modal */}
       {showWipeConfirm && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -679,3 +557,11 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
     </div>
   );
 };
+
+
+
+
+
+
+
+

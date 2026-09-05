@@ -1,0 +1,418 @@
+﻿C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:23: import { addNotificationToFirestore } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:44: category: 'Service Fee',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:123: category: newTxn.category || 'Service Fee',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:140: category: 'Service Fee',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:184: f.serviceTitle === txn.description ||
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:220: const serviceId =
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:221: txn.category === 'Service Fee'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:222: ? 'SERVICE-PAYMENT'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:223: : `SERVICE-${String(txn.category || 'GENERAL')
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:230: serviceId,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:231: serviceTitle: txn.description || txn.category || 'Service Application',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:252: `Your payment of Rs ${amount} for ${txn.description || txn.category || 'Service'} has been verified successfully by SFF.` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:307: `${txn.description || txn.category || 'Service'} was rejected by SFF.` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:431: Realtime passbook ledger for service charges, form fees, credits and expenses.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:471: category: 'Service Fee',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:525: <span>Total amount received from service charges & fees</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:591: Total service charge collected today
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:682: <option value="Service Fee">Service Fee (30)</option>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:757: <p className="text-xs text-slate-500 mt-1">When users deposit form or service fees, they will automatically be recorded here.</p>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:998: <option value="Service Fee">Service Fee</option>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminAccounts.tsx:1018: : 'e.g. Service fee received from user Deepak'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:41: const [services, setServices] = React.useState(() => adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:105: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:116: collection(db, 'service_requests'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:123: console.log('Firestore service requests:', firestoreForms.length);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:128: console.error('Service requests Firestore Error:', error);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:134: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:206: const filteredServices = React.useMemo(() => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:207: return services.filter((s) => isDateInRange(s.createdDate));
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:208: }, [services, startDate, endDate]);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:233: title: 'Total Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:234: count: filteredServices.length,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:235: trend: services.length > 0 ? `${filteredServices.length} active` : '0',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:239: tab: 'services' as AdminTab,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:306: Enterprise Government Service Portal Command Center
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:309: Real-time control over citizen applications, verification workflows, services catalog, and system telemetry.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:564: onClick={() => onNavigateTab('services')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminDashboard.tsx:569: <span>Add New Service</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:82: f.serviceTitle.toLowerCase().includes(search.toLowerCase());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:265: placeholder="Search Application #, Applicant Name or Service..."
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:317: <th className="p-3.5">Service Title</th>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:340: <td className="p-3.5 font-bold text-slate-200">{f.serviceTitle}</td>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:460: <p className="text-xs text-slate-400">Service: {selectedForm.serviceTitle}</p>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminForms.tsx:577: Service: <strong className="text-slate-100">{reviewModalForm.serviceTitle}</strong>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminHeader.tsx:92: placeholder="Search users, forms, services..."
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminLayout.tsx:7: import { AdminServices } from './AdminServices';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminLayout.tsx:107: {currentTab === 'services' && <AdminServices darkMode={darkMode} />}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminManagement.tsx:277: <option value="Admin">Admin (Services, Users & Approvals)</option>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:152: req.serviceTitle.toLowerCase().includes(q) ||
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:310: title: target ? `${target.serviceTitle} (${target.applicantId || target.applicantName})` : id,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:501: ? 'Search by Permanent User ID, Service...'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:570: When users submit requests for forms or services, they will appear here.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:597: <th className="p-3.5">Requested Service</th>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:630: {/* Requested Service */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminNotifications.tsx:632: <div className="font-bold text-slate-100">{req.serviceTitle}</div>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:38: const [services, setServices] = useState(() => adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:84: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:186: <span className="text-xs font-bold text-slate-400">Services Active</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminReports.tsx:189: <div className="text-2xl font-black text-slate-100">{services.length}</div>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:19: import { AdminServiceRecord } from './AdminTypes';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:21: interface AdminServicesProps {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:25: // Preset service templates to help admin add services quickly without coding
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:26: const SERVICE_PRESETS: Array<{
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:124: export const AdminServices: React.FC<AdminServicesProps> = ({ darkMode }) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:127: const [services, setServices] = useState<AdminServiceRecord[]>(() => adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:128: const [modalService, setModalService] = useState<Partial<AdminServiceRecord> | null>(null);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:131: const updateServices = () => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:132: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:134: updateServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:135: const unsubscribe = adminStore.subscribe(updateServices);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:139: const categories = ['All', ...Array.from(new Set(services.map((s) => s.category)))];
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:141: const filteredServices = services.filter((s) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:151: adminStore.toggleServiceStatus(id);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:152: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:156: if (confirm('Are you sure you want to delete this service?')) {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:157: adminStore.deleteService(id);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:158: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:163: if (confirm('Do you want to restore all default services and standard fee amounts?')) {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:164: adminStore.resetDefaultServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:165: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:171: if (!modalService?.title || !modalService.category) {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:172: alert('Please fill in Service Title and Category.');
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:177: let formattedFee = (modalService.fee || 'Rs 0').trim();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:182: const record: AdminServiceRecord = {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:183: id: modalService.id || `SRV-${Date.now().toString().slice(-4)}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:184: title: modalService.title.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:185: category: modalService.category.trim(),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:186: description: modalService.description || '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:187: iconName: modalService.iconName || 'Wrench',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:188: processingDays: Number(modalService.processingDays) || 3,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:190: enabled: modalService.enabled ?? true,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:191: totalSubmissions: modalService.totalSubmissions || 0,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:192: createdDate: modalService.createdDate || new Date().toISOString().split('T')[0],
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:195: adminStore.saveService(record);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:196: setServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:197: setModalService(null);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:200: const applyPreset = (preset: typeof SERVICE_PRESETS[0]) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:201: setModalService((prev) => ({
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:220: <span>Government Services & Pricing Catalog</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:223: Add or edit any user service, set application fee/amount in Rs , processing SLA, and enable/disable services without code changes.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:230: title="Restore default user services and standard rates"
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:234: <span>Load Default Services</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:239: setModalService({
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:251: <span>+ Add New Service</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:266: placeholder="Search service by title, category, or fee (e.g. Income, Pan Card, 30)..."
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:300: {/* Services Grid */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:301: {filteredServices.length === 0 ? (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:308: <h3 className="text-base font-bold text-slate-200">No Services Found</h3>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:310: No matching services found for &quot;{search}&quot;. Click below to add a custom service or restore default services.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:321: setModalService({
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:332: + Add Custom Service
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:338: {filteredServices.map((service) => (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:340: key={service.id}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:348: {service.category}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:351: onClick={() => handleToggleStatus(service.id)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:353: service.enabled
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:358: {service.enabled ? <ToggleRight className="w-3.5 h-3.5" /> : <ToggleLeft className="w-3.5 h-3.5" />}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:359: <span>{service.enabled ? 'Active' : 'Disabled'}</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:365: <span>{service.title}</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:367: <p className="text-xs text-slate-400 mt-1 line-clamp-2">{service.description}</p>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:373: <span>{service.processingDays} Days SLA</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:377: <span className="truncate">Amount: {service.fee}</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:384: Submissions: <strong className="text-slate-300">{service.totalSubmissions}</strong>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:389: onClick={() => setModalService(service)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:391: title="Edit Service Amount & Details"
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:397: onClick={() => handleDelete(service.id)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:399: title="Delete Service"
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:411: {modalService && (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:423: {modalService.id ? `Edit ${modalService.title || 'Service'}` : 'Add New User Service & Set Amount'}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:428: onClick={() => setModalService(null)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:436: {!modalService.id && (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:443: {SERVICE_PRESETS.map((preset) => (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:461: <label className="block font-extrabold text-slate-300 mb-1">Service Title *</label>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:465: value={modalService.title || ''}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:466: onChange={(e) => setModalService({ ...modalService, title: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:477: value={modalService.category || ''}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:478: onChange={(e) => setModalService({ ...modalService, category: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:489: <span>Service Amount / Processing Charge () *</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:494: value={modalService.fee || ''}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:495: onChange={(e) => setModalService({ ...modalService, fee: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:507: value={modalService.processingDays || 7}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:508: onChange={(e) => setModalService({ ...modalService, processingDays: Number(e.target.value) })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:516: <label className="block font-extrabold text-slate-300 mb-1">Service Description & Eligibility</label>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:519: placeholder="Describe guidelines, required document list, and service output..."
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:520: value={modalService.description || ''}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:521: onChange={(e) => setModalService({ ...modalService, description: e.target.value })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:530: checked={modalService.enabled ?? true}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:531: onChange={(e) => setModalService({ ...modalService, enabled: e.target.checked })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:535: Enable Service for Users (Active in User Dashboard catalog)
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:543: onClick={() => setModalService(null)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminServices.tsx:553: <span>Save Service & Amount</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSettings.tsx:31: import { wipeAllFirestoreCollections } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminSidebar.tsx:51: { id: 'services', label: 'Services', icon: <Wrench className="w-5 h-5" /> },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:4: AdminServiceRecord,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:31: SERVICES: 'sff_admin_services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:83: // Default System Services
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:84: export const DEFAULT_SERVICES: AdminServiceRecord[] = [
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:226: STORAGE_KEYS.SERVICES,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:477: // --- SERVICES ---
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:478: public getServices(): AdminServiceRecord[] {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:479: const services = this.getItem<AdminServiceRecord[]>(STORAGE_KEYS.SERVICES, []);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:480: let list = services;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:482: list = DEFAULT_SERVICES;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:486: const cleanList: AdminServiceRecord[] = [];
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:497: public resetDefaultServices(): void {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:498: this.setItem(STORAGE_KEYS.SERVICES, DEFAULT_SERVICES);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:499: this.addLog('Service', 'Reset catalog to default system services');
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:502: public saveService(service: AdminServiceRecord): void {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:503: const services = this.getServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:504: const index = services.findIndex((s) => s.id === service.id);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:506: services[index] = service;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:507: this.addLog('Service', `Updated service "${service.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:509: services.unshift(service);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:510: this.addLog('Service', `Created new service "${service.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:512: this.setItem(STORAGE_KEYS.SERVICES, services);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:515: public deleteService(serviceId: string): void {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:516: const services = this.getServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:517: const target = services.find((s) => s.id === serviceId);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:518: const filtered = services.filter((s) => s.id !== serviceId);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:519: this.setItem(STORAGE_KEYS.SERVICES, filtered);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:521: this.addLog('Service', `Deleted service "${target.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:525: public toggleServiceStatus(serviceId: string): void {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:526: const services = this.getServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:527: const updated = services.map((s) =>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:528: s.id === serviceId ? { ...s, enabled: !s.enabled } : s
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:530: this.setItem(STORAGE_KEYS.SERVICES, updated);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:531: this.addLog('Service', `Toggled availability status of service ID ${serviceId}`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:562: this.addLog('Service', `Updated job "${job.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:565: this.addLog('Service', `Created new job "${job.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:594: 'Service',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:611: this.addLog('Service', `Deleted job "${target.title}"`);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:639: 'Service',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:708: title: `?? Application Status Update: ${matchedForm.serviceTitle || 'Form Submission'}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\adminStore.ts:937: title: `Form Processing: ${f.serviceTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:4: | 'services'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:65: export interface AdminServiceRecord {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:83: serviceId: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:84: serviceTitle: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:172: category: 'User' | 'Document' | 'Service' | 'Form' | 'System' | 'Security';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminTypes.ts:182: | 'Service Fee'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\admin\AdminUsers.tsx:52: } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\common\SmartImage.tsx:2: import { resolveFileUrl } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:52: return `Hello! I am SFF Assistant.\nI can help you complete your profile.\n\nPlease complete your profile so you can easily access all services.`;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:114: "All Service Charges & Fees",
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:175: // 0. Fees / Service Charges Query
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:192: `ðŸ“œ **à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤° à¤”à¤° à¤¸à¥‡à¤µà¤¾à¤à¤‚ (Certificates & Services):**\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:222: : `ðŸ’° **Self Fill Forms (SFF) Official Service Charges**:\n\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:223: `ðŸ“œ **Certificates & Services:**\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:239: label: language === 'hi' ? 'à¤¸à¥‡à¤µà¤¾à¤à¤‚ à¤¦à¥‡à¤–à¥‡à¤‚ (Services)' : language === 'or' ? 'à¬¸à­‡à¬¬à¬¾ à¬¦à­‡à¬–à¬¨à­à¬¤à­' : 'Explore Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:240: tab: 'services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx:278: tab: 'services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:52: return `Hello! I am SFF Assistant.\nI can help you complete your profile.\n\nPlease complete your profile so you can easily access all services.`;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:114: "All Service Charges & Fees",
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:165: // 0. Fees / Service Charges Query
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:182: `📜 **प्रमाण पत्र और सेवाएं (Certificates & Services):**\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:212: : `💰 **Self Fill Forms (SFF) Official Service Charges**:\n\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:213: `📜 **Certificates & Services:**\n` +
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:229: label: language === 'hi' ? 'सेवाएं देखें (Services)' : language === 'or' ? 'ସେବା ଦେଖନ୍ତୁ' : 'Explore Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:230: tab: 'services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\AIAssistantPage.tsx.test.tsx:268: tab: 'services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:32: import { ServicesPage, ServicesMainView } from './ServicesPage';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:53: servicesSubView?: ServicesMainView;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:70: { tab: currentTab, servicesSubView: 'main', aiSubView: 'chat' }
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:81: servicesSubView: 'main',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:85: const servicesSubView = currentState.servicesSubView || 'main';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:94: if (tab !== currentTab || servicesSubView !== 'main' || aiSubView !== 'chat') {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:95: const newState: NavState = { tab, servicesSubView: 'main', aiSubView: 'chat' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:106: // HANDLE SERVICES SUB VIEW CHANGE
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:107: const handleServicesViewChange = (view: ServicesMainView) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:108: if (view !== servicesSubView) {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:109: const newState: NavState = { tab: 'services', servicesSubView: view, aiSubView: 'chat' };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:112: window.history.pushState({ tab: 'services', view }, '');
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:122: const newState: NavState = { tab: 'ai-assistant', servicesSubView: 'main', aiSubView: view };
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:137: text: 'SELF FILL FORMS - Odisha Government Services & Forms',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:164: } else if (currentTab !== 'home' || servicesSubView !== 'main' || aiSubView !== 'chat') {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:166: setNavHistory([{ tab: 'home', servicesSubView: 'main', aiSubView: 'chat' }]);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:182: }, [navHistory, showRequestsModal, showProfileMenu, currentTab, servicesSubView, aiSubView]);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:186: { id: 'services', label: t('nav.services', 'Services'), icon: Wrench },
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:194: services: t('nav.services', 'Services & Forms'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:241: formName: f.serviceTitle || 'Application Request',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:249: const isAtRootHome = currentTab === 'home' && servicesSubView === 'main' && aiSubView === 'chat' && navHistory.length <= 1 && !showRequestsModal && !showProfileMenu;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:509: About SELF FILL FORMS & our services
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:549: {currentTab === 'services' && (
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:550: <ServicesPage
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:552: currentView={servicesSubView}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:553: onViewChange={handleServicesViewChange}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:761: SFF Student Forms Fill Service Portal
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:787: service platform designed to make government,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:788: application and document-related services easier to
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:807: Students Forms Fill Services
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:834: 'Government & citizen service assistance',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:837: 'Service notifications and application updates',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DashboardLayout.tsx:885: submitting information and accessing available services.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\DocumentsPage.tsx:42: } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:61: id: 'services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:62: title: t('nav.services', 'Services'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:63: shortDesc: t('home.popularServices', 'Browse Services'),
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\HomePage.tsx:66: tabId: 'services' as DashboardTab,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\NotificationsPage.tsx:1: import { getUserNotificationsFromFirestore } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:45: import { uploadDocumentToStorage, saveUserProfileToFirestore } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:737: ? 'All services unlocked! Minimum 80% completion reached.'
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ProfilePage.tsx:738: : 'Complete Your Profile 80% to unlock all services.'}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:38: import { addServiceRequestToFirestore } from '../../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:41: export type ServicesMainView =
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:50: interface ServicesPageProps {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:52: currentView?: ServicesMainView;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:53: onViewChange?: (view: ServicesMainView) => void;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:58: export const ServicesPage: React.FC<ServicesPageProps> = ({
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:66: const [internalView, setInternalView] = useState<ServicesMainView>('main');
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:68: const [adminServices, setAdminServices] = useState(() => adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:72: const updateServices = () => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:73: setAdminServices(adminStore.getServices());
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:76: updateServices();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:77: const unsubscribe = adminStore.subscribe(updateServices);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:113: serviceName: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:126: serviceName: '',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:138: const isUnlocked = profileCompletion.isServicesUnlocked;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:143: const changeView = (v: ServicesMainView) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:183: {/* SERVICE ACCESS & PROFILE COMPLETION ADVISORY BANNER (NON-BLOCKING) */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:196: Services Active & Unlocked
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:200: Please complete 80%+ of your profile for faster auto-fill and instant document verification. You can still access and use all services anytime!
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:217: <span className="font-extrabold text-sm block">Profile Ready & All Services Active</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:219: Profile is {completionPercentage}% complete! Auto-fill and instant service application work seamlessly.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:236: {t(`services.${activeView}`, activeView)}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:239: {t('services.listSubtitle', 'List of available services')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:268: {t('services.admission', 'Admission')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:271: {t('services.admissionSub', 'School & College Admission')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:291: {t('services.scholarship', 'Scholarship')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:294: {t('services.scholarshipSub', 'Scholarship & Stipend Portal')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:317: {t('services.certificates', 'Certificates')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:320: {t('services.certificatesSub', 'Income, Caste, Residence & Birth')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:340: {t('services.jobs', 'Jobs')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:343: {t('services.jobsSub', 'Govt & Private Recruitment')}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:374: {/* CERTIFICATES SUB-PAGE: DYNAMIC SERVICES MANAGED BY ADMIN      */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:379: {adminServices
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:381: .map((service, index) => {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:382: const numMatch = service.fee ? service.fee.match(/\d+/) : null;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:384: const displayFee = service.fee
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:385: ? service.fee.startsWith('?')
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:386: ? service.fee
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:387: : `Rs ${service.fee}`
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:392: const lowerTitle = service.title.toLowerCase();
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:404: key={service.id || index}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:409: serviceName: service.title,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:428: {service.title}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:502: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Nursing Admission', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:526: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Computer Courses', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:550: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'ITI', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:583: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Scholarship', amount: 30, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:804: serviceName: `${job.title} Application`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:869: onClick={() => setSffCallModal({ isOpen: true, serviceName: 'Private Job Enquiry', amount: 40, step: 'select_applicant', applicantType: 'Self', otherApplicantName: '', otherApplicantMobile: '', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:872: <span>Enquire for Private Jobs (40 Service Charge)</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:896: <h3 className="font-extrabold text-base">Service Access Locked</h3>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:922: To prevent incomplete government application submissions, Self Fill Forms requires at least <strong>80% profile completion</strong> (4 out of 5 profile sections: Personal, Address, Education, Bank, Other Details) before services become accessible.
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1080: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1318: <span>Service & Auto-Fill Processing:</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1410: serviceId: 'admission-01',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1411: serviceTitle: sTitle,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1495: {/* STEP 2B: SERVICE COMING SOON FOR OTHER */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1507: Service Coming Soon
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1568: {/* SFF TEAM 30 MIN CALLBACK NOTIFICATION MODAL (For All Services & Enquiries) */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1580: onClick={() => setSffCallModal({ isOpen: false, serviceName: '', amount: 30, step: 'select_applicant', applicantType: 'Self', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1594: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1661: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1781: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1889: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1899: <span>Service Charge Fee:</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1908: {/* UPI QR PAYMENT - OTHER SERVICES */}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1981: const sTitle = sffCallModal.serviceName || 'Service Request';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1985: await addServiceRequestToFirestore({
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:1990: serviceTitle: sTitle,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2010: category: 'Service Fee',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2047: console.error('UPI QR service payment submission error:', error);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2090: {sffCallModal.serviceName}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2107: <span>Service Name:</span>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2108: <strong className="text-slate-900 dark:text-white font-extrabold">{sffCallModal.serviceName}</strong>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\dashboard\ServicesPage.tsx:2127: onClick={() => setSffCallModal({ isOpen: false, serviceName: '', amount: 30, step: 'select_applicant', applicantType: 'Self', isSelfDeclared: false, utrNumber: '', isPaying: false })}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:605: <td className="p-3.5 font-semibold text-white">{f.serviceTitle}</td>
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:623: const matchingTask = realTasks.find((t) => t.sourceId === f.id || t.title.includes(f.serviceTitle));
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:633: title: `Form Processing: ${f.serviceTitle}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\maintenance\MaintenanceDashboard.tsx:696: <span className="text-slate-400">Title / Service:</span>{' '}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:41: serviceId: 'helpdesk-grievance',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:42: serviceTitle: `[Support Grievance] ${form.issueType}`,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\HelpSupportModal.tsx:310: <strong>Subject:</strong> {foundTicket.serviceTitle}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\LoginPage.tsx:22: import { loginUserWithFirebase, getUserProfileFromFirestore, saveUserProfileToFirestore, loginWithGoogleProvider } from '../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\RegisterModal.tsx:28: } from '../lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\SplashScreen.tsx:110: Government Job Applications, Certificates & Citizen Services Portal
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\components\SplashScreen.tsx:130: {isPreview ? 'Preview Mode â€¢ Settings Saved in Admin' : '100% Verified Citizen Service Network'}
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:15: 'nav.services': 'Services & Forms',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:36: 'home.searchPlaceholder': 'Search services, government schemes, or form auto-fill...',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:44: 'home.popularServices': 'Popular Services & Schemes',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:49: // Services Page
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:50: 'services.all': 'All Services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:51: 'services.admission': 'Admission',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:52: 'services.admissionSub': 'School & College Admission',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:53: 'services.scholarship': 'Scholarship',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:54: 'services.scholarshipSub': 'Scholarship & Stipend Portal',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:55: 'services.certificates': 'Certificates',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:56: 'services.certificatesSub': 'Income, Caste, Residence & Birth',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:57: 'services.jobs': 'Jobs & Recruitment',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:58: 'services.jobsSub': 'Govt & Private Recruitment',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:59: 'services.resume': 'My Resume',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:60: 'services.resumeSub': 'Digital Resume Builder',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:61: 'services.autoFillNow': '1-Click Auto Fill',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:62: 'services.previewForm': 'Preview & Apply',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:106: 'services.listSubtitle': 'List of available services',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:112: 'modal.walletDesc': 'Manage portal balance for service processing fees',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:117: 'nav.services': 'सेवाएं एवं फॉर्म',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:146: 'home.popularServices': 'लोकप्रिय सेवाएं व योजनाएं',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:151: // Services Page
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:152: 'services.all': 'सभी सेवाएं',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:153: 'services.admission': 'प्रवेश (Admission)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:154: 'services.admissionSub': 'स्कूल व कॉलेज प्रवेश',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:155: 'services.scholarship': 'छात्रवृत्ति (Scholarship)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:156: 'services.scholarshipSub': 'छात्रवृत्ति व वजीफा पोर्टल',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:157: 'services.certificates': 'प्रमाण पत्र (Certificates)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:158: 'services.certificatesSub': 'आय, जाति, मूल निवास व जन्म',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:159: 'services.jobs': 'भर्ती व नौकरियां (Jobs)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:160: 'services.jobsSub': 'सरकारी व निजी भर्ती',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:161: 'services.resume': 'बायोडाटा (My Resume)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:162: 'services.resumeSub': 'डिजिटल सीवी बिल्डर',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:163: 'services.autoFillNow': '1-क्लिक ऑटो फिल',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:164: 'services.previewForm': 'देखें व आवेदन करें',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:208: 'services.listSubtitle': 'उपलब्ध सेवाओं की सूची',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:219: 'nav.services': 'ସେବା ଏବଂ ଫର୍ମ',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:248: 'home.popularServices': 'ଲୋକପ୍ରିୟ ସେବା ଏବଂ ଯୋଜନା',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:253: // Services Page
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:254: 'services.all': 'ସମସ୍ତ ସେବା',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:255: 'services.admission': 'ନାମଲେଖା (Admission)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:256: 'services.admissionSub': 'ସ୍କୁଲ୍ ଏବଂ କଲେଜ ନାମଲେଖା',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:257: 'services.scholarship': 'ସ୍କୋଲାରସିପ୍ (Scholarship)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:258: 'services.scholarshipSub': 'ବୃତ୍ତି ଏବଂ ସ୍କୋଲାରସିପ୍ ପୋର୍ଟାଲ୍',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:259: 'services.certificates': 'ପ୍ରମାଣପତ୍ର (Certificates)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:260: 'services.certificatesSub': 'ଆୟ, ଜାତି, ସ୍ଥାୟୀ ବାସସ୍ଥାନ ଏବଂ ଜନ୍ମ',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:261: 'services.jobs': 'ନିଯୁକ୍ତି ଏବଂ ଚାକିରି (Jobs)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:262: 'services.jobsSub': 'ସରକାରୀ ଏବଂ ବେସରକାରୀ ନିଯୁକ୍ତି',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:263: 'services.resume': 'ବାୟୋଡାଟା (My Resume)',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:264: 'services.resumeSub': 'ଡିଜିଟାଲ୍ ସିଭି ବିଲ୍ଡର',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:265: 'services.autoFillNow': '1-କ୍ଲିକ୍ ଅଟୋ ଫିଲ୍',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:266: 'services.previewForm': 'ଦେଖନ୍ତୁ ଏବଂ ଆବେଦନ କରନ୍ତୁ',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\context\LanguageContext.tsx:310: 'services.listSubtitle': 'ସେବା ଗୁଡ଼ିକର ତାଲିକା',
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:67: export interface ServiceRequestRecord {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:73: serviceTitle: string;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:393: // --- SERVICE REQUESTS (APPLICATION / ADMISSION / SCHOLARSHIP / JOB) IN FIRESTORE ---
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:395: export async function getUserServiceRequests(userId: string): Promise<ServiceRequestRecord[]> {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:398: const q = query(collection(db, 'service_requests'), where('userId', '==', userId));
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:400: const requests: ServiceRequestRecord[] = [];
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:402: requests.push({ id: docSnap.id, ...docSnap.data() } as ServiceRequestRecord);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:406: console.warn('Notice getting service requests:', e);
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:411: export async function addServiceRequestToFirestore(requestData: Omit<ServiceRequestRecord, 'id'>): Promise<string> {
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\lib\firestoreService.ts:412: const colRef = collection(db, 'service_requests');
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:55: isServicesUnlocked: boolean; // totalPercentage >= 80
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:522: const isServicesUnlocked = true; // Always unlocked - profile completion does not block user service tasks
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:533: isServicesUnlocked,
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\utils\profileChecker.ts:568: `ðŸ’¡ Note: Services require at least 80% completion (4 out of 5 sections) to unlock.`;
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\App.tsx:19: } from './lib/firestoreService';
+C:\Users\karun\Desktop\SFFv2\Deepak-Yadav-main\src\types.ts:5: export type DashboardTab = 'home' | 'documents' | 'services' | 'notifications' | 'ai-assistant' | 'profile';
+

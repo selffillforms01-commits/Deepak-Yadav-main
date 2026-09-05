@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { BackgroundCurves } from './components/BackgroundCurves';
 import { LoginPage } from './components/LoginPage';
 import { AdminLoginPlaceholder } from './components/AdminLoginPlaceholder';
@@ -278,5 +278,6 @@ export default function App() {
     </LanguageProvider>
   );
 }
+
 
 

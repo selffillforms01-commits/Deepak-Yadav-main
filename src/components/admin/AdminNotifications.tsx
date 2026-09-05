@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Bell,
   Send,
@@ -217,15 +217,15 @@ export const AdminNotifications: React.FC<AdminNotificationsProps> = ({ darkMode
         alert('Please enter the Recruitment Title.');
         return;
       }
-      finalTitle = `📢 JOB ALERT: ${jobData.recruitmentTitle}`;
-      finalMessage = `📋 Job Title: ${jobData.recruitmentTitle}
-🏢 Department: ${jobData.department || 'N/A'}
-👥 Total Posts: ${jobData.totalPosts || 'N/A'}
-🎓 Required Qualification: ${jobData.qualification || 'N/A'}
-📅 Application Last Date: ${jobData.lastDate || 'N/A'}
-💰 Application Fee: ${jobData.applyFee || 'As per official rules'}
-🔗 Official Portal Link: ${jobData.officialUrl || 'SelfFill Forms Portal'}
-${jobData.otherDetails ? `\n📌 Important Details: ${jobData.otherDetails}` : ''}`;
+      finalTitle = `ðŸ“¢ JOB ALERT: ${jobData.recruitmentTitle}`;
+      finalMessage = `ðŸ“‹ Job Title: ${jobData.recruitmentTitle}
+ðŸ¢ Department: ${jobData.department || 'N/A'}
+ðŸ‘¥ Total Posts: ${jobData.totalPosts || 'N/A'}
+ðŸŽ“ Required Qualification: ${jobData.qualification || 'N/A'}
+ðŸ“… Application Last Date: ${jobData.lastDate || 'N/A'}
+ðŸ’° Application Fee: ${jobData.applyFee || 'As per official rules'}
+ðŸ”— Official Portal Link: ${jobData.officialUrl || 'SelfFill Forms Portal'}
+${jobData.otherDetails ? `\nðŸ“Œ Important Details: ${jobData.otherDetails}` : ''}`;
     } else {
       if (!title.trim() || !message.trim()) {
         alert('Please enter both Title and Message.');
@@ -1216,7 +1216,7 @@ ${jobData.otherDetails ? `\n📌 Important Details: ${jobData.otherDetails}` : '
                         type="text"
                         value={jobData.applyFee}
                         onChange={(e) => setJobData((prev) => ({ ...prev, applyFee: e.target.value }))}
-                        placeholder="e.g. ₹100 (SC/ST/Female: ₹0)"
+                        placeholder="e.g. Rs 100 (SC/ST/Female: Rs 0)"
                         className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-white font-medium outline-hidden focus:border-cyan-500"
                       />
                     </div>
@@ -1444,3 +1444,6 @@ ${jobData.otherDetails ? `\n📌 Important Details: ${jobData.otherDetails}` : '
     </div>
   );
 };
+
+
+

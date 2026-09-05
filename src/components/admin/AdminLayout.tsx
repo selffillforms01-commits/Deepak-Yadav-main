@@ -6,6 +6,7 @@ import { AdminDashboard } from './AdminDashboard';
 import { AdminUsers } from './AdminUsers';
 import { AdminServices } from './AdminServices';
 import { AdminJobs } from './AdminJobs';
+import { AdminEducationServices } from './AdminEducationServices';
 import { AdminForms } from './AdminForms';
 import { AdminMaintenance } from './AdminMaintenance';
 import { AdminNotifications } from './AdminNotifications';
@@ -106,6 +107,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
               )}
               {currentTab === 'services' && <AdminServices darkMode={darkMode} />}
               {currentTab === 'jobs' && <AdminJobs darkMode={darkMode} />}
+              {currentTab === 'admission' && <AdminEducationServices type="admission" darkMode={darkMode} />}
+              {currentTab === 'scholarship' && <AdminEducationServices type="scholarship" darkMode={darkMode} />}
               {currentTab === 'forms' && <AdminForms darkMode={darkMode} onImpersonateUser={onImpersonateUser} />}
               {currentTab === 'maintenance' && <AdminMaintenance darkMode={darkMode} />}
               {currentTab === 'notifications' && <AdminNotifications darkMode={darkMode} />}
@@ -123,5 +126,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     </DesktopGuard>
   );
 };
+
+
+
 
 

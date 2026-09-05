@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Monitor, ArrowLeft, ShieldAlert, Laptop } from 'lucide-react';
 
 interface DesktopGuardProps {
@@ -31,3 +31,4 @@ export const DesktopGuard: React.FC<DesktopGuardProps> = ({
   return <>{children}</>;
 };
   
+

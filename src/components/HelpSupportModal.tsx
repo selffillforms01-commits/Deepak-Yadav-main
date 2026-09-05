@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, HelpCircle, PhoneCall, Mail, Clock, Send, CheckCircle2, Headphones, Search } from 'lucide-react';
 import { SupportTicketForm } from '../types';
@@ -158,7 +158,7 @@ export const HelpSupportModal: React.FC<HelpSupportModalProps> = ({ isOpen, onCl
             <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 px-3.5 py-2.5 rounded-lg border border-slate-200">
               <Clock className="w-4 h-4 text-[#0B3B8C] shrink-0" />
               <span>
-                <strong>Working Hours:</strong> Monday to Saturday, 9:00 AM – 6:00 PM IST
+                <strong>Working Hours:</strong> Monday to Saturday, 9:00 AM â€“ 6:00 PM IST
               </span>
             </div>
 
@@ -333,3 +333,4 @@ export const HelpSupportModal: React.FC<HelpSupportModalProps> = ({ isOpen, onCl
     </AnimatePresence>
   );
 };
+

@@ -1,0 +1,80 @@
+﻿import React from "react";
+import { Bot, Sparkles, ShieldCheck } from "lucide-react";
+import { AIAssistantPanel } from "../AIAssistantPanel";
+import { useSffAssistant } from "../../modules/useSffAssistant";
+
+interface PersonalAIPageProps {
+  userName?: string;
+  language?: string;
+}
+
+const PersonalAIPage: React.FC<PersonalAIPageProps> = ({
+  userName,
+  language = "hinglish",
+}) => {
+  const aiForm = {
+    id: "sff-personal-assistant",
+    fields: [],
+    steps: [],
+  };
+
+  const {
+    chatMessages,
+    askAssistant,
+    isAiLoading,
+    language: aiLanguage,
+    setLanguage: setAiLanguage,
+  } = useSffAssistant({
+    form: aiForm,
+    initialLanguage:
+      language === "odia"
+        ? "odia"
+        : language === "hindi"
+          ? "hindi"
+          : "hinglish",
+    apiEndpoint: "/api/ai/assistant",
+  });
+
+  return (
+    <div className="mx-auto w-full max-w-5xl space-y-5 pb-8">
+      <div className="rounded-3xl border border-white/10 bg-black/20 p-5 backdrop-blur-xl">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
+            <Bot className="h-6 w-6 text-white" />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl font-semibold text-white">
+              Personal AI Assistant
+            </h1>
+            <p className="mt-1 text-sm text-white/60">
+              {userName
+                ? `Hello ${userName}, main aapke SFF forms aur services mein help karunga.`
+                : "Main aapke SFF forms aur services mein help karunga."}
+            </p>
+          </div>
+
+          <Sparkles className="hidden h-5 w-5 text-white/50 sm:block" />
+        </div>
+      </div>
+
+      <AIAssistantPanel
+        chatMessages={chatMessages}
+        onSendMessage={askAssistant}
+        isQuerying={isAiLoading}
+        language={aiLanguage}
+        onChangeLanguage={setAiLanguage}
+      />
+
+      <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-xs text-white/50">
+        <ShieldCheck className="h-4 w-4 shrink-0" />
+        <span>
+          Sensitive information, OTP, password aur API keys AI ko share nahi
+          kiye jaane chahiye.
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default PersonalAIPage;

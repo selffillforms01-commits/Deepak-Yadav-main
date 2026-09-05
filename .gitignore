@@ -12,3 +12,6 @@ firebase-users.json
 users.csv
 server-errors.txt
 .idea/
+
+# Firebase Admin private credentials
+firebase-service-account.json

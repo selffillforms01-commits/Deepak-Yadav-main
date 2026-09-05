@@ -162,7 +162,7 @@ export const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ user }) => {
           boardUniversity: p.degreeUniversityName || '',
           schoolCollege: p.degreeCollegeName || '',
           passingYear: p.degreePassingYear || '',
-          percentage: p.graduationPercentage || '',
+          percentage: p.graduationPercentage || p.degreeEquivalentPercentage || '',
         }
       : null,
 
@@ -630,6 +630,8 @@ export const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ user }) => {
     </div>
   );
 };
+
+
 
 
 

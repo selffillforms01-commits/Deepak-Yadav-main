@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Wallet,
   ArrowUpRight,
@@ -20,6 +20,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { adminStore } from './adminStore';
+import { addNotificationToFirestore } from '../../lib/firestoreService';
 import { TransactionRecord } from './AdminTypes';
 
 interface AdminAccountsProps {
@@ -156,7 +157,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
     const amount = Number(txn.amount || 0).toLocaleString('en-IN');
     const recipient = txn.applicantId;
 
-    if (!confirm('Verify UPI payment of Rs.' + amount + ' from ' + applicant + '?')) {
+    if (!confirm('Verify UPI payment of Rs ' + amount + ' from ' + applicant + '?')) {
       return;
     }
 
@@ -166,7 +167,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
     const completedTxn = {
       ...txn,
       status: 'Completed' as const,
-      remarks: (txn.remarks || 'UPI payment') + ' Payment verified by Admin.',
+      remarks: (txn.remarks || 'UPI payment') + ' Payment verified by SFF.',
     };
 
     adminStore.saveTransaction(completedTxn);
@@ -211,7 +212,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           ...existingForm,
           status: 'Pending',
           remarks:
-            `Payment verified by Admin. Amount: ?${txn.amount}. ` +
+            `Payment verified by SFF. Amount: Rs ${txn.amount}. ` +
             `UTR: ${txn.utrNumber || 'N/A'}. Ready for form processing.`,
           formData: verifiedFormData,
         });
@@ -235,20 +236,20 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           submissionDate: txn.date || now,
           status: 'Pending',
           remarks:
-            `Payment verified by Admin. Amount: ?${txn.amount}. ` +
+            `Payment verified by SFF. Amount: Rs ${txn.amount}. ` +
             `UTR: ${txn.utrNumber || 'N/A'}. Ready for form processing.`,
           formData: verifiedFormData,
         });
       }
     }
 
-    // 3. Personal notification � ONLY the payer receives it.
+    // 3. Personal notification ï¿½ ONLY the payer receives it.
     if (recipient) {
       adminStore.saveNotification({
         id: `NTF-PAYMENT-${Date.now()}`,
         title: 'Payment Verified Successfully',
         message:
-          `Your payment of Rs.${amount} for ${txn.description || txn.category || 'Service'} has been verified successfully by SFF.` +
+          `Your payment of Rs ${amount} for ${txn.description || txn.category || 'Service'} has been verified successfully by SFF.` +
           ` UTR: ${txn.utrNumber || 'N/A'}. Your application has been sent for form processing.`,
         notificationType: 'Application Status',
         targetAudience: 'Selected Users',
@@ -293,7 +294,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
       status: 'Failed',
       remarks:
         (txn.remarks || 'UPI payment') +
-        ' Rejected by Admin. Reason: ' +
+        ' Rejected by SFF. Reason: ' +
         finalReason,
     });
 
@@ -302,8 +303,8 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
         id: `NTF-PAYMENT-${Date.now()}`,
         title: 'Payment Rejected',
         message:
-          `Your payment of Rs.${Number(txn.amount || 0).toLocaleString('en-IN')} for ` +
-          `${txn.description || txn.category || 'Service'} was rejected by Admin.` +
+          `Your payment of Rs ${Number(txn.amount || 0).toLocaleString('en-IN')} for ` +
+          `${txn.description || txn.category || 'Service'} was rejected by SFF.` +
           ` UTR: ${txn.utrNumber || 'N/A'}. Reason: ${finalReason}`,
         notificationType: 'Application Status',
         targetAudience: 'Selected Users',
@@ -516,7 +517,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           </div>
           <div className="mt-3 flex items-baseline gap-1">
             <span className="text-2xl sm:text-3xl font-black text-emerald-400">
-              ₹{totalCredit.toLocaleString('en-IN')}
+              Rs {totalCredit.toLocaleString('en-IN')}
             </span>
           </div>
           <p className="text-[11px] text-emerald-500 font-semibold mt-1 flex items-center gap-1">
@@ -539,7 +540,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           </div>
           <div className="mt-3 flex items-baseline gap-1">
             <span className="text-2xl sm:text-3xl font-black text-rose-400">
-              ₹{totalDebit.toLocaleString('en-IN')}
+              Rs {totalDebit.toLocaleString('en-IN')}
             </span>
           </div>
           <p className="text-[11px] text-rose-400 font-semibold mt-1">
@@ -561,7 +562,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           </div>
           <div className="mt-3 flex items-baseline gap-1">
             <span className={`text-2xl sm:text-3xl font-black ${netBalance >= 0 ? 'text-blue-400' : 'text-rose-400'}`}>
-              ₹{netBalance.toLocaleString('en-IN')}
+              Rs {netBalance.toLocaleString('en-IN')}
             </span>
           </div>
           <p className="text-[11px] text-slate-400 font-semibold mt-1">
@@ -583,7 +584,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
           </div>
           <div className="mt-3 flex items-baseline gap-1">
             <span className="text-2xl sm:text-3xl font-black text-amber-400">
-              ₹{todayIncome.toLocaleString('en-IN')}
+              Rs {todayIncome.toLocaleString('en-IN')}
             </span>
           </div>
           <p className="text-[11px] text-slate-400 font-semibold mt-1">
@@ -678,9 +679,9 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
               }`}
             >
               <option value="All">All Categories</option>
-              <option value="Service Fee">Service Fee (₹30)</option>
-              <option value="Govt Job Application">Govt Job Application (₹40)</option>
-              <option value="Admission Fee">Admission Fee (₹30)</option>
+              <option value="Service Fee">Service Fee (30)</option>
+              <option value="Govt Job Application">Govt Job Application (40)</option>
+              <option value="Admission Fee">Admission Fee (30)</option>
               <option value="Refund">Refund</option>
               <option value="Portal Expense">Portal Expense</option>
               <option value="Commission">Commission</option>
@@ -775,7 +776,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
                   <th className="p-3.5">Category & Description</th>
                   <th className="p-3.5">User / Applicant</th>
                   <th className="p-3.5">Payment Method & UTR</th>
-                  <th className="p-3.5 text-right">Amount (₹)</th>
+                  <th className="p-3.5 text-right">Amount (Rs )</th>
                   <th className="p-3.5 text-center">Action</th>
                 </tr>
               </thead>
@@ -868,7 +869,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
                       {/* Amount */}
                       <td className="p-3.5 text-right whitespace-nowrap">
                         <div className={`text-sm font-black ${isCredit ? 'text-emerald-400' : 'text-rose-400'}`}>
-                          {isCredit ? '+' : '-'}₹{t.amount.toLocaleString('en-IN')}
+                          {isCredit ? '+' : '-'}Rs {t.amount.toLocaleString('en-IN')}
                         </div>
                         <div className="text-[10px] text-slate-500">
                           {t.status}
@@ -972,7 +973,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
 
               {/* Amount */}
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Amount (₹)</label>
+                <label className="text-xs font-bold text-slate-300 block mb-1">Amount (Rs )</label>
                 <div className="relative">
                   <IndianRupee className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
@@ -995,7 +996,7 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
                   className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white font-bold outline-hidden focus:border-emerald-500"
                 >
                   <option value="Service Fee">Service Fee</option>
-                  <option value="Govt Job Application">Govt Job Application (₹40)</option>
+                  <option value="Govt Job Application">Govt Job Application (Rs 40)</option>
                   <option value="Admission Fee">Admission Fee</option>
                   <option value="Refund">Refund</option>
                   <option value="Portal Expense">Portal Expense</option>
@@ -1096,6 +1097,12 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
     </div>
   );
 };
+
+
+
+
+
+
 
 
 

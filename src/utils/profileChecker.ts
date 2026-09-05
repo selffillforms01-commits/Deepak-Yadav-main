@@ -74,7 +74,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'name',
       labelEn: 'Full Name',
       labelHi: 'Full Name',
-      labelOr: 'ପୁରା ନାମ',
+      labelOr: 'à¬ªà­à¬°à¬¾ à¬¨à¬¾à¬®',
       value: p.name,
       isMissing: !p.name || p.name.trim() === '',
     },
@@ -82,7 +82,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'fatherName',
       labelEn: "Father's Name",
       labelHi: "Father's Name",
-      labelOr: 'ପିତାଙ୍କ ନାମ',
+      labelOr: 'à¬ªà¬¿à¬¤à¬¾à¬™à­à¬• à¬¨à¬¾à¬®',
       value: p.fatherName,
       isMissing: !p.fatherName || p.fatherName.trim() === '',
     },
@@ -90,7 +90,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'motherName',
       labelEn: "Mother's Name",
       labelHi: "Mother's Name",
-      labelOr: 'ମାତାଙ୍କ ନାମ',
+      labelOr: 'à¬®à¬¾à¬¤à¬¾à¬™à­à¬• à¬¨à¬¾à¬®',
       value: p.motherName,
       isMissing: !p.motherName || p.motherName.trim() === '',
     },
@@ -98,7 +98,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'dob',
       labelEn: 'Date of Birth',
       labelHi: 'Date of Birth',
-      labelOr: 'ଜନ୍ମ ତାରିଖ',
+      labelOr: 'à¬œà¬¨à­à¬® à¬¤à¬¾à¬°à¬¿à¬–',
       value: p.dob,
       isMissing: !p.dob || p.dob.trim() === '',
     },
@@ -106,7 +106,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'gender',
       labelEn: 'Gender',
       labelHi: 'Gender',
-      labelOr: 'ଲିଙ୍ଗ',
+      labelOr: 'à¬²à¬¿à¬™à­à¬—',
       value: p.gender,
       isMissing: !p.gender || p.gender.trim() === '',
     },
@@ -114,7 +114,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'mobile',
       labelEn: 'Mobile Number',
       labelHi: 'Mobile Number',
-      labelOr: 'ମୋବାଇଲ ନମ୍ବର',
+      labelOr: 'à¬®à­‹à¬¬à¬¾à¬‡à¬² à¬¨à¬®à­à¬¬à¬°',
       value: p.mobile,
       isMissing: !p.mobile || p.mobile.trim() === '',
     },
@@ -122,7 +122,7 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
       key: 'aadhaar',
       labelEn: 'Aadhaar Number',
       labelHi: 'Aadhaar Number',
-      labelOr: 'ଆଧାର ନମ୍ବର',
+      labelOr: 'à¬†à¬§à¬¾à¬° à¬¨à¬®à­à¬¬à¬°',
       value: aadhaarVal,
       isMissing: !aadhaarVal || aadhaarVal.trim() === '',
     },
@@ -143,8 +143,8 @@ export const checkPersonalInformationProfile = (user?: UserProfile): SectionChec
     missingFields,
     completedFields,
     statusMessageHi: isComplete
-      ? 'आपका Personal Information पूरा हो चुका है।'
-      : 'आपका Personal Information पूरा नहीं है।',
+      ? 'à¤†à¤ªà¤•à¤¾ Personal Information à¤ªà¥‚à¤°à¤¾ à¤¹à¥‹ à¤šà¥à¤•à¤¾ à¤¹à¥ˆà¥¤'
+      : 'à¤†à¤ªà¤•à¤¾ Personal Information à¤ªà¥‚à¤°à¤¾ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤',
     formattedResponseHi: '',
   };
 };
@@ -165,7 +165,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'villageAt',
       labelEn: 'Village / At / Locality',
       labelHi: 'Village / At / Locality',
-      labelOr: 'ଗ୍ରାମ / ସାହି',
+      labelOr: 'à¬—à­à¬°à¬¾à¬® / à¬¸à¬¾à¬¹à¬¿',
       value: villageAt,
       isMissing: !villageAt || villageAt.trim() === '',
     },
@@ -173,7 +173,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'postOffice',
       labelEn: 'Post Office',
       labelHi: 'Post Office',
-      labelOr: 'ଡାକଘର',
+      labelOr: 'à¬¡à¬¾à¬•à¬˜à¬°',
       value: postOffice,
       isMissing: !postOffice || postOffice.trim() === '',
     },
@@ -181,7 +181,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'policeStation',
       labelEn: 'Police Station',
       labelHi: 'Police Station',
-      labelOr: 'ଥାନା',
+      labelOr: 'à¬¥à¬¾à¬¨à¬¾',
       value: policeStation,
       isMissing: !policeStation || policeStation.trim() === '',
     },
@@ -189,7 +189,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'district',
       labelEn: 'District',
       labelHi: 'District',
-      labelOr: 'ଜିଲ୍ଲା',
+      labelOr: 'à¬œà¬¿à¬²à­à¬²à¬¾',
       value: district,
       isMissing: !district || district.trim() === '',
     },
@@ -197,7 +197,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'state',
       labelEn: 'State',
       labelHi: 'State',
-      labelOr: 'ରାଜ୍ୟ',
+      labelOr: 'à¬°à¬¾à¬œà­à­Ÿ',
       value: state,
       isMissing: !state || state.trim() === '',
     },
@@ -205,7 +205,7 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
       key: 'pincode',
       labelEn: 'PIN Code',
       labelHi: 'PIN Code',
-      labelOr: 'ପିନ୍ କୋଡ୍',
+      labelOr: 'à¬ªà¬¿à¬¨à­ à¬•à­‹à¬¡à­',
       value: pincode,
       isMissing: !pincode || pincode.trim() === '',
     },
@@ -226,8 +226,8 @@ export const checkAddressInformationProfile = (user?: UserProfile): SectionCheck
     missingFields,
     completedFields,
     statusMessageHi: isComplete
-      ? 'आपका Address Information पूरा हो चुका है।'
-      : 'आपका Address Information पूरा नहीं है।',
+      ? 'à¤†à¤ªà¤•à¤¾ Address Information à¤ªà¥‚à¤°à¤¾ à¤¹à¥‹ à¤šà¥à¤•à¤¾ à¤¹à¥ˆà¥¤'
+      : 'à¤†à¤ªà¤•à¤¾ Address Information à¤ªà¥‚à¤°à¤¾ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤',
     formattedResponseHi: '',
   };
 };
@@ -251,7 +251,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'qualification',
       labelEn: 'Highest Qualification',
       labelHi: 'Highest Qualification',
-      labelOr: 'ଉଚ୍ଚତମ ଯୋଗ୍ୟତା',
+      labelOr: 'à¬‰à¬šà­à¬šà¬¤à¬® à¬¯à­‹à¬—à­à­Ÿà¬¤à¬¾',
       value: qual,
       isMissing: !qual || qual.trim() === '',
     },
@@ -259,7 +259,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'courseName',
       labelEn: 'Course / Stream Name',
       labelHi: 'Course / Stream Name',
-      labelOr: 'କୋର୍ସ ନାମ',
+      labelOr: 'à¬•à­‹à¬°à­à¬¸ à¬¨à¬¾à¬®',
       value: course,
       isMissing: !isBelow10th && (!course || course.trim() === ''),
     },
@@ -267,7 +267,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'schoolCollegeName',
       labelEn: 'School / College Name',
       labelHi: 'School / College Name',
-      labelOr: 'ବିଦ୍ୟାଳୟ ନାମ',
+      labelOr: 'à¬¬à¬¿à¬¦à­à­Ÿà¬¾à¬³à­Ÿ à¬¨à¬¾à¬®',
       value: schoolCollege,
       isMissing: !isBelow10th && (!schoolCollege || schoolCollege.trim() === ''),
     },
@@ -275,7 +275,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'boardUniversity',
       labelEn: 'Board / University Name',
       labelHi: 'Board / University Name',
-      labelOr: 'ବୋର୍ଡ ନାମ',
+      labelOr: 'à¬¬à­‹à¬°à­à¬¡ à¬¨à¬¾à¬®',
       value: boardUniversity,
       isMissing: !isBelow10th && (!boardUniversity || boardUniversity.trim() === ''),
     },
@@ -283,7 +283,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'passingYear',
       labelEn: 'Passing Year',
       labelHi: 'Passing Year',
-      labelOr: 'ଉତ୍ତୀର୍ଣ୍ଣ ବର୍ଷ',
+      labelOr: 'à¬‰à¬¤à­à¬¤à­€à¬°à­à¬£à­à¬£ à¬¬à¬°à­à¬·',
       value: passingYear,
       isMissing: !isBelow10th && (!passingYear || passingYear.trim() === ''),
     },
@@ -291,7 +291,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'rollNumber',
       labelEn: 'Roll Number',
       labelHi: 'Roll Number',
-      labelOr: 'ରୋଲ୍ ନମ୍ବର',
+      labelOr: 'à¬°à­‹à¬²à­ à¬¨à¬®à­à¬¬à¬°',
       value: rollNumber,
       isMissing: !isBelow10th && (!rollNumber || rollNumber.trim() === ''),
     },
@@ -299,7 +299,7 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
       key: 'percentage',
       labelEn: 'Marks / Percentage',
       labelHi: 'Marks / Percentage',
-      labelOr: 'ମାର୍କ / ପ୍ରତିଶତ',
+      labelOr: 'à¬®à¬¾à¬°à­à¬• / à¬ªà­à¬°à¬¤à¬¿à¬¶à¬¤',
       value: percentage,
       isMissing: !isBelow10th && (!percentage || percentage.trim() === ''),
     },
@@ -320,8 +320,8 @@ export const checkEducationProfile = (user?: UserProfile): SectionCheckResult =>
     missingFields,
     completedFields,
     statusMessageHi: isComplete
-      ? 'आपकी Education Details पूरी हो चुकी है।'
-      : 'आपकी Education Details पूरी नहीं है।',
+      ? 'à¤†à¤ªà¤•à¥€ Education Details à¤ªà¥‚à¤°à¥€ à¤¹à¥‹ à¤šà¥à¤•à¥€ à¤¹à¥ˆà¥¤'
+      : 'à¤†à¤ªà¤•à¥€ Education Details à¤ªà¥‚à¤°à¥€ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤',
     formattedResponseHi: '',
   };
 };
@@ -341,7 +341,7 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
       key: 'bankAccountHolderName',
       labelEn: 'Account Holder Name',
       labelHi: 'Account Holder Name',
-      labelOr: 'ଖାତାଧାରୀଙ୍କ ନାମ',
+      labelOr: 'à¬–à¬¾à¬¤à¬¾à¬§à¬¾à¬°à­€à¬™à­à¬• à¬¨à¬¾à¬®',
       value: accountHolder,
       isMissing: !accountHolder || accountHolder.trim() === '',
     },
@@ -349,7 +349,7 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
       key: 'bankName',
       labelEn: 'Bank Name',
       labelHi: 'Bank Name',
-      labelOr: 'ବ୍ୟାଙ୍କ ନାମ',
+      labelOr: 'à¬¬à­à­Ÿà¬¾à¬™à­à¬• à¬¨à¬¾à¬®',
       value: bankName,
       isMissing: !bankName || bankName.trim() === '',
     },
@@ -357,7 +357,7 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
       key: 'bankAccountNumber',
       labelEn: 'Account Number',
       labelHi: 'Account Number',
-      labelOr: 'ଖାତା ନମ୍ବର',
+      labelOr: 'à¬–à¬¾à¬¤à¬¾ à¬¨à¬®à­à¬¬à¬°',
       value: accNumber,
       isMissing: !accNumber || accNumber.trim() === '',
     },
@@ -365,7 +365,7 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
       key: 'bankIfsc',
       labelEn: 'IFSC Code',
       labelHi: 'IFSC Code',
-      labelOr: 'IFSC କୋଡ୍',
+      labelOr: 'IFSC à¬•à­‹à¬¡à­',
       value: ifsc,
       isMissing: !ifsc || ifsc.trim() === '',
     },
@@ -373,7 +373,7 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
       key: 'bankBranch',
       labelEn: 'Branch Name',
       labelHi: 'Branch Name',
-      labelOr: 'ଶାଖା ନାମ',
+      labelOr: 'à¬¶à¬¾à¬–à¬¾ à¬¨à¬¾à¬®',
       value: branch,
       isMissing: !branch || branch.trim() === '',
     },
@@ -394,8 +394,8 @@ export const checkBankProfile = (user?: UserProfile): SectionCheckResult => {
     missingFields,
     completedFields,
     statusMessageHi: isComplete
-      ? 'आपकी Bank Details पूरी हो चुकी है।'
-      : 'आपकी Bank Details पूरी नहीं है।',
+      ? 'à¤†à¤ªà¤•à¥€ Bank Details à¤ªà¥‚à¤°à¥€ à¤¹à¥‹ à¤šà¥à¤•à¥€ à¤¹à¥ˆà¥¤'
+      : 'à¤†à¤ªà¤•à¥€ Bank Details à¤ªà¥‚à¤°à¥€ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤',
     formattedResponseHi: '',
   };
 };
@@ -409,7 +409,7 @@ const isDocAvailableInStorage = (docId: string, keyword: string): boolean => {
     const docs = JSON.parse(stored);
     if (!Array.isArray(docs)) return false;
     const found = docs.find((d: any) => d.id === docId || (d.name && d.name.toLowerCase().includes(keyword.toLowerCase())));
-    if (found && (found.status === 'Verified' || (found.documentNumber && found.documentNumber.trim() !== '') || found.customFileUrl)) {
+    if (found && found.customFileUrl && found.customFileUrl.trim() !== '') {
       return true;
     }
   } catch (e) {}
@@ -422,16 +422,18 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
 
   const otherCerts = p.otherCertificates || [];
   
-  const incomeCert = otherCerts.find(c => c.name.toLowerCase().includes('income'))?.number 
-    || p.declaredFamilyIncome 
-    || p.annualIncome 
+  const incomeCert =
+    otherCerts.find(c => c.name.toLowerCase().includes('income'))?.number
     || (isDocAvailableInStorage('doc-income', 'income') ? 'Verified Document' : '');
 
   const userCat = (p.category || 'General').trim().toUpperCase();
   const isReservedCategory = userCat.includes('SC') || userCat.includes('ST') || userCat.includes('OBC') || userCat.includes('SEBC');
 
-  const residenceCert = p.domicileCertNumber 
-    || otherCerts.find(c => c.name.toLowerCase().includes('residence') || c.name.toLowerCase().includes('domicile'))?.number 
+  const residenceCert =
+    otherCerts.find(c =>
+      c.name.toLowerCase().includes('residence') ||
+      c.name.toLowerCase().includes('domicile')
+    )?.number
     || (isDocAvailableInStorage('doc-residence', 'residence') ? 'Verified Document' : '');
 
   const fields: FieldCheck[] = [
@@ -439,7 +441,7 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
       key: 'incomeCertificate',
       labelEn: 'Income Certificate',
       labelHi: 'Income Certificate',
-      labelOr: 'ଆୟ ପ୍ରମାଣପତ୍ର',
+      labelOr: 'à¬†à­Ÿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
       value: incomeCert,
       isMissing: !incomeCert || incomeCert.trim() === '',
     },
@@ -447,7 +449,7 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
       key: 'residenceCertificate',
       labelEn: 'Residence Certificate / Domicile',
       labelHi: 'Residence Certificate / Domicile',
-      labelOr: 'ବାସସ୍ଥାନ ପ୍ରମାଣପତ୍ର',
+      labelOr: 'à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
       value: residenceCert,
       isMissing: !residenceCert || residenceCert.trim() === '',
     },
@@ -461,7 +463,7 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
       key: 'casteCertificate',
       labelEn: 'Caste Certificate',
       labelHi: 'Caste Certificate',
-      labelOr: 'ଜାତି ପ୍ରମାଣପତ୍ର',
+      labelOr: 'à¬œà¬¾à¬¤à¬¿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
       value: casteCert,
       isMissing: !casteCert || casteCert.trim() === '',
     });
@@ -470,8 +472,8 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
   const isDisabilityYes = Boolean(
     p.disabilityStatus &&
       (p.disabilityStatus.trim().toLowerCase() === 'yes' ||
-        p.disabilityStatus.includes('हाँ') ||
-        p.disabilityStatus.includes('ହଁ'))
+        p.disabilityStatus.includes('à¤¹à¤¾à¤') ||
+        p.disabilityStatus.includes('à¬¹à¬'))
   );
 
   if (isDisabilityYes) {
@@ -481,7 +483,7 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
       key: 'disabilityCertificate',
       labelEn: 'Disability Certificate',
       labelHi: 'Disability Certificate',
-      labelOr: 'ଦିବ୍ୟାଙ୍ଗ ପ୍ରମାଣପତ୍ର',
+      labelOr: 'à¬¦à¬¿à¬¬à­à­Ÿà¬¾à¬™à­à¬— à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
       value: disCert,
       isMissing: !disCert || disCert.trim() === '',
     });
@@ -502,8 +504,8 @@ export const checkCertificatesProfile = (user?: UserProfile): SectionCheckResult
     missingFields,
     completedFields,
     statusMessageHi: isComplete
-      ? 'आपकी Other Details जानकारी पूरी हो चुकी है।'
-      : 'आपकी Other Details जानकारी पूरी नहीं है।',
+      ? 'à¤†à¤ªà¤•à¥€ Other Details à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€ à¤ªà¥‚à¤°à¥€ à¤¹à¥‹ à¤šà¥à¤•à¥€ à¤¹à¥ˆà¥¤'
+      : 'à¤†à¤ªà¤•à¥€ Other Details à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€ à¤ªà¥‚à¤°à¥€ à¤¨à¤¹à¥€à¤‚ à¤¹à¥ˆà¥¤',
     formattedResponseHi: '',
   };
 };
@@ -549,21 +551,21 @@ export const checkFullStep2Profile = (user?: UserProfile) => {
   let formattedMasterResponseHi = '';
 
   if (allComplete) {
-    formattedMasterResponseHi = `🎉 **आपकी संपूर्ण Profile (Personal, Address, Education, Bank, Other Details) 100% पूरी हो चुकी है!**\n\n` +
-      `✅ **Personal Information:** 20%\n` +
-      `✅ **Address Information:** 20%\n` +
-      `✅ **Education Details:** 20%\n` +
-      `✅ **Bank Details:** 20%\n` +
-      `✅ **Other Details:** 20%\n\n` +
-      `💡 सभी 5 सेक्शन पूर्ण हैं। सभी सेवाएं पूरी तरह अनलॉक हैं।`;
+    formattedMasterResponseHi = `ðŸŽ‰ **à¤†à¤ªà¤•à¥€ à¤¸à¤‚à¤ªà¥‚à¤°à¥à¤£ Profile (Personal, Address, Education, Bank, Other Details) 100% à¤ªà¥‚à¤°à¥€ à¤¹à¥‹ à¤šà¥à¤•à¥€ à¤¹à¥ˆ!**\n\n` +
+      `âœ… **Personal Information:** 20%\n` +
+      `âœ… **Address Information:** 20%\n` +
+      `âœ… **Education Details:** 20%\n` +
+      `âœ… **Bank Details:** 20%\n` +
+      `âœ… **Other Details:** 20%\n\n` +
+      `ðŸ’¡ à¤¸à¤­à¥€ 5 à¤¸à¥‡à¤•à¥à¤¶à¤¨ à¤ªà¥‚à¤°à¥à¤£ à¤¹à¥ˆà¤‚à¥¤ à¤¸à¤­à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤‚ à¤ªà¥‚à¤°à¥€ à¤¤à¤°à¤¹ à¤…à¤¨à¤²à¥‰à¤• à¤¹à¥ˆà¤‚à¥¤`;
   } else {
-    formattedMasterResponseHi = `📋 **Profile Status Checklist (Overall: ${overall.totalPercentage}%)**\n\n` +
-      `1️⃣ **Personal Information (20%):** ${personal.isComplete ? '✅ Complete (20%)' : '⚠️ Incomplete (0%)'}\n` +
-      `2️⃣ **Address Information (20%):** ${overall.sections.address.isComplete ? '✅ Complete (20%)' : '⚠️ Incomplete (0%)'}\n` +
-      `3️⃣ **Education Details (20%):** ${education.isComplete ? '✅ Complete (20%)' : '⚠️ Incomplete (0%)'}\n` +
-      `4️⃣ **Bank Details (20%):** ${bank.isComplete ? '✅ Complete (20%)' : '⚠️ Incomplete (0%)'}\n` +
-      `5️⃣ **Other Details (20%):** ${certificates.isComplete ? '✅ Complete (20%)' : '⚠️ Incomplete (0%)'}\n\n` +
-      `💡 Note: Services require at least 80% completion (4 out of 5 sections) to unlock.`;
+    formattedMasterResponseHi = `ðŸ“‹ **Profile Status Checklist (Overall: ${overall.totalPercentage}%)**\n\n` +
+      `1ï¸âƒ£ **Personal Information (20%):** ${personal.isComplete ? 'âœ… Complete (20%)' : 'âš ï¸ Incomplete (0%)'}\n` +
+      `2ï¸âƒ£ **Address Information (20%):** ${overall.sections.address.isComplete ? 'âœ… Complete (20%)' : 'âš ï¸ Incomplete (0%)'}\n` +
+      `3ï¸âƒ£ **Education Details (20%):** ${education.isComplete ? 'âœ… Complete (20%)' : 'âš ï¸ Incomplete (0%)'}\n` +
+      `4ï¸âƒ£ **Bank Details (20%):** ${bank.isComplete ? 'âœ… Complete (20%)' : 'âš ï¸ Incomplete (0%)'}\n` +
+      `5ï¸âƒ£ **Other Details (20%):** ${certificates.isComplete ? 'âœ… Complete (20%)' : 'âš ï¸ Incomplete (0%)'}\n\n` +
+      `ðŸ’¡ Note: Services require at least 80% completion (4 out of 5 sections) to unlock.`;
   }
 
   return {
@@ -575,3 +577,4 @@ export const checkFullStep2Profile = (user?: UserProfile) => {
     formattedMasterResponseHi,
   };
 };
+

@@ -2,7 +2,7 @@
 
 export type UserRole = 'citizen' | 'admin' | 'maintenance';
 
-export type DashboardTab = 'home' | 'documents' | 'services' | 'notifications' | 'ai-assistant' | 'profile';
+export type DashboardTab = 'home' | 'documents' | 'services' | 'notifications' | 'profile' | 'ai';
 
 export interface OtherCertificate {
   id: string;
@@ -246,6 +246,9 @@ export interface SupportTicketForm {
   issueType: string;
   message: string;
 }
+
+
+
 
 
 

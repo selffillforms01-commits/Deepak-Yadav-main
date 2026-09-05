@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from 'firebase/firestore';
+﻿import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import React, { useState, useEffect } from 'react';
 import {
@@ -1344,7 +1344,7 @@ setUsers(list);
                                 </span>
                               </div>
                               <p className="text-[10px] text-slate-400 mt-0.5">
-                                Uploaded on {doc.uploadDate} • Size: {doc.fileSize}
+                                Uploaded on {doc.uploadDate} â€¢ Size: {doc.fileSize}
                               </p>
                             </div>
                           </div>
@@ -1968,3 +1968,5 @@ setUsers(list);
     </div>
   );
 };
+
+

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * High-performance, memory-safe image compressor.
  * Handles ANY file size (1 MB to 100+ MB) seamlessly by converting large
  * smartphone photos/scans into lightweight, crystal-clear compressed images (100-250 KB).
@@ -155,3 +155,4 @@ function resolveFallback(
   };
   reader.readAsDataURL(file);
 }
+

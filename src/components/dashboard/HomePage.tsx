@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'motion/react';
 import { 
   User as UserIcon, 
@@ -33,8 +33,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigateToTab 
 }) => {
   const { t } = useLanguage();
-
-  const navigate = (tab: DashboardTab) => {
+const navigate = (tab: DashboardTab) => {
     if (onNavigateTab) {
       onNavigateTab(tab);
     } else if (onNavigateToTab) {
@@ -49,14 +48,6 @@ export const HomePage: React.FC<HomePageProps> = ({
   const completionPercent = profileCompletion.totalPercentage;
 
   const dashboardCards = [
-    {
-      id: 'ai-assistant',
-      title: t('nav.aiAssistant', 'AI Assistant'),
-      shortDesc: t('ai.title', '24/7 Smart Bot'),
-      icon: Bot,
-      iconBg: 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/40 dark:text-indigo-400 dark:border-indigo-900',
-      tabId: 'ai-assistant' as DashboardTab,
-    },
     {
       id: 'services',
       title: t('nav.services', 'Services'),
@@ -80,6 +71,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       icon: UserIcon,
       iconBg: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900',
       tabId: 'profile' as DashboardTab,
+    },
+    {
+      id: 'personal-ai',
+      title: 'Personal AI',
+      shortDesc: 'Your Personal Assistant',
+      icon: Bot,
+      iconBg: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900',
+      tabId: 'ai' as DashboardTab,
     },
   ];
 
@@ -180,8 +179,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           );
         })}
       </div>
-
-      {/* 4. BOTTOM SECURITY BADGE */}
+{/* 4. BOTTOM SECURITY BADGE */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -201,3 +199,14 @@ export const HomePage: React.FC<HomePageProps> = ({
 };
 
 export default HomePage;
+
+
+
+
+
+
+
+
+
+
+

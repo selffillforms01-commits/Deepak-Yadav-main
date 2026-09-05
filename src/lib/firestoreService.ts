@@ -1,4 +1,4 @@
-import {
+﻿import {
   doc,
   getDoc,
   setDoc,
@@ -1012,6 +1012,7 @@ export async function wipeAllFirestoreCollections(): Promise<void> {
     console.warn('Wipe firestore collections warning:', e);
   }
 }
+
 
 
 

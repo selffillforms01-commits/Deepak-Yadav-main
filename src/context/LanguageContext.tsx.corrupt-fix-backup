@@ -1,0 +1,366 @@
+﻿import React, { createContext, useContext, useState, useEffect } from 'react';
+
+export type Language = 'en' | 'hi' | 'or';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string, fallback?: string) => string;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Nav & Header
+    'nav.home': 'Home',
+    'nav.services': 'Services & Forms',
+    'nav.notifications': 'Notifications',
+    'nav.aiAssistant': 'AI Assistant',
+    'nav.profile': 'My Profile',
+    'nav.documents': 'My Documents',
+    'header.title': 'Self Fill Forms Portal',
+    'header.subtitle': 'Citizen Smart Assistant',
+    'header.back': 'Back',
+    'menu.wallet': '1. My Wallet',
+    'menu.walletBalance': 'Balance',
+    'menu.theme': '2. Theme Mode',
+    'menu.requests': '3. My Requests',
+    'menu.requestsSub': 'Application status',
+    'menu.connect': '4. Connect / Support',
+    'menu.connectSub': 'Helpline, Admin & Support',
+    'menu.language': '5. Language / भाषा / ଭାଷା',
+    'menu.logout': '6. Logout',
+    'active': 'Active',
+
+    // Home Page
+    'home.welcome': 'Welcome',
+    'home.searchPlaceholder': 'Search services, government schemes, or form auto-fill...',
+    'home.heroTitle': '1-Click Government Form Auto-Fill Portal',
+    'home.heroSubtitle': 'Apply for certificates, scholarships, admissions & jobs without typing errors using verified personal data.',
+    'home.applyBtn': 'Apply Now',
+    'home.profileScore': 'Profile Score',
+    'home.verifiedDocs': 'Verified Documents',
+    'home.activeApps': 'Active Applications',
+    'home.quickActions': 'Quick Actions',
+    'home.popularServices': 'Popular Services & Schemes',
+    'home.fillForm': 'Auto-Fill Form',
+    'home.uploadDocs': 'Upload Documents',
+    'home.checkScore': 'Check Score',
+
+    // Services Page
+    'services.all': 'All Services',
+    'services.admission': 'Admission',
+    'services.admissionSub': 'School & College Admission',
+    'services.scholarship': 'Scholarship',
+    'services.scholarshipSub': 'Scholarship & Stipend Portal',
+    'services.certificates': 'Certificates',
+    'services.certificatesSub': 'Income, Caste, Residence & Birth',
+    'services.jobs': 'Jobs & Recruitment',
+    'services.jobsSub': 'Govt & Private Recruitment',
+    'services.resume': 'My Resume',
+    'services.resumeSub': 'Digital Resume Builder',
+    'services.autoFillNow': '1-Click Auto Fill',
+    'services.previewForm': 'Preview & Apply',
+
+    // Documents Page
+    'docs.title': 'My Vault & Verified Documents',
+    'docs.subtitle': 'Store and verify your essential documents for 1-click form auto-filling.',
+    'docs.upload': 'Upload Document',
+    'docs.aadhaar': 'Aadhaar Card',
+    'docs.pan': 'PAN Card',
+    'docs.marksheet': 'Academic Marksheet',
+    'docs.caste': 'Caste Certificate',
+    'docs.income': 'Income Certificate',
+    'docs.residence': 'Resident Certificate',
+    'docs.photo': 'Passport Photo',
+    'docs.sign': 'Digital Signature',
+
+    // Profile Page
+    'profile.title': 'Citizen Profile & Preferences',
+    'profile.subtitle': 'Keep your verified details updated for instant 1-click form filling.',
+    'profile.personal': '1. Personal Details',
+    'profile.address': '2. Address Details',
+    'profile.qualification': '3. Qualification Details',
+    'profile.bank': '4. Bank Account Details',
+    'profile.save': 'Save Profile Changes',
+    'profile.myDocumentsBtn': 'MY DOCUMENTS',
+    'profile.myDocumentsTitle': 'My Verified Documents',
+    'profile.myDocumentsSub': 'Aadhaar, selected education marksheet & certificate, income, caste & residence',
+
+    // AI Assistant
+    'ai.title': '24/7 AI Smart Assistant',
+    'ai.subtitle': 'Ask questions about schemes, document requirements & form auto-filling.',
+    'ai.placeholder': 'Ask AI Assistant in English, Hindi, or Odia...',
+    'ai.send': 'Send',
+    'ai.voice': 'Voice Input',
+    'ai.chatTitle': 'AI Assistant Chat',
+    'ai.live247': '24/7 Live',
+    'ai.tabChat': 'Chat',
+    'ai.tabChart': 'Chart',
+    'ai.resetChat': 'Reset Chat',
+    'ai.thinking': 'AI Assistant is thinking...',
+    'ai.voiceInput': 'Voice Input',
+    'ai.listeningPlaceholder': 'Listening... speak now...',
+    'ai.inputPlaceholder': 'Ask AI Assistant (e.g. How to apply for Caste Certificate?)...',
+    'ai.analyticsTitle': 'AI Analytics & Chart',
+    'ai.profileScoreChart': 'Profile Readiness Chart',
+    'services.listSubtitle': 'List of available services',
+
+    // Modals
+    'modal.requestsTitle': 'My Requests & Form Submissions',
+    'modal.requestsDesc': 'Track your real-time application status',
+    'modal.walletTitle': 'Citizen Digital Wallet',
+    'modal.walletDesc': 'Manage portal balance for service processing fees',
+  },
+  hi: {
+    // Nav & Header
+    'nav.home': 'ह�9म (�॒ह)',
+    'nav.services': 'स�!वाए� एव� फ�0र्म',
+    'nav.notifications': 'स��aनाए�',
+    'nav.aiAssistant': 'AI सहाय�"',
+    'nav.profile': 'म�!र६ प्र�9फा�!ल',
+    'nav.documents': 'म�!र�! दस्ताव�!�S',
+    'header.title': 'स�!ल्फ फिल फ�0र्म प�9र्�xल',
+    'header.subtitle': 'ना�रि�" स्मार्�x सहाय�"',
+    'header.back': 'वापस',
+    'menu.wallet': '1. म�!रा व�0ल�!�x',
+    'menu.walletBalance': 'श�!ष राशि',
+    'menu.theme': '2. थ६म म�9ड',
+    'menu.requests': '3. म�!र�! � व�!दन',
+    'menu.requestsSub': '� व�!दन �"६ स्थिति',
+    'menu.connect': '4. स�पर्�" �"र�!� (Connect)',
+    'menu.connectSub': 'ह�!ल्पला�!न व सहायता �"�!�द्र',
+    'menu.language': '5. भाषा (Language)',
+    'menu.logout': '6. ल�0�� �0�x',
+    'active': 'स�"्रिय',
+
+    // Home Page
+    'home.welcome': 'स्वा�त ह��',
+    'home.searchPlaceholder': 'स�!वाए�, सर�"ार६ य�9�Sनाए� या फ�0र्म ��9�S�!�...',
+    'home.heroTitle': '1-�"्लि�" सर�"ार६ फ�0र्म ��x�9-फिल प�9र्�xल',
+    'home.heroSubtitle': 'सत्यापित व्य�"्ति�त विवरण �"ा �0पय�9� �"र�"�! बिना �"िस६ त्रु�xि �"�! प्रमाण पत्र, �:ात्रव॒त्ति �र न�R�"रिय�9� �"�! लिए तुर�त � व�!दन �"र�!�।',
+    'home.applyBtn': '�&भ६ � व�!दन �"र�!�',
+    'home.profileScore': 'प्र�9फा�!ल स्�"�9र',
+    'home.verifiedDocs': 'सत्यापित दस्ताव�!�S',
+    'home.activeApps': 'स�"्रिय � व�!दन',
+    'home.quickActions': 'त्वरित स�!वाए�',
+    'home.popularServices': 'ल�9�"प्रिय स�!वाए� व य�9�Sनाए�',
+    'home.fillForm': 'फ�0र्म ��x�9-फिल',
+    'home.uploadDocs': 'दस्ताव�!�S �&पल�9ड',
+    'home.checkScore': 'स्�"�9र �a�!�" �"र�!�',
+
+    // Services Page
+    'services.all': 'सभ६ स�!वाए�',
+    'services.admission': 'प्रव�!श (Admission)',
+    'services.admissionSub': 'स्�"�ल व �"�0ल�!�S प्रव�!श',
+    'services.scholarship': '�:ात्रव॒त्ति (Scholarship)',
+    'services.scholarshipSub': '�:ात्रव॒त्ति व व�S६फा प�9र्�xल',
+    'services.certificates': 'प्रमाण पत्र (Certificates)',
+    'services.certificatesSub': '� य, �Sाति, म�ल निवास व �Sन्म',
+    'services.jobs': 'भर्त६ व न�R�"रिया� (Jobs)',
+    'services.jobsSub': 'सर�"ार६ व नि�S६ भर्त६',
+    'services.resume': 'बाय�9डा�xा (My Resume)',
+    'services.resumeSub': 'डि�Sि�xल स६व६ बिल्डर',
+    'services.autoFillNow': '1-�"्लि�" ��x�9 फिल',
+    'services.previewForm': 'द�!��!� व � व�!दन �"र�!�',
+
+    // Documents Page
+    'docs.title': 'दस्ताव�!�S व�0ल्�x व सत्यापन',
+    'docs.subtitle': '1-�"्लि�" फ�0र्म ��x�9-फिलि�� �"�! लिए �&पन�! � वश्य�" दस्ताव�!�S�9� �"�9 सुर�"्षित र��!�।',
+    'docs.upload': 'दस्ताव�!�S़ �&पल�9ड �"र�!�',
+    'docs.aadhaar': '� धार �"ार्ड',
+    'docs.pan': 'प��न �"ार्ड',
+    'docs.marksheet': '10व६�/12व६� �&��"स��a६',
+    'docs.caste': '�Sाति प्रमाण पत्र',
+    'docs.income': '� य प्रमाण पत्र',
+    'docs.residence': 'म�ल निवास प्रमाण पत्र',
+    'docs.photo': 'पासप�9र्�x फ�9�x�9',
+    'docs.sign': 'डि�Sि�xल हस्ता�"्षर',
+
+    // Profile Page
+    'profile.title': 'ना�रि�" प्र�9फा�!ल व विवरण',
+    'profile.subtitle': 'तुर�त 1-�"्लि�" फ�0र्म भरन�! �"�! लिए �&पना सत्यापित विवरण �&पड�!�x र��!�।',
+    'profile.personal': '1. व्य�"्ति�त विवरण',
+    'profile.address': '2. पता विवरण',
+    'profile.qualification': '3. श���"्षणि�" य�9�्यता',
+    'profile.bank': '4. ब����" �ाता विवरण',
+    'profile.save': 'प्र�9फा�!ल सह�!�S�!�',
+    'profile.myDocumentsBtn': 'म�!र�! दस्ताव�!�S़ (MY DOCUMENTS)',
+    'profile.myDocumentsTitle': 'म�!र�! सत्यापित दस्ताव�!�S़',
+    'profile.myDocumentsSub': '� धार, �aयनित श���"्षणि�" मार्�"श६�x एव� प्रमाण पत्र, � य, �Sाति एव� निवास',
+
+    // AI Assistant
+    'ai.title': '24/7 AI स्मार्�x सहाय�"',
+    'ai.subtitle': 'य�9�Sना��, � वश्य�" दस्ताव�!�S�9� �र फ�0र्म भरन�! �"�! बार�! म�!� हि�द६ या �&��्र�!�S६ म�!� प��:�!�।',
+    'ai.placeholder': 'AI सहाय�" स�! हि�द६, �&��्र�!�S६ या �0ड़िया म�!� प��:�!�...',
+    'ai.send': 'भ�!�S�!�',
+    'ai.voice': 'व�0�!स �!नपु�x',
+    'ai.chatTitle': 'AI सहाय�" �a���x',
+    'ai.live247': '24/7 ला�!व',
+    'ai.tabChat': '�a���x',
+    'ai.tabChart': '�aार्�x',
+    'ai.resetChat': '�a���x र६स�!�x �"र�!�',
+    'ai.thinking': 'AI सहाय�" स�9�a रहा ह��...',
+    'ai.voiceInput': 'व�0�!स �!नपु�x',
+    'ai.listeningPlaceholder': 'सुन रहा ह�ँ... �&ब ब�9लिए...',
+    'ai.inputPlaceholder': 'AI सहाय�" स�! प��:�!� (�S��स�!, �Sाति प्रमाण पत्र �"��स�! बनाए�?)...',
+    'ai.analyticsTitle': 'AI एनालि�xि�"्स एव� �aार्�x',
+    'ai.profileScoreChart': 'प्र�9फ़ा�!ल स्�"�9र �aार्�x',
+    'services.listSubtitle': '�0पलब्ध स�!वा�� �"६ स��a६',
+
+    // Modals
+    'modal.requestsTitle': 'म�!र�! � व�!दन एव� फ�0र्म स्थितिया�',
+    'modal.requestsDesc': '�&पन�! � व�!दन�9� �"६ र६यल-�xा�!म स्थिति द�!��!�',
+    'modal.walletTitle': 'ना�रि�" डि�Sि�xल व�0ल�!�x',
+    'modal.walletDesc': 'स�!वा शुल्�" भु�तान �"�! लिए प�9र्�xल ब��ल�!�स प्रब�धित �"र�!�',
+  },
+  or: {
+    // Nav & Header
+    'nav.home': 'ମୁ�୍�x ପ୒ଷ୍ଠା',
+    'nav.services': 'ସ�!ବା ଏବ� ଫର୍ମ',
+    'nav.notifications': 'ସ��aନାସମ�ହ',
+    'nav.aiAssistant': 'AI ସହା�x�"',
+    'nav.profile': 'ମ�9ର ପ୍ର�9ଫା�!ଲ୍',
+    'nav.documents': 'ମ�9ର ଦସ୍ତାବି�S',
+    'header.title': 'ସ�!ଲ୍ଫ ଫିଲ୍ ଫର୍ମ ପ�9ର୍�xାଲ୍',
+    'header.subtitle': 'ନା�ରି�" ସ୍ମାର୍�x ସହା�x�"',
+    'header.back': 'ଫ�!ରନ୍ତୁ',
+    'menu.wallet': '1. ମ�9ର ୱାଲ�!�x୍',
+    'menu.walletBalance': 'ବଳ�"ା �x�"୍�"ା',
+    'menu.theme': '2. ଥିମ୍ ମ�9ଡ୍',
+    'menu.requests': '3. ମ�9ର � ବ�!ଦନ',
+    'menu.requestsSub': '� ବ�!ଦନର ସ୍ଥିତି',
+    'menu.connect': '4. ସମ୍ପର୍�" �"ରନ୍ତୁ (Connect)',
+    'menu.connectSub': 'ହ�!ଲ୍ପଲା�!ନ୍ ଏବ� ସହା�xତା',
+    'menu.language': '5. ଭାଷା (Language)',
+    'menu.logout': '6. ଲ�୍� �0�x୍',
+    'active': 'ସ�"୍ରି�x',
+
+    // Home Page
+    'home.welcome': 'ସ୍ୱା�ତ',
+    'home.searchPlaceholder': 'ସ�!ବା, ସର�"ାର୬ ଯ�9�Sନା �"ିମ୍ବା ଫର୍ମ ��9�Sନ୍ତୁ...',
+    'home.heroTitle': '1-�"୍ଲି�"୍ ସର�"ାର୬ ଫର୍ମ �&�x�9-ଫିଲ୍ ପ�9ର୍�xାଲ୍',
+    'home.heroSubtitle': '� ପଣ�"୍�" ଯା�~୍�a ହ�9�!ଥିବା ପ୍ର�9ଫା�!ଲ୍ ବ୍�xବହାର �"ରି ବିନା �"�Rଣସି ଭୁଲର�! ପ୍ରମାଣପତ୍ର, ସ୍�"�9ଲାରସିପ୍ ଏବ� �aା�"ିରି ପା�!ଁ ତୁରନ୍ତ � ବ�!ଦନ �"ରନ୍ତୁ।',
+    'home.applyBtn': 'ଏବ�! � ବ�!ଦନ �"ରନ୍ତୁ',
+    'home.profileScore': 'ପ୍ର�9ଫା�!ଲ୍ ସ୍�"�9ର',
+    'home.verifiedDocs': 'ଯା�~୍�a ହ�9�!ଥିବା ଦସ୍ତାବି�S',
+    'home.activeApps': 'ସ�"୍ରି�x � ବ�!ଦନ',
+    'home.quickActions': 'ତୁରନ୍ତ ସ�!ବା',
+    'home.popularServices': 'ଲ�9�"ପ୍ରି�x ସ�!ବା ଏବ� ଯ�9�Sନା',
+    'home.fillForm': 'ଫର୍ମ �&�x�9-ଫିଲ୍',
+    'home.uploadDocs': 'ଦସ୍ତାବି�S �&ପଲ�9ଡ୍',
+    'home.checkScore': 'ସ୍�"�9ର �a�!�"୍ �"ରନ୍ତୁ',
+
+    // Services Page
+    'services.all': 'ସମସ୍ତ ସ�!ବା',
+    'services.admission': 'ନାମଲ�!�ା (Admission)',
+    'services.admissionSub': 'ସ୍�"ୁଲ୍ ଏବ� �"ଲ�!�S ନାମଲ�!�ା',
+    'services.scholarship': 'ସ୍�"�9ଲାରସିପ୍ (Scholarship)',
+    'services.scholarshipSub': 'ବ୒ତ୍ତି ଏବ� ସ୍�"�9ଲାରସିପ୍ ପ�9ର୍�xାଲ୍',
+    'services.certificates': 'ପ୍ରମାଣପତ୍ର (Certificates)',
+    'services.certificatesSub': '� �x, �Sାତି, ସ୍ଥା�x୬ ବାସସ୍ଥାନ ଏବ� �Sନ୍ମ',
+    'services.jobs': 'ନିଯୁ�"୍ତି ଏବ� �aା�"ିରି (Jobs)',
+    'services.jobsSub': 'ସର�"ାର୬ ଏବ� ବ�!ସର�"ାର୬ ନିଯୁ�"୍ତି',
+    'services.resume': 'ବା�x�9ଡା�xା (My Resume)',
+    'services.resumeSub': 'ଡି�Sି�xାଲ୍ ସିଭି ବିଲ୍ଡର',
+    'services.autoFillNow': '1-�"୍ଲି�"୍ �&�x�9 ଫିଲ୍',
+    'services.previewForm': 'ଦ�!�ନ୍ତୁ ଏବ� � ବ�!ଦନ �"ରନ୍ତୁ',
+
+    // Documents Page
+    'docs.title': 'ଦସ୍ତାବି�S ଭଲ୍�x ଏବ� ଯା�~୍�a',
+    'docs.subtitle': '1-�"୍ଲି�"୍ ଫର୍ମ �&�x�9-ଫିଲି� ପା�!ଁ � ପଣ�"୍�" � ବଶ୍�x�"୬�x ଦସ୍ତାବି�S�"ୁ ସୁର�"୍ଷିତ ର�ନ୍ତୁ।',
+    'docs.upload': 'ଦସ୍ତାବି�S �&ପଲ�9ଡ୍ �"ରନ୍ତୁ',
+    'docs.aadhaar': '� ଧାର �"ାର୍ଡ',
+    'docs.pan': 'ପ୍�xାନ୍ �"ାର୍ଡ',
+    'docs.marksheet': '10ମ/12ଶ ମାର୍�"ସି�x୍',
+    'docs.caste': '�Sାତି ପ୍ରମାଣପତ୍ର',
+    'docs.income': '� �x ପ୍ରମାଣପତ୍ର',
+    'docs.residence': 'ସ୍ଥା�x୬ ବାସସ୍ଥାନ ପ୍ରମାଣପତ୍ର',
+    'docs.photo': 'ପାସପ�9ର୍�x ଫ�9�x�9',
+    'docs.sign': 'ଡି�Sି�xାଲ୍ ଦସ୍ତ�ତ',
+
+    // Profile Page
+    'profile.title': 'ନା�ରି�" ପ୍ର�9ଫା�!ଲ୍ ଏବ� ବିବରଣ୬',
+    'profile.subtitle': 'ତୁରନ୍ତ 1-�"୍ଲି�"୍ ଫର୍ମ ପ�ରଣ ପା�!ଁ � ପଣ�"୍�" ଯା�~୍�a ହ�9�!ଥିବା ବିବରଣ୬ �&ପଡ�!�x୍ ର�ନ୍ତୁ।',
+    'profile.personal': '1. ବ୍�x�"୍ତି�ତ ବିବରଣ୬',
+    'profile.address': '2. ଠି�"ଣା ବିବରଣ୬',
+    'profile.qualification': '3. ଶି�"୍ଷା�ତ ଯ�9�୍�xତା',
+    'profile.bank': '4. ବ୍�xା�"୍�" �ାତା ବିବରଣ୬',
+    'profile.save': 'ପ୍ର�9ଫା�!ଲ୍ ସ�ର�"୍ଷଣ �"ରନ୍ତୁ',
+    'profile.myDocumentsBtn': 'ମ�9ର ଦସ୍ତାବି�S (MY DOCUMENTS)',
+    'profile.myDocumentsTitle': 'ମ�9ର ସତ୍�xାପିତ ଦସ୍ତାବି�S',
+    'profile.myDocumentsSub': '� ଧାର, ମନ�9ନ୬ତ ଶି�"୍ଷା�ତ ମାର୍�"ସି�x୍ ଏବ� ପ୍ରମାଣପତ୍ର, � �x, �Sାତି ଏବ� ବାସସ୍ଥାନ',
+
+    // AI Assistant
+    'ai.title': '24/7 AI ସ୍ମାର୍�x ସହା�x�"',
+    'ai.subtitle': 'ଯ�9�Sନା, � ବଶ୍�x�"୬�x ଦସ୍ତାବି�S ଏବ� ଫର୍ମ ପ�ରଣ ବିଷ�xର�! �ଡ଼ି� , ହିନ୍ଦ୬ �"ିମ୍ବା �!�ରା�S୬ର�! ପ�aାରନ୍ତୁ।',
+    'ai.placeholder': 'AI ସହା�x�"�"୍�"ୁ �ଡ଼ି� , ହିନ୍ଦ୬ �"ିମ୍ବା �!�ରା�S୬ର�! ପ�aାରନ୍ତୁ...',
+    'ai.send': 'ପଠାନ୍ତୁ',
+    'ai.voice': 'ଭଏସ୍ �!ନପୁ�x୍',
+    'ai.chatTitle': 'AI ସହା�x�" �aା�x୍',
+    'ai.live247': '24/7 ଲା�!ଭ୍',
+    'ai.tabChat': '�aା�x୍',
+    'ai.tabChart': '�aାର୍�x',
+    'ai.resetChat': '�aା�x୍ ରିସ�!�x୍ �"ରନ୍ତୁ',
+    'ai.thinking': 'AI ସହା�x�" ଭାବୁ�:ି...',
+    'ai.voiceInput': 'ଭଏସ୍ �!ନପୁ�x୍',
+    'ai.listeningPlaceholder': 'ଶୁଣୁ�:ି... ଏବ�! �"ୁହନ୍ତୁ...',
+    'ai.inputPlaceholder': 'AI ସହା�x�"�"୍�"ୁ �ଡ଼ି� ର�! ପ�aାରନ୍ତୁ (ଯ�!ପରି, �Sାତି ପ୍ରମାଣପତ୍ର �"ିପରି ତି� ରି �"ରିବ�!?)...',
+    'ai.analyticsTitle': 'AI � ନାଲି�xି�"୍ସ ଏବ� �aାର୍�x',
+    'ai.profileScoreChart': 'ପ୍ର�9ଫା�!ଲ୍ ସ୍�"�9ର �aାର୍�x',
+    'services.listSubtitle': 'ସ�!ବା �ୁଡ଼ି�"ର ତାଲି�"ା',
+
+    // Modals
+    'modal.requestsTitle': 'ମ�9ର � ବ�!ଦନ ଏବ� ଫର୍ମ ସ୍ଥିତି',
+    'modal.requestsDesc': '� ପଣ�"୍�" � ବ�!ଦନର ରି�&ଲ-�xା�!ମ୍ ସ୍ଥିତି ଦ�!�ନ୍ତୁ',
+    'modal.walletTitle': 'ନା�ରି�" ଡି�Sି�xାଲ୍ ୱାଲ�!�x୍',
+    'modal.walletDesc': 'ସ�!ବା ଫି ପ୍ରଦାନ ପା�!ଁ ପ�9ର୍�xାଲ୍ ବାଲାନ୍ସ ପରି�aାଳନା �"ରନ୍ତୁ',
+  },
+};
+
+const LanguageContext = createContext<LanguageContextType>({
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string, fallback?: string) => fallback || key,
+});
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    try {
+      const saved = localStorage.getItem('sff_language') as Language;
+      if (saved && (saved === 'en' || saved === 'hi' || saved === 'or')) {
+        return saved;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('sff_language', lang);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const t = (key: string, fallback?: string): string => {
+    if (translations[language] && translations[language][key]) {
+      return translations[language][key];
+    }
+    if (translations.en && translations.en[key]) {
+      return translations.en[key];
+    }
+    return fallback || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => useContext(LanguageContext);
+

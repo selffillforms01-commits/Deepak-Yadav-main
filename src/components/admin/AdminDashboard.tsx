@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'motion/react';
 import {
   Users,
@@ -501,7 +501,7 @@ return () => {
                 onClick={() => onNavigateTab('users')}
                 className="text-xs font-bold text-amber-400 hover:underline cursor-pointer"
               >
-                View All Users →
+                View All Users â†’
               </button>
             </div>
 
@@ -653,3 +653,5 @@ return () => {
     </div>
   );
 };
+
+

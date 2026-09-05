@@ -1,0 +1,37 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/auth/send-email-otp",
+      "mountPath": "/api/auth",
+      "method": "OPTIONS",
+      "module": [
+        "api/auth/send-email-otp.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/auth/send-email-otp",
+      "mountPath": "/api/auth",
+      "method": "POST",
+      "module": [
+        "api/auth/send-email-otp.ts:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/auth/verify-email-otp",
+      "mountPath": "/api/auth",
+      "method": "OPTIONS",
+      "module": [
+        "api/auth/verify-email-otp.ts:onRequestOptions"
+      ]
+    },
+    {
+      "routePath": "/api/auth/verify-email-otp",
+      "mountPath": "/api/auth",
+      "method": "POST",
+      "module": [
+        "api/auth/verify-email-otp.ts:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

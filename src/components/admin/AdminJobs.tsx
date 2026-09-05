@@ -482,7 +482,7 @@ export const AdminJobs: React.FC<AdminJobsProps> = ({ darkMode }) => {
                       })
                     }
                     className="admin-job-input"
-                    placeholder="e.g. ₹19,900 - ₹63,200"
+                    placeholder="e.g. ?19,900 - ?63,200"
                   />
                 </div>
 
@@ -499,7 +499,7 @@ export const AdminJobs: React.FC<AdminJobsProps> = ({ darkMode }) => {
                       })
                     }
                     className="admin-job-input"
-                    placeholder="e.g. ₹200"
+                    placeholder="e.g. Rs 200"
                   />
                 </div>
 
@@ -664,5 +664,8 @@ export const AdminJobs: React.FC<AdminJobsProps> = ({ darkMode }) => {
     </div>
   );
 };
+
+
+
 
 

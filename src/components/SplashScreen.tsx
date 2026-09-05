@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Sparkles, ShieldCheck } from 'lucide-react';
 
@@ -127,10 +127,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           </div>
 
           <div className="text-center text-[10px] text-slate-500 font-medium">
-            {isPreview ? 'Preview Mode • Settings Saved in Admin' : '100% Verified Citizen Service Network'}
+            {isPreview ? 'Preview Mode â€¢ Settings Saved in Admin' : '100% Verified Citizen Service Network'}
           </div>
         </div>
       </motion.div>
     </AnimatePresence>
   );
 };
+

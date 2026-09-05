@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 
 export const BackgroundCurves: React.FC = () => {
   return (
@@ -32,4 +32,5 @@ export const BackgroundCurves: React.FC = () => {
     </div>
   );
 };
+
 

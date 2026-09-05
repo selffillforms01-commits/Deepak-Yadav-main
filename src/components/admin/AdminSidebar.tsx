@@ -4,6 +4,8 @@ import {
   Home,
   Users,
   FileText,
+  GraduationCap,
+  Award,
   Wrench,
   Hammer,
   ClipboardList,
@@ -49,7 +51,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5" /> },
     { id: 'users', label: 'Users', icon: <Users className="w-5 h-5" /> },
     { id: 'services', label: 'Services', icon: <Wrench className="w-5 h-5" /> },
-    { id: 'jobs', label: 'Jobs', icon: <FileText className="w-5 h-5" /> },
+        { id: 'jobs', label: 'Jobs', icon: <FileText className="w-5 h-5" /> },
+    { id: 'admission', label: 'Admission', icon: <GraduationCap className="w-5 h-5" /> },
+    { id: 'scholarship', label: 'Scholarship', icon: <Award className="w-5 h-5" /> },
     {
       id: 'forms',
       label: 'Forms',
@@ -179,4 +183,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     </aside>
   );
 };
+
+
+
 

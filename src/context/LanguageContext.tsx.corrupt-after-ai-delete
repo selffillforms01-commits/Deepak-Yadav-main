@@ -1,0 +1,87 @@
+﻿import React, { createContext, useContext, useState, useEffect } from 'react';
+
+export type Language = 'en' | 'hi' | 'or';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string, fallback?: string) => string;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Nav & Header
+    'nav.home': 'Home',
+    'nav.services': 'Services & Forms',
+    'nav.notifications': 'Notifications',
+    'nav.profile': 'My Profile',
+    'nav.documents': 'My Documents',
+    'header.title': 'Self Fill Forms Portal',
+    'header.subtitle': 'Citizen Smart Assistant',
+    'header.back': 'Back',
+    'menu.wallet': '1. My Wallet',
+    'menu.walletBalance': 'Balance',
+    'menu.theme': '2. Theme Mode',
+    'menu.requests': '3. My Requests',
+    'menu.requestsSub': 'Application status',
+    'menu.connect': '4. Connect / Support',
+    'menu.connectSub': 'Helpline, Admin & Support',
+    'menu.language': '5. Language / à¤­à¤¾à¤·à¤¾ / à¬­à¬¾à¬·à¬¾',
+    'menu.logout': '6. Logout',
+    'active': 'Active',
+
+    // Home Page
+    'home.welcome': 'Welcome',
+    'home.searchPlaceholder': 'Search services, government schemes, or form auto-fill...',
+    'home.heroTitle': '1-Click Government Form Auto-Fill Portal',
+    'home.heroSubtitle': 'Apply for certificates, scholarships, admissions & jobs without typing errors using verified personal data.',
+    'home.applyBtn': 'Apply Now',
+    'home.profileScore': 'Profile Score',
+    'home.verifiedDocs': 'Verified Documents',
+    'home.activeApps': 'Active Applications',
+    'home.quickActions': 'Quick Actions',
+    'home.popularServices': 'Popular Services & Schemes',
+    'home.fillForm': 'Auto-Fill Form',
+    'home.uploadDocs': 'Upload Documents',
+    'home.checkScore': 'Check Score',
+
+    // Services Page
+    'services.all': 'All Services',
+    'services.admission': 'Admission',
+    'services.admissionSub': 'School & College Admission',
+    'services.scholarship': 'Scholarship',
+    'services.scholarshipSub': 'Scholarship & Stipend Portal',
+    'services.certificates': 'Certificates',
+    'services.certificatesSub': 'Income, Caste, Residence & Birth',
+    'services.jobs': 'Jobs & Recruitment',
+    'services.jobsSub': 'Govt & Private Recruitment',
+    'services.resume': 'My Resume',
+    'services.resumeSub': 'Digital Resume Builder',
+    'services.autoFillNow': '1-Click Auto Fill',
+    'services.previewForm': 'Preview & Apply',
+
+    // Documents Page
+    'docs.title': 'My Vault & Verified Documents',
+    'docs.subtitle': 'Store and verify your essential documents for 1-click form auto-filling.',
+    'docs.upload': 'Upload Document',
+    'docs.aadhaar': 'Aadhaar Card',
+    'docs.pan': 'PAN Card',
+    'docs.marksheet': 'Academic Marksheet',
+    'docs.caste': 'Caste Certificate',
+    'docs.income': 'Income Certificate',
+    'docs.residence': 'Resident Certificate',
+    'docs.photo': 'Passport Photo',
+    'docs.sign': 'Digital Signature',
+
+    // Profile Page
+    'profile.title': 'Citizen Profile & Preferences',
+    'profile.subtitle': 'Keep your verified details updated for instant 1-click form filling.',
+    'profile.personal': '1. Personal Details',
+    'profile.address': '2. Address Details',
+    'profile.qualification': '3. Qualification Details',
+    'profile.bank': '4. Bank Account Details',
+    'profile.save': 'Save Profile Changes',
+    'profile.myDocumentsBtn': 'MY DOCUMENTS',
+    'profile.myDocumentsTitle': 'My Verified Documents',
+    'profile.myDocumentsSub': 'Aadhaar, selected education marksheet & certificate, income, caste & residence',
+
