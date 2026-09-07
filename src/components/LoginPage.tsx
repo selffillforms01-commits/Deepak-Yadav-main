@@ -1,4 +1,4 @@
-import { Capacitor } from '@capacitor/core';
+﻿import { Capacitor } from '@capacitor/core';
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import {
@@ -20,6 +20,7 @@ import { HelpSupportModal } from './HelpSupportModal';
 import { AdminMaintenanceModal } from './AdminMaintenanceModal';
 import { RegisterModal } from './RegisterModal';
 import { loginUserWithFirebase, getUserProfileFromFirestore, saveUserProfileToFirestore, loginWithGoogleProvider } from '../lib/firestoreService';
+import { adminStore } from './admin/adminStore';
 
 interface LoginPageProps {
   onNavigate: (route: PortalRoute) => void;
@@ -303,12 +304,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
                 {!Capacitor.isNativePlatform() && (
                   <a
-                    href="https://github.com/selffillforms01-commits/Deepak-Yadav-main/releases/latest/download/app-release.apk"
+                    href={adminStore.getSettings().appDownloadLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-bold text-xs sm:text-sm rounded-2xl flex items-center justify-center gap-2 transition-all shadow-sm"
                   >
-                    ?? Download SELF-FILL-FORMS App
+                    Download SELF-FILL-FORMS App
                   </a>
                 )}
 
@@ -364,6 +365,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     </div>
   );
 };
+
 
 
 

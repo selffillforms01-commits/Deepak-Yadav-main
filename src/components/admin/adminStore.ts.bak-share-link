@@ -44,8 +44,6 @@ const STORAGE_KEYS = {
 const DEFAULT_SETTINGS: AdminSystemSettings = {
   appName: 'SELF FILL FORMS (SFF)',
   appLogoUrl: '/sff-logo.svg',
-  appShareLink: 'https://github.com/selffillforms01-commits/Deepak-Yadav-main/releases/latest/download/app-release.apk',
-  appDownloadLink: '',
   paymentMerchantName: 'DEEPAK YADAV',
   themeMode: 'dark',
   smtpHost: 'mail.gov.in',
@@ -1224,9 +1222,6 @@ class AdminStore {
 }
 
 export const adminStore = new AdminStore();
-
-
-
 
 
 

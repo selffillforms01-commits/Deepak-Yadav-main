@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿import { Capacitor } from '@capacitor/core';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Mail, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
 
@@ -8,8 +9,12 @@ interface ForgotPasswordModalProps {
 }
 
 export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClose }) => {
+  // Use the same API system as Registration
+  const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://self-fill-forms.pages.dev' : '';
+
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
+  const [resetToken, setResetToken] = useState('');
   const [step, setStep] = useState<'email' | 'otp' | 'password' | 'success'>('email');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,7 +35,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/send-password-reset-otp', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/send-password-reset-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +70,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/verify-password-reset-otp', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/verify-password-reset-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,12 +81,17 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
         }),
       });
 
-      const data: { error?: string } = await response.json();
+      const data: { error?: string; resetToken?: string } = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || 'Invalid OTP.');
       }
 
+      if (!data.resetToken) {
+        throw new Error('Password reset token was not received. Please try again.');
+      }
+
+      setResetToken(data.resetToken);
       setStep('password');
     } catch (err: any) {
       setError(err.message || 'Invalid OTP. Please try again.');
@@ -223,9 +233,14 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
 
             {step === 'password' && (
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
                   setError('');
+
+                  if (!resetToken) {
+                    setError('Password reset session is invalid. Please start again.');
+                    return;
+                  }
 
                   if (newPassword.length < 6) {
                     setError('Password must be at least 6 characters.');
@@ -237,7 +252,50 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
                     return;
                   }
 
-                  setStep('success');
+                  setLoading(true);
+
+                  try {
+
+                    const response = await fetch(
+                      `${API_BASE_URL}/api/auth/change-password`,
+                      {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          resetToken,
+                          newPassword,
+                        }),
+                      }
+                    );
+
+                    const contentType = response.headers.get('content-type') || '';
+
+                    if (!contentType.includes('application/json')) {
+                      throw new Error(
+                        'Server returned an invalid response. Please check your internet connection and try again.'
+                      );
+                    }
+
+                    const data: { error?: string; success?: boolean } =
+                      await response.json();
+
+                    if (!response.ok) {
+                      throw new Error(
+                        data.error || 'Unable to change password.'
+                      );
+                    }
+
+                    setStep('success');
+                  } catch (err: any) {
+                    setError(
+                      err.message ||
+                      'Unable to change password. Please try again.'
+                    );
+                  } finally {
+                    setLoading(false);
+                  }
                 }}
                 className="space-y-4"
               >
@@ -321,6 +379,9 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     </AnimatePresence>
   );
 };
+
+
+
 
 
 

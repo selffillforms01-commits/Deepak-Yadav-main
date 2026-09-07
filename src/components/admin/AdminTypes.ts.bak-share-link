@@ -139,8 +139,6 @@ export interface AdminAccountRecord {
 export interface AdminSystemSettings {
   appName: string;
   appLogoUrl: string;
-  appShareLink: string;
-  appDownloadLink: string;
   paymentMerchantName?: string;
   themeMode: 'dark' | 'light' | 'system';
   smtpHost: string;
@@ -265,9 +263,6 @@ export interface AdminJobRecord {
   createdDate: string;
   updatedDate?: string;
 }
-
-
-
 
 
 

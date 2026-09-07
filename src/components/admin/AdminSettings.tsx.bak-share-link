@@ -25,7 +25,6 @@ import {
   ToggleLeft,
   ToggleRight,
   Sparkles,
-  Share2,
 } from 'lucide-react';
 import { adminStore } from './adminStore';
 import { AdminSystemSettings } from './AdminTypes';
@@ -102,19 +101,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
   };
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex items-center justify-end">
-        <button
-          type="button"
-          onClick={handleSaveSettings}
-          className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition-all"
-        >
-          <Save className="w-4 h-4" />
-          {savedSuccess ? "Saved Successfully" : "Save Settings"}
-        </button>
-      </div>
-
-      {/* Splash Screen Image Settings */}
+    <div className="space-y-6 pb-12">`n      {/* Splash Screen Image Settings */}
         <div className="p-6 rounded-2xl border bg-[#0B132B] border-amber-500/40 space-y-4 lg:col-span-2">
           <div className="flex items-center justify-between pb-3 border-b border-amber-500/30 text-amber-300 font-bold text-sm">
             <div className="flex items-center gap-2">
@@ -383,42 +370,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
           </div>
         </div>
 
-        {/* App Share Link */}
-        <div className="p-6 rounded-2xl border bg-[#0B132B] border-slate-800 space-y-4">
-          <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-emerald-400 font-bold text-sm">
-            <Share2 className="w-4 h-4" /> App Share Link
-          </div>
-
-          <div className="space-y-3 text-xs">
-            <div>
-              <label className="block font-bold text-slate-300 mb-1">Share URL</label>
-              <input
-                type="url"
-                value={formData.appShareLink || ""}
-                onChange={(e) => setFormData({ ...formData, appShareLink: e.target.value })}
-                placeholder="https://example.com/app"
-                className="w-full p-2.5 rounded-xl border border-slate-700 bg-[#1C2541] text-slate-100 font-mono text-xs outline-none"
-              />
-              <p className="text-[10px] text-slate-400 mt-1">
-                Ye URL user ke 3-dot menu → Share App se share hoga.
-              </p>
-            </div>
-
-            <div>
-              <label className="block font-bold text-slate-300 mb-1">App Download Link</label>
-              <input
-                type="url"
-                value={formData.appDownloadLink || ""}
-                onChange={(e) => setFormData({ ...formData, appDownloadLink: e.target.value })}
-                placeholder="Paste app download URL"
-                className="w-full p-2.5 rounded-xl border border-slate-700 bg-[#1C2541] text-slate-100 font-mono text-xs outline-none"
-              />
-              <p className="text-[10px] text-slate-400 mt-1">
-                Login Page ka "Download SELF-FILL-FORMS App" button isi URL ko use karega.
-              </p>
-            </div>
-          </div>
-        </div>
         {/* Maintenance Mode & Database Backup */}
         <div className="p-6 rounded-2xl border bg-[#0B132B] border-slate-800 space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-rose-400 font-bold text-sm">
@@ -606,9 +557,6 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({ darkMode, onLogoCh
     </div>
   );
 };
-
-
-
 
 
 

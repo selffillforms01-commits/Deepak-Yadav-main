@@ -48,7 +48,7 @@ export function AIAssistantPanel({
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-3 sm:p-4">
         {chatMessages.length === 0 && (
           <div className="text-sm text-gray-600">
-            Namaste! Main SFF AI Assistant hoon. Form bharne mein help karunga.
+            Namaste Main SFF AI Assistant hoon. Form bharne mein help karunga.
           </div>
         )}
 

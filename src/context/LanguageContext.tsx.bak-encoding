@@ -1,0 +1,358 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth } from '../lib/firebase';
+
+export type Language = 'en' | 'hi' | 'or';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string, fallback?: string) => string;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Nav & Header
+    'nav.home': 'Home',
+    'nav.services': 'Services & Forms',
+    'nav.notifications': 'Notifications',
+    'nav.profile': 'My Profile',
+    'nav.documents': 'My Documents',
+    'header.title': 'Self Fill Forms Portal',
+    'header.subtitle': 'Citizen Smart Assistant',
+    'header.back': 'Back',
+    'menu.wallet': '1. My Wallet',
+    'menu.walletBalance': 'Balance',
+    'menu.theme': '2. Theme Mode',
+    'menu.requests': '3. My Requests',
+    'menu.requestsSub': 'Application status',
+    'menu.connect': '4. Connect / Support',
+    'menu.connectSub': 'Helpline, Admin & Support',
+    'menu.language': '5. Language',
+    'menu.logout': '6. Logout',
+    'active': 'Active',
+
+    // Home Page
+    'home.welcome': 'Welcome',
+    'home.searchPlaceholder': 'Search services, government schemes, or form auto-fill...',
+    'home.heroTitle': '1-Click Government Form Auto-Fill Portal',
+    'home.heroSubtitle': 'Apply for certificates, scholarships, admissions & jobs without typing errors using verified personal data.',
+    'home.applyBtn': 'Apply Now',
+    'home.profileScore': 'Profile Score',
+    'home.verifiedDocs': 'Verified Documents',
+    'home.activeApps': 'Active Applications',
+    'home.quickActions': 'Quick Actions',
+    'home.popularServices': 'Popular Services & Schemes',
+    'home.fillForm': 'Auto-Fill Form',
+    'home.uploadDocs': 'Upload Documents',
+    'home.checkScore': 'Check Score',
+
+    // Services Page
+    'services.all': 'All Services',
+    'services.admission': 'Admission',
+    'services.admissionSub': 'School & College Admission',
+    'services.scholarship': 'Scholarship',
+    'services.scholarshipSub': 'Scholarship & Stipend Portal',
+    'services.certificates': 'Certificates',
+    'services.certificatesSub': 'Income, Caste, Residence & Birth',
+    'services.jobs': 'Jobs & Recruitment',
+    'services.jobsSub': 'Govt & Private Recruitment',
+    'services.resume': 'My Resume',
+    'services.resumeSub': 'Digital Resume Builder',
+    'services.autoFillNow': '1-Click Auto Fill',
+    'services.previewForm': 'Preview & Apply',
+
+    // Documents Page
+    'docs.title': 'My Vault & Verified Documents',
+    'docs.subtitle': 'Store and verify your essential documents for 1-click form auto-filling.',
+    'docs.upload': 'Upload Document',
+    'docs.aadhaar': 'Aadhaar Card',
+    'docs.pan': 'PAN Card',
+    'docs.marksheet': 'Academic Marksheet',
+    'docs.caste': 'Caste Certificate',
+    'docs.income': 'Income Certificate',
+    'docs.residence': 'Resident Certificate',
+    'docs.photo': 'Passport Photo',
+    'docs.sign': 'Digital Signature',
+
+    // Profile Page
+    'profile.title': 'Citizen Profile & Preferences',
+    'profile.subtitle': 'Keep your verified details updated for instant 1-click form filling.',
+    'profile.personal': '1. Personal Details',
+    'profile.address': '2. Address Details',
+    'profile.qualification': '3. Qualification Details',
+    'profile.bank': '4. Bank Account Details',
+    'profile.save': 'Save Profile Changes',
+    'profile.myDocumentsBtn': 'MY DOCUMENTS',
+    'profile.myDocumentsTitle': 'My Verified Documents',
+    'profile.myDocumentsSub': 'Aadhaar, selected education marksheet & certificate, income, caste & residence',
+    'services.listSubtitle': 'List of available services',
+
+    // Modals
+    'modal.requestsTitle': 'My Requests & Form Submissions',
+    'modal.requestsDesc': 'Track your real-time application status',
+    'modal.walletTitle': 'Citizen Digital Wallet',
+    'modal.walletDesc': 'Manage portal balance for service processing fees',
+  },
+  hi: {
+    'nav.home': 'à¤¹à¥‹à¤® (à¤—à¥ƒà¤¹)',
+    'nav.services': 'à¤¸à¥‡à¤µà¤¾à¤à¤',
+    'nav.notifications': 'à¤¸à¥‚à¤šà¤¨à¤¾à¤à¤',
+    'nav.profile': 'à¤®à¥‡à¤°à¥€ à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤²',
+    'nav.documents': 'à¤®à¥‡à¤°à¥‡ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
+    'header.title': 'à¤¸à¥‡à¤²à¥à¤« à¤«à¤¿à¤² à¤«à¥‰à¤°à¥à¤®à¥à¤¸',
+    'header.subtitle': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤¸à¥‡à¤µà¤¾ à¤ªà¥‹à¤°à¥à¤Ÿà¤²',
+    'header.back': 'à¤µà¤¾à¤ªà¤¸',
+    'menu.wallet': '1. à¤®à¥‡à¤°à¤¾ à¤µà¥‰à¤²à¥‡à¤Ÿ',
+    'menu.walletBalance': 'à¤¶à¥‡à¤· à¤°à¤¾à¤¶à¤¿',
+    'menu.theme': '2. à¤¥à¥€à¤® à¤®à¥‹à¤¡',
+    'menu.requests': '3. à¤®à¥‡à¤°à¥‡ à¤…à¤¨à¥à¤°à¥‹à¤§',
+    'menu.requestsSub': 'à¤†à¤µà¥‡à¤¦à¤¨ à¤”à¤° à¤…à¤¨à¥à¤°à¥‹à¤§ à¤¦à¥‡à¤–à¥‡à¤‚',
+    'menu.connect': '4. à¤¸à¤¹à¤¾à¤¯à¤¤à¤¾ à¤¸à¥‡ à¤œà¥à¤¡à¤¼à¥‡à¤‚',
+    'menu.connectSub': 'à¤¹à¥‡à¤²à¥à¤ª à¤”à¤° à¤¸à¤¹à¤¾à¤¯à¤¤à¤¾',
+    'menu.language': '5. à¤­à¤¾à¤·à¤¾ (Language)',
+    'menu.logout': '6. à¤²à¥‰à¤—à¤†à¤‰à¤Ÿ',
+    'active': 'à¤¸à¤•à¥à¤°à¤¿à¤¯',
+    'home.welcome': 'à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆ',
+    'home.searchPlaceholder': 'à¤¸à¥‡à¤µà¤¾ à¤–à¥‹à¤œà¥‡à¤‚...',
+    'home.heroTitle': '1-à¤•à¥à¤²à¤¿à¤• à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤',
+    'home.heroSubtitle': 'à¤¸à¤­à¥€ à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤ à¤à¤• à¤¹à¥€ à¤œà¤—à¤¹',
+    'home.applyBtn': 'à¤…à¤­à¥€ à¤†à¤µà¥‡à¤¦à¤¨ à¤•à¤°à¥‡à¤‚',
+    'home.profileScore': 'à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤² à¤ªà¥‚à¤°à¥à¤£à¤¤à¤¾',
+    'home.verifiedDocs': 'à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
+    'home.activeApps': 'à¤¸à¤•à¥à¤°à¤¿à¤¯ à¤†à¤µà¥‡à¤¦à¤¨',
+    'home.quickActions': 'à¤¤à¥à¤µà¤°à¤¿à¤¤ à¤•à¤¾à¤°à¥à¤¯',
+    'home.popularServices': 'à¤²à¥‹à¤•à¤ªà¥à¤°à¤¿à¤¯ à¤¸à¥‡à¤µà¤¾à¤à¤',
+    'home.fillForm': 'à¤«à¥‰à¤°à¥à¤® à¤­à¤°à¥‡à¤‚',
+    'home.uploadDocs': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤°à¥‡à¤‚',
+    'home.checkScore': 'à¤¸à¥à¤•à¥‹à¤° à¤¦à¥‡à¤–à¥‡à¤‚',
+    'services.all': 'à¤¸à¤­à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤',
+    'services.admission': 'à¤ªà¥à¤°à¤µà¥‡à¤¶',
+    'services.admissionSub': 'à¤ªà¥à¤°à¤µà¥‡à¤¶ à¤¸à¤‚à¤¬à¤‚à¤§à¥€ à¤†à¤µà¥‡à¤¦à¤¨',
+    'services.scholarship': 'à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿',
+    'services.scholarshipSub': 'à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿ à¤•à¥‡ à¤²à¤¿à¤ à¤†à¤µà¥‡à¤¦à¤¨',
+    'services.certificates': 'à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤°',
+    'services.certificatesSub': 'à¤†à¤¯, à¤œà¤¾à¤¤à¤¿ à¤”à¤° à¤¨à¤¿à¤µà¤¾à¤¸ à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤°',
+    'services.jobs': 'à¤­à¤°à¥à¤¤à¥€',
+    'services.jobsSub': 'à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¨à¥Œà¤•à¤°à¥€ à¤•à¥‡ à¤†à¤µà¥‡à¤¦à¤¨',
+    'services.resume': 'à¤¬à¤¾à¤¯à¥‹à¤¡à¤¾à¤Ÿà¤¾',
+    'services.resumeSub': 'à¤¡à¤¿à¤œà¤¿à¤Ÿà¤² à¤°à¤¿à¤œà¤¼à¥à¤¯à¥‚à¤®à¥‡ à¤¬à¤¨à¤¾à¤à¤‚',
+    'services.autoFillNow': '1-à¤•à¥à¤²à¤¿à¤• à¤‘à¤Ÿà¥‹ à¤«à¤¿à¤²',
+    'services.previewForm': 'à¤«à¥‰à¤°à¥à¤® à¤•à¤¾ à¤ªà¥‚à¤°à¥à¤µà¤¾à¤µà¤²à¥‹à¤•à¤¨',
+    'docs.title': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
+    'docs.subtitle': '1-à¤•à¥à¤²à¤¿à¤• à¤®à¥‡à¤‚ à¤…à¤ªà¤¨à¥‡ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ à¤ªà¥à¤°à¤¬à¤‚à¤§à¤¿à¤¤ à¤•à¤°à¥‡à¤‚',
+    'docs.upload': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤°à¥‡à¤‚',
+    'docs.aadhaar': 'à¤†à¤§à¤¾à¤° à¤•à¤¾à¤°à¥à¤¡',
+    'docs.pan': 'à¤ªà¥ˆà¤¨ à¤•à¤¾à¤°à¥à¤¡',
+    'docs.marksheet': '10à¤µà¥€à¤‚/12à¤µà¥€à¤‚ à¤•à¥€ à¤®à¤¾à¤°à¥à¤•à¤¶à¥€à¤Ÿ',
+    'docs.caste': 'à¤œà¤¾à¤¤à¤¿ à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤°',
+    'docs.income': 'à¤†à¤¯ à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤°',
+    'docs.residence': 'à¤¨à¤¿à¤µà¤¾à¤¸ à¤ªà¥à¤°à¤®à¤¾à¤£à¤ªà¤¤à¥à¤°',
+    'docs.photo': 'à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ à¤«à¥‹à¤Ÿà¥‹',
+    'docs.sign': 'à¤¡à¤¿à¤œà¤¿à¤Ÿà¤² à¤¹à¤¸à¥à¤¤à¤¾à¤•à¥à¤·à¤°',
+    'profile.title': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤²',
+    'profile.subtitle': 'à¤…à¤ªà¤¨à¥€ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€ à¤ªà¥‚à¤°à¥€ à¤•à¤°à¥‡à¤‚',
+    'profile.personal': '1. à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¤—à¤¤ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€',
+    'profile.address': '2. à¤ªà¤¤à¤¾ à¤œà¤¾à¤¨à¤•à¤¾à¤°à¥€',
+    'profile.qualification': '3. à¤¶à¥ˆà¤•à¥à¤·à¤£à¤¿à¤• à¤¯à¥‹à¤—à¥à¤¯à¤¤à¤¾',
+    'profile.bank': '4. à¤¬à¥ˆà¤‚à¤• à¤µà¤¿à¤µà¤°à¤£',
+    'profile.save': 'à¤ªà¥à¤°à¥‹à¤«à¤¼à¤¾à¤‡à¤² à¤¸à¥‡à¤µ à¤•à¤°à¥‡à¤‚',
+    'profile.myDocumentsBtn': 'à¤®à¥‡à¤°à¥‡ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
+    'profile.myDocumentsTitle': 'à¤®à¥‡à¤°à¥‡ à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
+    'profile.myDocumentsSub': 'à¤†à¤§à¤¾à¤°, 10à¤µà¥€à¤‚, 12à¤µà¥€à¤‚, à¤†à¤¯, à¤œà¤¾à¤¤à¤¿ à¤”à¤° à¤¨à¤¿à¤µà¤¾à¤¸',
+    'services.listSubtitle': 'à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤',
+    'modal.requestsTitle': 'à¤®à¥‡à¤°à¥‡ à¤…à¤¨à¥à¤°à¥‹à¤§',
+    'modal.requestsDesc': 'à¤…à¤ªà¤¨à¥‡ à¤†à¤µà¥‡à¤¦à¤¨ à¤”à¤° à¤…à¤¨à¥à¤°à¥‹à¤§ à¤¦à¥‡à¤–à¥‡à¤‚',
+    'modal.walletTitle': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤µà¥‰à¤²à¥‡à¤Ÿ',
+    'modal.walletDesc': 'à¤¸à¥‡à¤µà¤¾ à¤¶à¥à¤²à¥à¤• à¤”à¤° à¤µà¥‰à¤²à¥‡à¤Ÿ à¤¬à¥ˆà¤²à¥‡à¤‚à¤¸ à¤¦à¥‡à¤–à¥‡à¤‚',
+  },
+  or: {
+    'nav.home': 'à¬¹à­‹à¬®à­ (à¬—à­ƒà¬¹)',
+    'nav.services': 'à¬¸à­‡à¬¬à¬¾',
+    'nav.notifications': 'à¬¸à­‚à¬šà¬¨à¬¾',
+    'nav.profile': 'à¬®à­‹ à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­',
+    'nav.documents': 'à¬®à­‹ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
+    'header.title': 'à¬¸à­‡à¬²à­à¬« à¬«à¬¿à¬²à­ à¬«à¬°à­à¬®à­à¬¸',
+    'header.subtitle': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à¬¸à­‡à¬¬à¬¾ à¬ªà­‹à¬°à­à¬Ÿà¬¾à¬²à­',
+    'header.back': 'à¬ªà¬›à¬•à­',
+    'menu.wallet': '1. à¬®à­‹ à­±à¬¾à¬²à­‡à¬Ÿà­',
+    'menu.walletBalance': 'à¬…à¬¬à¬¶à¬¿à¬·à­à¬Ÿ à¬°à¬¾à¬¶à¬¿',
+    'menu.theme': '2. à¬¥à¬¿à¬®à­ à¬®à­‹à¬¡à­',
+    'menu.requests': '3. à¬®à­‹ à¬…à¬¨à­à¬°à­‹à¬§',
+    'menu.requestsSub': 'à¬†à¬¬à­‡à¬¦à¬¨ à¬à¬¬à¬‚ à¬…à¬¨à­à¬°à­‹à¬§ à¬¦à­‡à¬–à¬¨à­à¬¤à­',
+    'menu.connect': '4. à¬¸à¬¹à¬¾à­Ÿà¬¤à¬¾ à¬¸à¬¹à¬¿à¬¤ à¬¯à­‹à¬—à¬¾à¬¯à­‹à¬—',
+    'menu.connectSub': 'à¬¹à­‡à¬²à­à¬ª à¬à¬¬à¬‚ à¬¸à¬¹à¬¾à­Ÿà¬¤à¬¾',
+    'menu.language': '5. à¬­à¬¾à¬·à¬¾ (Language)',
+    'menu.logout': '6. à¬²à¬—à¬†à¬‰à¬Ÿà­',
+    'active': 'à¬¸à¬•à­à¬°à¬¿à­Ÿ',
+    'home.welcome': 'à¬¸à­à­±à¬¾à¬—à¬¤',
+    'home.searchPlaceholder': 'à¬¸à­‡à¬¬à¬¾ à¬–à­‹à¬œà¬¨à­à¬¤à­...',
+    'home.heroTitle': '1-à¬•à­à¬²à¬¿à¬•à­ à¬¸à¬°à¬•à¬¾à¬°à­€ à¬¸à­‡à¬¬à¬¾',
+    'home.heroSubtitle': 'à¬¸à¬®à¬¸à­à¬¤ à¬¸à¬°à¬•à¬¾à¬°à­€ à¬¸à­‡à¬¬à¬¾ à¬—à­‹à¬Ÿà¬¿à¬ à¬¸à­à¬¥à¬¾à¬¨à¬°à­‡',
+    'home.applyBtn': 'à¬¬à¬°à­à¬¤à­à¬¤à¬®à¬¾à¬¨ à¬†à¬¬à­‡à¬¦à¬¨ à¬•à¬°à¬¨à­à¬¤à­',
+    'home.profileScore': 'à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¸à¬®à­à¬ªà­‚à¬°à­à¬£à­à¬£à¬¤à¬¾',
+    'home.verifiedDocs': 'à¬¯à¬¾à¬žà­à¬šà¬¿à¬¤ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
+    'home.activeApps': 'à¬¸à¬•à­à¬°à¬¿à­Ÿ à¬†à¬¬à­‡à¬¦à¬¨',
+    'home.quickActions': 'à¬¤à­à¬°à¬¨à­à¬¤ à¬•à¬¾à¬°à­à¬¯à­à­Ÿ',
+    'home.popularServices': 'à¬²à­‹à¬•à¬ªà­à¬°à¬¿à­Ÿ à¬¸à­‡à¬¬à¬¾',
+    'home.fillForm': 'à¬«à¬°à­à¬® à¬ªà­‚à¬°à¬£ à¬•à¬°à¬¨à­à¬¤à­',
+    'home.uploadDocs': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬…à¬ªà¬²à­‹à¬¡à­ à¬•à¬°à¬¨à­à¬¤à­',
+    'home.checkScore': 'à¬¸à­à¬•à­‹à¬° à¬¦à­‡à¬–à¬¨à­à¬¤à­',
+    'services.all': 'à¬¸à¬®à¬¸à­à¬¤ à¬¸à­‡à¬¬à¬¾',
+    'services.admission': 'à¬¨à¬¾à¬®à¬²à­‡à¬–à¬¾',
+    'services.admissionSub': 'à¬¨à¬¾à¬®à¬²à­‡à¬–à¬¾ à¬¸à¬®à­à¬¬à¬¨à­à¬§à­€à­Ÿ à¬†à¬¬à­‡à¬¦à¬¨',
+    'services.scholarship': 'à¬›à¬¾à¬¤à­à¬°à¬¬à­ƒà¬¤à­à¬¤à¬¿',
+    'services.scholarshipSub': 'à¬›à¬¾à¬¤à­à¬°à¬¬à­ƒà¬¤à­à¬¤à¬¿ à¬ªà¬¾à¬‡à¬ à¬†à¬¬à­‡à¬¦à¬¨',
+    'services.certificates': 'à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
+    'services.certificatesSub': 'à¬†à­Ÿ, à¬œà¬¾à¬¤à¬¿ à¬à¬¬à¬‚ à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
+    'services.jobs': 'à¬¨à¬¿à¬¯à­à¬•à­à¬¤à¬¿',
+    'services.jobsSub': 'à¬¸à¬°à¬•à¬¾à¬°à­€ à¬šà¬¾à¬•à¬¿à¬°à¬¿ à¬ªà¬¾à¬‡à¬ à¬†à¬¬à­‡à¬¦à¬¨',
+    'services.resume': 'à¬¬à¬¾à­Ÿà­‹à¬¡à¬¾à¬Ÿà¬¾',
+    'services.resumeSub': 'à¬¡à¬¿à¬œà¬¿à¬Ÿà¬¾à¬²à­ à¬°à­‡à¬œà­à¬®à­‡ à¬¤à¬¿à¬†à¬°à¬¿ à¬•à¬°à¬¨à­à¬¤à­',
+    'services.autoFillNow': '1-à¬•à­à¬²à¬¿à¬•à­ à¬…à¬Ÿà­‹ à¬«à¬¿à¬²à­',
+    'services.previewForm': 'à¬«à¬°à­à¬® à¬ªà­‚à¬°à­à¬¬à¬¦à¬°à­à¬¶à¬¨',
+    'docs.title': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
+    'docs.subtitle': '1-à¬•à­à¬²à¬¿à¬•à­ à¬°à­‡ à¬†à¬ªà¬£à¬™à­à¬• à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬ªà¬°à¬¿à¬šà¬¾à¬³à¬¨à¬¾ à¬•à¬°à¬¨à­à¬¤à­',
+    'docs.upload': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬…à¬ªà¬²à­‹à¬¡à­ à¬•à¬°à¬¨à­à¬¤à­',
+    'docs.aadhaar': 'à¬†à¬§à¬¾à¬° à¬•à¬¾à¬°à­à¬¡',
+    'docs.pan': 'à¬ªà¬¾à¬¨à­ à¬•à¬¾à¬°à­à¬¡',
+    'docs.marksheet': '10à¬®/12à¬¶ à¬®à¬¾à¬°à­à¬•à¬¸à¬¿à¬Ÿà­',
+    'docs.caste': 'à¬œà¬¾à¬¤à¬¿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
+    'docs.income': 'à¬†à­Ÿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
+    'docs.residence': 'à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
+    'docs.photo': 'à¬ªà¬¾à¬¸à¬ªà­‹à¬°à­à¬Ÿ à¬«à¬Ÿà­‹',
+    'docs.sign': 'à¬¡à¬¿à¬œà¬¿à¬Ÿà¬¾à¬²à­ à¬¸à­à­±à¬¾à¬•à­à¬·à¬°',
+    'profile.title': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­',
+    'profile.subtitle': 'à¬†à¬ªà¬£à¬™à­à¬• à¬¸à­‚à¬šà¬¨à¬¾ à¬¸à¬®à­à¬ªà­‚à¬°à­à¬£à­à¬£ à¬•à¬°à¬¨à­à¬¤à­',
+    'profile.personal': '1. à¬¬à­à­Ÿà¬•à­à¬¤à¬¿à¬—à¬¤ à¬¸à­‚à¬šà¬¨à¬¾',
+    'profile.address': '2. à¬ à¬¿à¬•à¬£à¬¾ à¬¸à­‚à¬šà¬¨à¬¾',
+    'profile.qualification': '3. à¬¶à¬¿à¬•à­à¬·à¬¾à¬—à¬¤ à¬¯à­‹à¬—à­à­Ÿà¬¤à¬¾',
+    'profile.bank': '4. à¬¬à­à­Ÿà¬¾à¬™à­à¬• à¬¬à¬¿à¬¬à¬°à¬£à­€',
+    'profile.save': 'à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¸à­‡à¬­à­ à¬•à¬°à¬¨à­à¬¤à­',
+    'profile.myDocumentsBtn': 'à¬®à­‹ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
+    'profile.myDocumentsTitle': 'à¬®à­‹ à¬¯à¬¾à¬žà­à¬šà¬¿à¬¤ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
+    'profile.myDocumentsSub': 'à¬†à¬§à¬¾à¬°, 10à¬®, 12à¬¶, à¬†à­Ÿ, à¬œà¬¾à¬¤à¬¿ à¬à¬¬à¬‚ à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨',
+    'services.listSubtitle': 'à¬‰à¬ªà¬²à¬¬à­à¬§ à¬¸à¬°à¬•à¬¾à¬°à­€ à¬¸à­‡à¬¬à¬¾',
+    'modal.requestsTitle': 'à¬®à­‹ à¬…à¬¨à­à¬°à­‹à¬§',
+    'modal.requestsDesc': 'à¬†à¬ªà¬£à¬™à­à¬• à¬†à¬¬à­‡à¬¦à¬¨ à¬à¬¬à¬‚ à¬…à¬¨à­à¬°à­‹à¬§ à¬¦à­‡à¬–à¬¨à­à¬¤à­',
+    'modal.walletTitle': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à­±à¬¾à¬²à­‡à¬Ÿà­',
+    'modal.walletDesc': 'à¬¸à­‡à¬¬à¬¾ à¬¶à­à¬³à­à¬• à¬à¬¬à¬‚ à­±à¬¾à¬²à­‡à¬Ÿà­ à¬¬à¬¾à¬²à¬¾à¬¨à­à¬¸ à¬¦à­‡à¬–à¬¨à­à¬¤à­',
+  },
+};
+
+const LanguageContext = createContext<LanguageContextType>({
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string, fallback?: string) => fallback || key,
+});
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const getCurrentUserKey = (): string => {
+    try {
+      const firebaseUid = auth.currentUser?.uid;
+      if (firebaseUid) {
+        return firebaseUid;
+      }
+
+      const storedUser = localStorage.getItem('sff_user');
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        const key =
+          user?.uid ||
+          user?.firebaseUid ||
+          user?.sffUserId ||
+          user?.userId ||
+          user?.email ||
+          user?.mobile;
+
+        if (key) {
+          return String(key);
+        }
+      }
+    } catch (e) {
+      console.error('Unable to determine current user for language:', e);
+    }
+
+    return '';
+  };
+
+  const getLanguageStorageKey = (userKey: string): string => {
+    return userKey
+      ? `sff_language_${userKey.replace(/[^a-zA-Z0-9_.-]/g, '_').toLowerCase()}`
+      : 'sff_language_guest';
+  };
+
+  const getSavedLanguage = (userKey: string): Language => {
+    try {
+      const key = getLanguageStorageKey(userKey);
+      const saved = localStorage.getItem(key) as Language;
+
+      if (saved === 'en' || saved === 'hi' || saved === 'or') {
+        return saved;
+      }
+    } catch (e) {
+      console.error('Unable to load user language:', e);
+    }
+
+    return 'en';
+  };
+
+  const [userKey, setUserKey] = useState<string>(() => getCurrentUserKey());
+
+  const [language, setLanguageState] = useState<Language>(() => {
+    return getSavedLanguage(getCurrentUserKey());
+  });
+
+  useEffect(() => {
+    const checkUser = () => {
+      const currentKey = getCurrentUserKey();
+
+      if (currentKey !== userKey) {
+        setUserKey(currentKey);
+        setLanguageState(getSavedLanguage(currentKey));
+      }
+    };
+
+    checkUser();
+
+    const interval = window.setInterval(checkUser, 500);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [userKey]);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+
+    try {
+      const currentKey = getCurrentUserKey();
+      const storageKey = getLanguageStorageKey(currentKey);
+
+      localStorage.setItem(storageKey, lang);
+    } catch (e) {
+      console.error('Unable to save user language:', e);
+    }
+  };
+
+  const t = (key: string, fallback?: string): string => {
+    if (translations[language] && translations[language][key]) {
+      return translations[language][key];
+    }
+
+    if (translations.en && translations.en[key]) {
+      return translations.en[key];
+    }
+
+    return fallback || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => useContext(LanguageContext);
+
+

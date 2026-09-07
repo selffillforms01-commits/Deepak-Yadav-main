@@ -1027,8 +1027,8 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                         </span>
                       </div>
                       <p className="text-xs text-slate-400 flex items-center gap-3">
-                        <span>ðŸ“ž {staff.phone}</span>
-                        <span>âœ‰ï¸ {staff.email}</span>
+                        <span>{staff.phone}</span>
+                        <span>{staff.email}</span>
                       </p>
                     </div>
 
@@ -1043,7 +1043,7 @@ export const AdminMaintenance: React.FC<AdminMaintenanceProps> = ({ darkMode }) 
                       <div className="text-xs">
                         <div className="text-[10px] text-slate-400 font-bold uppercase">Password</div>
                         <div className="font-mono font-black text-emerald-400 text-xs">
-                          {showPass ? staff.password || 'staff123' : 'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢'}
+                          {showPass ? staff.password || 'staff123' : '*******************'}
                         </div>
                       </div>
 

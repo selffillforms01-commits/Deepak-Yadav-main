@@ -664,9 +664,9 @@ export const AdminAccounts: React.FC<AdminAccountsProps> = ({ darkMode }) => {
               }`}
             >
               <option value="All">All Payments</option>
-              <option value="Pending">?? Pending Payment</option>
-              <option value="Verified">?? Verified Payment</option>
-              <option value="Rejected">?? Rejected Payment</option>
+              <option value="Pending">Pending Payment</option>
+              <option value="Verified">Verified Payment</option>
+              <option value="Rejected">Rejected Payment</option>
             </select>
             {/* Category Filter */}
             <select

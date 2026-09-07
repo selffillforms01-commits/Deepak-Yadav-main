@@ -234,5 +234,3 @@ export const AdminEducationServices: React.FC<AdminEducationServicesProps> = ({
   );
 };
 
-
-

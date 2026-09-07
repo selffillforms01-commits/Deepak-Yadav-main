@@ -1,0 +1,288 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+export type Language = 'en' | 'hi' | 'or';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string, fallback?: string) => string;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Nav & Header
+    'nav.home': 'Home',
+    'nav.services': 'Services & Forms',
+    'nav.notifications': 'Notifications',
+    'nav.profile': 'My Profile',
+    'nav.documents': 'My Documents',
+    'header.title': 'Self Fill Forms Portal',
+    'header.subtitle': 'Citizen Smart Assistant',
+    'header.back': 'Back',
+    'menu.wallet': '1. My Wallet',
+    'menu.walletBalance': 'Balance',
+    'menu.theme': '2. Theme Mode',
+    'menu.requests': '3. My Requests',
+    'menu.requestsSub': 'Application status',
+    'menu.connect': '4. Connect / Support',
+    'menu.connectSub': 'Helpline, Admin & Support',
+    'menu.language': '5. Language',
+    'menu.logout': '6. Logout',
+    'active': 'Active',
+
+    // Home Page
+    'home.welcome': 'Welcome',
+    'home.searchPlaceholder': 'Search services, government schemes, or form auto-fill...',
+    'home.heroTitle': '1-Click Government Form Auto-Fill Portal',
+    'home.heroSubtitle': 'Apply for certificates, scholarships, admissions & jobs without typing errors using verified personal data.',
+    'home.applyBtn': 'Apply Now',
+    'home.profileScore': 'Profile Score',
+    'home.verifiedDocs': 'Verified Documents',
+    'home.activeApps': 'Active Applications',
+    'home.quickActions': 'Quick Actions',
+    'home.popularServices': 'Popular Services & Schemes',
+    'home.fillForm': 'Auto-Fill Form',
+    'home.uploadDocs': 'Upload Documents',
+    'home.checkScore': 'Check Score',
+
+    // Services Page
+    'services.all': 'All Services',
+    'services.admission': 'Admission',
+    'services.admissionSub': 'School & College Admission',
+    'services.scholarship': 'Scholarship',
+    'services.scholarshipSub': 'Scholarship & Stipend Portal',
+    'services.certificates': 'Certificates',
+    'services.certificatesSub': 'Income, Caste, Residence & Birth',
+    'services.jobs': 'Jobs & Recruitment',
+    'services.jobsSub': 'Govt & Private Recruitment',
+    'services.resume': 'My Resume',
+    'services.resumeSub': 'Digital Resume Builder',
+    'services.autoFillNow': '1-Click Auto Fill',
+    'services.previewForm': 'Preview & Apply',
+
+    // Documents Page
+    'docs.title': 'My Vault & Verified Documents',
+    'docs.subtitle': 'Store and verify your essential documents for 1-click form auto-filling.',
+    'docs.upload': 'Upload Document',
+    'docs.aadhaar': 'Aadhaar Card',
+    'docs.pan': 'PAN Card',
+    'docs.marksheet': 'Academic Marksheet',
+    'docs.caste': 'Caste Certificate',
+    'docs.income': 'Income Certificate',
+    'docs.residence': 'Resident Certificate',
+    'docs.photo': 'Passport Photo',
+    'docs.sign': 'Digital Signature',
+
+    // Profile Page
+    'profile.title': 'Citizen Profile & Preferences',
+    'profile.subtitle': 'Keep your verified details updated for instant 1-click form filling.',
+    'profile.personal': '1. Personal Details',
+    'profile.address': '2. Address Details',
+    'profile.qualification': '3. Qualification Details',
+    'profile.bank': '4. Bank Account Details',
+    'profile.save': 'Save Profile Changes',
+    'profile.myDocumentsBtn': 'MY DOCUMENTS',
+    'profile.myDocumentsTitle': 'My Verified Documents',
+    'profile.myDocumentsSub': 'Aadhaar, selected education marksheet & certificate, income, caste & residence',
+    'services.listSubtitle': 'List of available services',
+
+    // Modals
+    'modal.requestsTitle': 'My Requests & Form Submissions',
+    'modal.requestsDesc': 'Track your real-time application status',
+    'modal.walletTitle': 'Citizen Digital Wallet',
+    'modal.walletDesc': 'Manage portal balance for service processing fees',
+  },
+  hi: {
+    'nav.home': 'होम (गृह)',
+    'nav.services': 'सेवाएँ',
+    'nav.notifications': 'सूचनाएँ',
+    'nav.profile': 'मेरी प्रोफ़ाइल',
+    'nav.documents': 'मेरे दस्तावेज़',
+    'header.title': 'सेल्फ फिल फॉर्म्स',
+    'header.subtitle': 'नागरिक सेवा पोर्टल',
+    'header.back': 'वापस',
+    'menu.wallet': '1. मेरा वॉलेट',
+    'menu.walletBalance': 'शेष राशि',
+    'menu.theme': '2. थीम मोड',
+    'menu.requests': '3. मेरे अनुरोध',
+    'menu.requestsSub': 'आवेदन और अनुरोध देखें',
+    'menu.connect': '4. सहायता से जुड़ें',
+    'menu.connectSub': 'हेल्प और सहायता',
+    'menu.language': '5. भाषा (Language)',
+    'menu.logout': '6. लॉगआउट',
+    'active': 'सक्रिय',
+    'home.welcome': 'स्वागत है',
+    'home.searchPlaceholder': 'सेवा खोजें...',
+    'home.heroTitle': '1-क्लिक सरकारी सेवाएँ',
+    'home.heroSubtitle': 'सभी सरकारी सेवाएँ एक ही जगह',
+    'home.applyBtn': 'अभी आवेदन करें',
+    'home.profileScore': 'प्रोफ़ाइल पूर्णता',
+    'home.verifiedDocs': 'सत्यापित दस्तावेज़',
+    'home.activeApps': 'सक्रिय आवेदन',
+    'home.quickActions': 'त्वरित कार्य',
+    'home.popularServices': 'लोकप्रिय सेवाएँ',
+    'home.fillForm': 'फॉर्म भरें',
+    'home.uploadDocs': 'दस्तावेज़ अपलोड करें',
+    'home.checkScore': 'स्कोर देखें',
+    'services.all': 'सभी सेवाएँ',
+    'services.admission': 'प्रवेश',
+    'services.admissionSub': 'प्रवेश संबंधी आवेदन',
+    'services.scholarship': 'छात्रवृत्ति',
+    'services.scholarshipSub': 'छात्रवृत्ति के लिए आवेदन',
+    'services.certificates': 'प्रमाणपत्र',
+    'services.certificatesSub': 'आय, जाति और निवास प्रमाणपत्र',
+    'services.jobs': 'भर्ती',
+    'services.jobsSub': 'सरकारी नौकरी के आवेदन',
+    'services.resume': 'बायोडाटा',
+    'services.resumeSub': 'डिजिटल रिज़्यूमे बनाएं',
+    'services.autoFillNow': '1-क्लिक ऑटो फिल',
+    'services.previewForm': 'फॉर्म का पूर्वावलोकन',
+    'docs.title': 'दस्तावेज़',
+    'docs.subtitle': '1-क्लिक में अपने दस्तावेज़ प्रबंधित करें',
+    'docs.upload': 'दस्तावेज़ अपलोड करें',
+    'docs.aadhaar': 'आधार कार्ड',
+    'docs.pan': 'पैन कार्ड',
+    'docs.marksheet': '10वीं/12वीं की मार्कशीट',
+    'docs.caste': 'जाति प्रमाणपत्र',
+    'docs.income': 'आय प्रमाणपत्र',
+    'docs.residence': 'निवास प्रमाणपत्र',
+    'docs.photo': 'पासपोर्ट फोटो',
+    'docs.sign': 'डिजिटल हस्ताक्षर',
+    'profile.title': 'नागरिक प्रोफ़ाइल',
+    'profile.subtitle': 'अपनी जानकारी पूरी करें',
+    'profile.personal': '1. व्यक्तिगत जानकारी',
+    'profile.address': '2. पता जानकारी',
+    'profile.qualification': '3. शैक्षणिक योग्यता',
+    'profile.bank': '4. बैंक विवरण',
+    'profile.save': 'प्रोफ़ाइल सेव करें',
+    'profile.myDocumentsBtn': 'मेरे दस्तावेज़',
+    'profile.myDocumentsTitle': 'मेरे सत्यापित दस्तावेज़',
+    'profile.myDocumentsSub': 'आधार, 10वीं, 12वीं, आय, जाति और निवास',
+    'services.listSubtitle': 'उपलब्ध सरकारी सेवाएँ',
+    'modal.requestsTitle': 'मेरे अनुरोध',
+    'modal.requestsDesc': 'अपने आवेदन और अनुरोध देखें',
+    'modal.walletTitle': 'नागरिक वॉलेट',
+    'modal.walletDesc': 'सेवा शुल्क और वॉलेट बैलेंस देखें',
+  },
+  or: {
+    'nav.home': 'ହୋମ୍ (ଗୃହ)',
+    'nav.services': 'ସେବା',
+    'nav.notifications': 'ସୂଚନା',
+    'nav.profile': 'ମୋ ପ୍ରୋଫାଇଲ୍',
+    'nav.documents': 'ମୋ ଦସ୍ତାବିଜ',
+    'header.title': 'ସେଲ୍ଫ ଫିଲ୍ ଫର୍ମ୍ସ',
+    'header.subtitle': 'ନାଗରିକ ସେବା ପୋର୍ଟାଲ୍',
+    'header.back': 'ପଛକୁ',
+    'menu.wallet': '1. ମୋ ୱାଲେଟ୍',
+    'menu.walletBalance': 'ଅବଶିଷ୍ଟ ରାଶି',
+    'menu.theme': '2. ଥିମ୍ ମୋଡ୍',
+    'menu.requests': '3. ମୋ ଅନୁରୋଧ',
+    'menu.requestsSub': 'ଆବେଦନ ଏବଂ ଅନୁରୋଧ ଦେଖନ୍ତୁ',
+    'menu.connect': '4. ସହାୟତା ସହିତ ଯୋଗାଯୋଗ',
+    'menu.connectSub': 'ହେଲ୍ପ ଏବଂ ସହାୟତା',
+    'menu.language': '5. ଭାଷା (Language)',
+    'menu.logout': '6. ଲଗଆଉଟ୍',
+    'active': 'ସକ୍ରିୟ',
+    'home.welcome': 'ସ୍ୱାଗତ',
+    'home.searchPlaceholder': 'ସେବା ଖୋଜନ୍ତୁ...',
+    'home.heroTitle': '1-କ୍ଲିକ୍ ସରକାରୀ ସେବା',
+    'home.heroSubtitle': 'ସମସ୍ତ ସରକାରୀ ସେବା ଗୋଟିଏ ସ୍ଥାନରେ',
+    'home.applyBtn': 'ବର୍ତ୍ତମାନ ଆବେଦନ କରନ୍ତୁ',
+    'home.profileScore': 'ପ୍ରୋଫାଇଲ୍ ସମ୍ପୂର୍ଣ୍ଣତା',
+    'home.verifiedDocs': 'ଯାଞ୍ଚିତ ଦସ୍ତାବିଜ',
+    'home.activeApps': 'ସକ୍ରିୟ ଆବେଦନ',
+    'home.quickActions': 'ତୁରନ୍ତ କାର୍ଯ୍ୟ',
+    'home.popularServices': 'ଲୋକପ୍ରିୟ ସେବା',
+    'home.fillForm': 'ଫର୍ମ ପୂରଣ କରନ୍ତୁ',
+    'home.uploadDocs': 'ଦସ୍ତାବିଜ ଅପଲୋଡ୍ କରନ୍ତୁ',
+    'home.checkScore': 'ସ୍କୋର ଦେଖନ୍ତୁ',
+    'services.all': 'ସମସ୍ତ ସେବା',
+    'services.admission': 'ନାମଲେଖା',
+    'services.admissionSub': 'ନାମଲେଖା ସମ୍ବନ୍ଧୀୟ ଆବେଦନ',
+    'services.scholarship': 'ଛାତ୍ରବୃତ୍ତି',
+    'services.scholarshipSub': 'ଛାତ୍ରବୃତ୍ତି ପାଇଁ ଆବେଦନ',
+    'services.certificates': 'ପ୍ରମାଣପତ୍ର',
+    'services.certificatesSub': 'ଆୟ, ଜାତି ଏବଂ ବାସସ୍ଥାନ ପ୍ରମାଣପତ୍ର',
+    'services.jobs': 'ନିଯୁକ୍ତି',
+    'services.jobsSub': 'ସରକାରୀ ଚାକିରି ପାଇଁ ଆବେଦନ',
+    'services.resume': 'ବାୟୋଡାଟା',
+    'services.resumeSub': 'ଡିଜିଟାଲ୍ ରେଜୁମେ ତିଆରି କରନ୍ତୁ',
+    'services.autoFillNow': '1-କ୍ଲିକ୍ ଅଟୋ ଫିଲ୍',
+    'services.previewForm': 'ଫର୍ମ ପୂର୍ବଦର୍ଶନ',
+    'docs.title': 'ଦସ୍ତାବିଜ',
+    'docs.subtitle': '1-କ୍ଲିକ୍ ରେ ଆପଣଙ୍କ ଦସ୍ତାବିଜ ପରିଚାଳନା କରନ୍ତୁ',
+    'docs.upload': 'ଦସ୍ତାବିଜ ଅପଲୋଡ୍ କରନ୍ତୁ',
+    'docs.aadhaar': 'ଆଧାର କାର୍ଡ',
+    'docs.pan': 'ପାନ୍ କାର୍ଡ',
+    'docs.marksheet': '10ମ/12ଶ ମାର୍କସିଟ୍',
+    'docs.caste': 'ଜାତି ପ୍ରମାଣପତ୍ର',
+    'docs.income': 'ଆୟ ପ୍ରମାଣପତ୍ର',
+    'docs.residence': 'ବାସସ୍ଥାନ ପ୍ରମାଣପତ୍ର',
+    'docs.photo': 'ପାସପୋର୍ଟ ଫଟୋ',
+    'docs.sign': 'ଡିଜିଟାଲ୍ ସ୍ୱାକ୍ଷର',
+    'profile.title': 'ନାଗରିକ ପ୍ରୋଫାଇଲ୍',
+    'profile.subtitle': 'ଆପଣଙ୍କ ସୂଚନା ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ',
+    'profile.personal': '1. ବ୍ୟକ୍ତିଗତ ସୂଚନା',
+    'profile.address': '2. ଠିକଣା ସୂଚନା',
+    'profile.qualification': '3. ଶିକ୍ଷାଗତ ଯୋଗ୍ୟତା',
+    'profile.bank': '4. ବ୍ୟାଙ୍କ ବିବରଣୀ',
+    'profile.save': 'ପ୍ରୋଫାଇଲ୍ ସେଭ୍ କରନ୍ତୁ',
+    'profile.myDocumentsBtn': 'ମୋ ଦସ୍ତାବିଜ',
+    'profile.myDocumentsTitle': 'ମୋ ଯାଞ୍ଚିତ ଦସ୍ତାବିଜ',
+    'profile.myDocumentsSub': 'ଆଧାର, 10ମ, 12ଶ, ଆୟ, ଜାତି ଏବଂ ବାସସ୍ଥାନ',
+    'services.listSubtitle': 'ଉପଲବ୍ଧ ସରକାରୀ ସେବା',
+    'modal.requestsTitle': 'ମୋ ଅନୁରୋଧ',
+    'modal.requestsDesc': 'ଆପଣଙ୍କ ଆବେଦନ ଏବଂ ଅନୁରୋଧ ଦେଖନ୍ତୁ',
+    'modal.walletTitle': 'ନାଗରିକ ୱାଲେଟ୍',
+    'modal.walletDesc': 'ସେବା ଶୁଳ୍କ ଏବଂ ୱାଲେଟ୍ ବାଲାନ୍ସ ଦେଖନ୍ତୁ',
+  },
+};
+
+const LanguageContext = createContext<LanguageContextType>({
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string, fallback?: string) => fallback || key,
+});
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    try {
+      const saved = localStorage.getItem('sff_language') as Language;
+      if (saved && (saved === 'en' || saved === 'hi' || saved === 'or')) {
+        return saved;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('sff_language', lang);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const t = (key: string, fallback?: string): string => {
+    if (translations[language] && translations[language][key]) {
+      return translations[language][key];
+    }
+    if (translations.en && translations.en[key]) {
+      return translations.en[key];
+    }
+    return fallback || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => useContext(LanguageContext);
+
+

@@ -1,4 +1,5 @@
 ﻿import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth } from '../lib/firebase';
 
 export type Language = 'en' | 'hi' | 'or';
 
@@ -26,7 +27,7 @@ const translations: Record<Language, Record<string, string>> = {
     'menu.requestsSub': 'Application status',
     'menu.connect': '4. Connect / Support',
     'menu.connectSub': 'Helpline, Admin & Support',
-    'menu.language': '5. Language / à¤­à¤¾à¤·à¤¾ / à¬­à¬¾à¬·à¬¾',
+    'menu.language': '5. Language',
     'menu.logout': '6. Logout',
     'active': 'Active',
 
@@ -92,171 +93,173 @@ const translations: Record<Language, Record<string, string>> = {
     'modal.walletTitle': 'Citizen Digital Wallet',
     'modal.walletDesc': 'Manage portal balance for service processing fees',
   },
+
   hi: {
     // Nav & Header
-    'nav.home': 'à¤¹à¥‹à¤® (à¤—à¥ƒà¤¹)',
-    'nav.services': 'à¤¸à¥‡à¤µà¤¾à¤à¤‚ à¤à¤µà¤‚ à¤«à¥‰à¤°à¥à¤®',
-    'nav.notifications': 'à¤¸à¥‚à¤šà¤¨à¤¾à¤à¤‚',
-    'nav.profile': 'à¤®à¥‡à¤°à¥€ à¤ªà¥à¤°à¥‹à¤«à¤¾à¤‡à¤²',
-    'nav.documents': 'à¤®à¥‡à¤°à¥‡ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œ',
-    'header.title': 'à¤¸à¥‡à¤²à¥à¤« à¤«à¤¿à¤² à¤«à¥‰à¤°à¥à¤® à¤ªà¥‹à¤°à¥à¤Ÿà¤²',
-    'header.subtitle': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¸à¤¹à¤¾à¤¯à¤•',
-    'header.back': 'à¤µà¤¾à¤ªà¤¸',
-    'menu.wallet': '1. à¤®à¥‡à¤°à¤¾ à¤µà¥‰à¤²à¥‡à¤Ÿ',
-    'menu.walletBalance': 'à¤¶à¥‡à¤· à¤°à¤¾à¤¶à¤¿',
-    'menu.theme': '2. à¤¥à¥€à¤® à¤®à¥‹à¤¡',
-    'menu.requests': '3. à¤®à¥‡à¤°à¥‡ à¤†à¤µà¥‡à¤¦à¤¨',
-    'menu.requestsSub': 'à¤†à¤µà¥‡à¤¦à¤¨ à¤•à¥€ à¤¸à¥à¤¥à¤¿à¤¤à¤¿',
-    'menu.connect': '4. à¤¸à¤‚à¤ªà¤°à¥à¤• à¤•à¤°à¥‡à¤‚ (Connect)',
-    'menu.connectSub': 'à¤¹à¥‡à¤²à¥à¤ªà¤²à¤¾à¤‡à¤¨ à¤µ à¤¸à¤¹à¤¾à¤¯à¤¤à¤¾ à¤•à¥‡à¤‚à¤¦à¥à¤°',
-    'menu.language': '5. à¤­à¤¾à¤·à¤¾ (Language)',
-    'menu.logout': '6. à¤²à¥‰à¤—à¤†à¤‰à¤Ÿ',
-    'active': 'à¤¸à¤•à¥à¤°à¤¿à¤¯',
+    'nav.home': 'होम',
+    'nav.services': 'सेवाएँ और फॉर्म',
+    'nav.notifications': 'सूचनाएँ',
+    'nav.profile': 'मेरी प्रोफ़ाइल',
+    'nav.documents': 'मेरे दस्तावेज़',
+    'header.title': 'सेल्फ फिल फॉर्म पोर्टल',
+    'header.subtitle': 'नागरिक स्मार्ट सहायक',
+    'header.back': 'वापस',
+    'menu.wallet': '1. मेरा वॉलेट',
+    'menu.walletBalance': 'बैलेंस',
+    'menu.theme': '2. थीम मोड',
+    'menu.requests': '3. मेरे अनुरोध',
+    'menu.requestsSub': 'आवेदन की स्थिति',
+    'menu.connect': '4. संपर्क / सहायता',
+    'menu.connectSub': 'हेल्पलाइन, एडमिन और सहायता',
+    'menu.language': '5. भाषा',
+    'menu.logout': '6. लॉगआउट',
+    'active': 'सक्रिय',
 
     // Home Page
-    'home.welcome': 'à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆ',
-    'home.searchPlaceholder': 'à¤¸à¥‡à¤µà¤¾à¤à¤‚, à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤¯à¥‹à¤œà¤¨à¤¾à¤à¤‚ à¤¯à¤¾ à¤«à¥‰à¤°à¥à¤® à¤–à¥‹à¤œà¥‡à¤‚...',
-    'home.heroTitle': '1-à¤•à¥à¤²à¤¿à¤• à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤«à¥‰à¤°à¥à¤® à¤‘à¤Ÿà¥‹-à¤«à¤¿à¤² à¤ªà¥‹à¤°à¥à¤Ÿà¤²',
-    'home.heroSubtitle': 'à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¤—à¤¤ à¤µà¤¿à¤µà¤°à¤£ à¤•à¤¾ à¤‰à¤ªà¤¯à¥‹à¤— à¤•à¤°à¤•à¥‡ à¤¬à¤¿à¤¨à¤¾ à¤•à¤¿à¤¸à¥€ à¤¤à¥à¤°à¥à¤Ÿà¤¿ à¤•à¥‡ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤°, à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿ à¤”à¤° à¤¨à¥Œà¤•à¤°à¤¿à¤¯à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤¤à¥à¤°à¤‚à¤¤ à¤†à¤µà¥‡à¤¦à¤¨ à¤•à¤°à¥‡à¤‚à¥¤',
-    'home.applyBtn': 'à¤…à¤­à¥€ à¤†à¤µà¥‡à¤¦à¤¨ à¤•à¤°à¥‡à¤‚',
-    'home.profileScore': 'à¤ªà¥à¤°à¥‹à¤«à¤¾à¤‡à¤² à¤¸à¥à¤•à¥‹à¤°',
-    'home.verifiedDocs': 'à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œ',
-    'home.activeApps': 'à¤¸à¤•à¥à¤°à¤¿à¤¯ à¤†à¤µà¥‡à¤¦à¤¨',
-    'home.quickActions': 'à¤¤à¥à¤µà¤°à¤¿à¤¤ à¤¸à¥‡à¤µà¤¾à¤à¤‚',
-    'home.popularServices': 'à¤²à¥‹à¤•à¤ªà¥à¤°à¤¿à¤¯ à¤¸à¥‡à¤µà¤¾à¤à¤‚ à¤µ à¤¯à¥‹à¤œà¤¨à¤¾à¤à¤‚',
-    'home.fillForm': 'à¤«à¥‰à¤°à¥à¤® à¤‘à¤Ÿà¥‹-à¤«à¤¿à¤²',
-    'home.uploadDocs': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œ à¤…à¤ªà¤²à¥‹à¤¡',
-    'home.checkScore': 'à¤¸à¥à¤•à¥‹à¤° à¤šà¥‡à¤• à¤•à¤°à¥‡à¤‚',
+    'home.welcome': 'स्वागत है',
+    'home.searchPlaceholder': 'सेवाएँ, सरकारी योजनाएँ या फॉर्म ऑटो-फिल खोजें...',
+    'home.heroTitle': '1-क्लिक सरकारी फॉर्म ऑटो-फिल पोर्टल',
+    'home.heroSubtitle': 'सत्यापित व्यक्तिगत जानकारी का उपयोग करके बिना टाइपिंग की गलतियों के प्रमाणपत्र, छात्रवृत्ति, प्रवेश और नौकरी के लिए आवेदन करें।',
+    'home.applyBtn': 'अभी आवेदन करें',
+    'home.profileScore': 'प्रोफ़ाइल स्कोर',
+    'home.verifiedDocs': 'सत्यापित दस्तावेज़',
+    'home.activeApps': 'सक्रिय आवेदन',
+    'home.quickActions': 'त्वरित कार्य',
+    'home.popularServices': 'लोकप्रिय सेवाएँ और योजनाएँ',
+    'home.fillForm': 'फॉर्म ऑटो-फिल',
+    'home.uploadDocs': 'दस्तावेज़ अपलोड करें',
+    'home.checkScore': 'स्कोर देखें',
 
     // Services Page
-    'services.all': 'à¤¸à¤­à¥€ à¤¸à¥‡à¤µà¤¾à¤à¤‚',
-    'services.admission': 'à¤ªà¥à¤°à¤µà¥‡à¤¶ (Admission)',
-    'services.admissionSub': 'à¤¸à¥à¤•à¥‚à¤² à¤µ à¤•à¥‰à¤²à¥‡à¤œ à¤ªà¥à¤°à¤µà¥‡à¤¶',
-    'services.scholarship': 'à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿ (Scholarship)',
-    'services.scholarshipSub': 'à¤›à¤¾à¤¤à¥à¤°à¤µà¥ƒà¤¤à¥à¤¤à¤¿ à¤µ à¤µà¤œà¥€à¤«à¤¾ à¤ªà¥‹à¤°à¥à¤Ÿà¤²',
-    'services.certificates': 'à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤° (Certificates)',
-    'services.certificatesSub': 'à¤†à¤¯, à¤œà¤¾à¤¤à¤¿, à¤®à¥‚à¤² à¤¨à¤¿à¤µà¤¾à¤¸ à¤µ à¤œà¤¨à¥à¤®',
-    'services.jobs': 'à¤­à¤°à¥à¤¤à¥€ à¤µ à¤¨à¥Œà¤•à¤°à¤¿à¤¯à¤¾à¤‚ (Jobs)',
-    'services.jobsSub': 'à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤µ à¤¨à¤¿à¤œà¥€ à¤­à¤°à¥à¤¤à¥€',
-    'services.resume': 'à¤¬à¤¾à¤¯à¥‹à¤¡à¤¾à¤Ÿà¤¾ (My Resume)',
-    'services.resumeSub': 'à¤¡à¤¿à¤œà¤¿à¤Ÿà¤² à¤¸à¥€à¤µà¥€ à¤¬à¤¿à¤²à¥à¤¡à¤°',
-    'services.autoFillNow': '1-à¤•à¥à¤²à¤¿à¤• à¤‘à¤Ÿà¥‹ à¤«à¤¿à¤²',
-    'services.previewForm': 'à¤¦à¥‡à¤–à¥‡à¤‚ à¤µ à¤†à¤µà¥‡à¤¦à¤¨ à¤•à¤°à¥‡à¤‚',
+    'services.all': 'सभी सेवाएँ',
+    'services.admission': 'प्रवेश',
+    'services.admissionSub': 'स्कूल और कॉलेज प्रवेश',
+    'services.scholarship': 'छात्रवृत्ति',
+    'services.scholarshipSub': 'छात्रवृत्ति और स्टाइपेंड पोर्टल',
+    'services.certificates': 'प्रमाणपत्र',
+    'services.certificatesSub': 'आय, जाति, निवास और जन्म प्रमाणपत्र',
+    'services.jobs': 'नौकरी और भर्ती',
+    'services.jobsSub': 'सरकारी और निजी भर्ती',
+    'services.resume': 'मेरा रिज्यूमे',
+    'services.resumeSub': 'डिजिटल रिज्यूमे बिल्डर',
+    'services.autoFillNow': '1-क्लिक ऑटो फिल',
+    'services.previewForm': 'पूर्वावलोकन और आवेदन',
 
     // Documents Page
-    'docs.title': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œ à¤µà¥‰à¤²à¥à¤Ÿ à¤µ à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¨',
-    'docs.subtitle': '1-à¤•à¥à¤²à¤¿à¤• à¤«à¥‰à¤°à¥à¤® à¤‘à¤Ÿà¥‹-à¤«à¤¿à¤²à¤¿à¤‚à¤— à¤•à¥‡ à¤²à¤¿à¤ à¤…à¤ªà¤¨à¥‡ à¤†à¤µà¤¶à¥à¤¯à¤• à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¥‹à¤‚ à¤•à¥‹ à¤¸à¥à¤°à¤•à¥à¤·à¤¿à¤¤ à¤°à¤–à¥‡à¤‚à¥¤',
-    'docs.upload': 'à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ à¤…à¤ªà¤²à¥‹à¤¡ à¤•à¤°à¥‡à¤‚',
-    'docs.aadhaar': 'à¤†à¤§à¤¾à¤° à¤•à¤¾à¤°à¥à¤¡',
-    'docs.pan': 'à¤ªà¥ˆà¤¨ à¤•à¤¾à¤°à¥à¤¡',
-    'docs.marksheet': '10à¤µà¥€à¤‚/12à¤µà¥€à¤‚ à¤…à¤‚à¤•à¤¸à¥‚à¤šà¥€',
-    'docs.caste': 'à¤œà¤¾à¤¤à¤¿ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤°',
-    'docs.income': 'à¤†à¤¯ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤°',
-    'docs.residence': 'à¤®à¥‚à¤² à¤¨à¤¿à¤µà¤¾à¤¸ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤°',
-    'docs.photo': 'à¤ªà¤¾à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ à¤«à¥‹à¤Ÿà¥‹',
-    'docs.sign': 'à¤¡à¤¿à¤œà¤¿à¤Ÿà¤² à¤¹à¤¸à¥à¤¤à¤¾à¤•à¥à¤·à¤°',
+    'docs.title': 'मेरा वॉल्ट और सत्यापित दस्तावेज़',
+    'docs.subtitle': '1-क्लिक फॉर्म ऑटो-फिल के लिए अपने आवश्यक दस्तावेज़ सुरक्षित रखें और सत्यापित करें।',
+    'docs.upload': 'दस्तावेज़ अपलोड करें',
+    'docs.aadhaar': 'आधार कार्ड',
+    'docs.pan': 'पैन कार्ड',
+    'docs.marksheet': 'शैक्षणिक मार्कशीट',
+    'docs.caste': 'जाति प्रमाणपत्र',
+    'docs.income': 'आय प्रमाणपत्र',
+    'docs.residence': 'निवास प्रमाणपत्र',
+    'docs.photo': 'पासपोर्ट फोटो',
+    'docs.sign': 'डिजिटल हस्ताक्षर',
 
     // Profile Page
-    'profile.title': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤ªà¥à¤°à¥‹à¤«à¤¾à¤‡à¤² à¤µ à¤µà¤¿à¤µà¤°à¤£',
-    'profile.subtitle': 'à¤¤à¥à¤°à¤‚à¤¤ 1-à¤•à¥à¤²à¤¿à¤• à¤«à¥‰à¤°à¥à¤® à¤­à¤°à¤¨à¥‡ à¤•à¥‡ à¤²à¤¿à¤ à¤…à¤ªà¤¨à¤¾ à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤µà¤¿à¤µà¤°à¤£ à¤…à¤ªà¤¡à¥‡à¤Ÿ à¤°à¤–à¥‡à¤‚à¥¤',
-    'profile.personal': '1. à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¤—à¤¤ à¤µà¤¿à¤µà¤°à¤£',
-    'profile.address': '2. à¤ªà¤¤à¤¾ à¤µà¤¿à¤µà¤°à¤£',
-    'profile.qualification': '3. à¤¶à¥ˆà¤•à¥à¤·à¤£à¤¿à¤• à¤¯à¥‹à¤—à¥à¤¯à¤¤à¤¾',
-    'profile.bank': '4. à¤¬à¥ˆà¤‚à¤• à¤–à¤¾à¤¤à¤¾ à¤µà¤¿à¤µà¤°à¤£',
-    'profile.save': 'à¤ªà¥à¤°à¥‹à¤«à¤¾à¤‡à¤² à¤¸à¤¹à¥‡à¤œà¥‡à¤‚',
-    'profile.myDocumentsBtn': 'à¤®à¥‡à¤°à¥‡ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼ (MY DOCUMENTS)',
-    'profile.myDocumentsTitle': 'à¤®à¥‡à¤°à¥‡ à¤¸à¤¤à¥à¤¯à¤¾à¤ªà¤¿à¤¤ à¤¦à¤¸à¥à¤¤à¤¾à¤µà¥‡à¤œà¤¼',
-    'profile.myDocumentsSub': 'à¤†à¤§à¤¾à¤°, à¤šà¤¯à¤¨à¤¿à¤¤ à¤¶à¥ˆà¤•à¥à¤·à¤£à¤¿à¤• à¤®à¤¾à¤°à¥à¤•à¤¶à¥€à¤Ÿ à¤à¤µà¤‚ à¤ªà¥à¤°à¤®à¤¾à¤£ à¤ªà¤¤à¥à¤°, à¤†à¤¯, à¤œà¤¾à¤¤à¤¿ à¤à¤µà¤‚ à¤¨à¤¿à¤µà¤¾à¤¸',
-    'services.listSubtitle': 'à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤¸à¥‡à¤µà¤¾à¤“à¤‚ à¤•à¥€ à¤¸à¥‚à¤šà¥€',
+    'profile.title': 'नागरिक प्रोफ़ाइल और प्राथमिकताएँ',
+    'profile.subtitle': 'त्वरित 1-क्लिक फॉर्म भरने के लिए अपनी सत्यापित जानकारी अपडेट रखें।',
+    'profile.personal': '1. व्यक्तिगत जानकारी',
+    'profile.address': '2. पता जानकारी',
+    'profile.qualification': '3. शैक्षणिक योग्यता',
+    'profile.bank': '4. बैंक खाता विवरण',
+    'profile.save': 'प्रोफ़ाइल परिवर्तन सहेजें',
+    'profile.myDocumentsBtn': 'मेरे दस्तावेज़',
+    'profile.myDocumentsTitle': 'मेरे सत्यापित दस्तावेज़',
+    'profile.myDocumentsSub': 'आधार, चयनित शैक्षणिक मार्कशीट और प्रमाणपत्र, आय, जाति और निवास',
+    'services.listSubtitle': 'उपलब्ध सेवाओं की सूची',
 
     // Modals
-    'modal.requestsTitle': 'à¤®à¥‡à¤°à¥‡ à¤†à¤µà¥‡à¤¦à¤¨ à¤à¤µà¤‚ à¤«à¥‰à¤°à¥à¤® à¤¸à¥à¤¥à¤¿à¤¤à¤¿à¤¯à¤¾à¤‚',
-    'modal.requestsDesc': 'à¤…à¤ªà¤¨à¥‡ à¤†à¤µà¥‡à¤¦à¤¨à¥‹à¤‚ à¤•à¥€ à¤°à¥€à¤¯à¤²-à¤Ÿà¤¾à¤‡à¤® à¤¸à¥à¤¥à¤¿à¤¤à¤¿ à¤¦à¥‡à¤–à¥‡à¤‚',
-    'modal.walletTitle': 'à¤¨à¤¾à¤—à¤°à¤¿à¤• à¤¡à¤¿à¤œà¤¿à¤Ÿà¤² à¤µà¥‰à¤²à¥‡à¤Ÿ',
-    'modal.walletDesc': 'à¤¸à¥‡à¤µà¤¾ à¤¶à¥à¤²à¥à¤• à¤­à¥à¤—à¤¤à¤¾à¤¨ à¤•à¥‡ à¤²à¤¿à¤ à¤ªà¥‹à¤°à¥à¤Ÿà¤² à¤¬à¥ˆà¤²à¥‡à¤‚à¤¸ à¤ªà¥à¤°à¤¬à¤‚à¤§à¤¿à¤¤ à¤•à¤°à¥‡à¤‚',
+    'modal.requestsTitle': 'मेरे अनुरोध और फॉर्म सबमिशन',
+    'modal.requestsDesc': 'अपने आवेदन की वास्तविक समय स्थिति देखें',
+    'modal.walletTitle': 'नागरिक डिजिटल वॉलेट',
+    'modal.walletDesc': 'सेवा प्रसंस्करण शुल्क के लिए पोर्टल बैलेंस प्रबंधित करें',
   },
+
   or: {
     // Nav & Header
-    'nav.home': 'à¬®à­à¬–à­à­Ÿ à¬ªà­ƒà¬·à­à¬ à¬¾',
-    'nav.services': 'à¬¸à­‡à¬¬à¬¾ à¬à¬¬à¬‚ à¬«à¬°à­à¬®',
-    'nav.notifications': 'à¬¸à­‚à¬šà¬¨à¬¾à¬¸à¬®à­‚à¬¹',
-    'nav.profile': 'à¬®à­‹à¬° à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­',
-    'nav.documents': 'à¬®à­‹à¬° à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
-    'header.title': 'à¬¸à­‡à¬²à­à¬« à¬«à¬¿à¬²à­ à¬«à¬°à­à¬® à¬ªà­‹à¬°à­à¬Ÿà¬¾à¬²à­',
-    'header.subtitle': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à¬¸à­à¬®à¬¾à¬°à­à¬Ÿ à¬¸à¬¹à¬¾à­Ÿà¬•',
-    'header.back': 'à¬«à­‡à¬°à¬¨à­à¬¤à­',
-    'menu.wallet': '1. à¬®à­‹à¬° à­±à¬¾à¬²à­‡à¬Ÿà­',
-    'menu.walletBalance': 'à¬¬à¬³à¬•à¬¾ à¬Ÿà¬™à­à¬•à¬¾',
-    'menu.theme': '2. à¬¥à¬¿à¬®à­ à¬®à­‹à¬¡à­',
-    'menu.requests': '3. à¬®à­‹à¬° à¬†à¬¬à­‡à¬¦à¬¨',
-    'menu.requestsSub': 'à¬†à¬¬à­‡à¬¦à¬¨à¬° à¬¸à­à¬¥à¬¿à¬¤à¬¿',
-    'menu.connect': '4. à¬¸à¬®à­à¬ªà¬°à­à¬• à¬•à¬°à¬¨à­à¬¤à­ (Connect)',
-    'menu.connectSub': 'à¬¹à­‡à¬²à­à¬ªà¬²à¬¾à¬‡à¬¨à­ à¬à¬¬à¬‚ à¬¸à¬¹à¬¾à­Ÿà¬¤à¬¾',
-    'menu.language': '5. à¬­à¬¾à¬·à¬¾ (Language)',
-    'menu.logout': '6. à¬²à¬—à­à¬†à¬‰à¬Ÿà­',
-    'active': 'à¬¸à¬•à­à¬°à¬¿à­Ÿ',
+    'nav.home': 'ହୋମ୍',
+    'nav.services': 'ସେବା ଓ ଫର୍ମ',
+    'nav.notifications': 'ବିଜ୍ଞପ୍ତି',
+    'nav.profile': 'ମୋ ପ୍ରୋଫାଇଲ୍',
+    'nav.documents': 'ମୋ ଦଲିଲ',
+    'header.title': 'ସେଲ୍ଫ ଫିଲ୍ ଫର୍ମ ପୋର୍ଟାଲ୍',
+    'header.subtitle': 'ନାଗରିକ ସ୍ମାର୍ଟ ସହାୟକ',
+    'header.back': 'ପଛକୁ',
+    'menu.wallet': '1. ମୋ ୱାଲେଟ୍',
+    'menu.walletBalance': 'ବାଲାନ୍ସ',
+    'menu.theme': '2. ଥିମ୍ ମୋଡ୍',
+    'menu.requests': '3. ମୋ ଅନୁରୋଧ',
+    'menu.requestsSub': 'ଆବେଦନର ସ୍ଥିତି',
+    'menu.connect': '4. ସଂଯୋଗ / ସହାୟତା',
+    'menu.connectSub': 'ହେଲ୍ପଲାଇନ୍, ଆଡମିନ୍ ଓ ସହାୟତା',
+    'menu.language': '5. ଭାଷା',
+    'menu.logout': '6. ଲଗଆଉଟ୍',
+    'active': 'ସକ୍ରିୟ',
 
     // Home Page
-    'home.welcome': 'à¬¸à­à­±à¬¾à¬—à¬¤',
-    'home.searchPlaceholder': 'à¬¸à­‡à¬¬à¬¾, à¬¸à¬°à¬•à¬¾à¬°à­€ à¬¯à­‹à¬œà¬¨à¬¾ à¬•à¬¿à¬®à­à¬¬à¬¾ à¬«à¬°à­à¬® à¬–à­‹à¬œà¬¨à­à¬¤à­...',
-    'home.heroTitle': '1-à¬•à­à¬²à¬¿à¬•à­ à¬¸à¬°à¬•à¬¾à¬°à­€ à¬«à¬°à­à¬® à¬…à¬Ÿà­‹-à¬«à¬¿à¬²à­ à¬ªà­‹à¬°à­à¬Ÿà¬¾à¬²à­',
-    'home.heroSubtitle': 'à¬†à¬ªà¬£à¬™à­à¬• à¬¯à¬¾à¬žà­à¬š à¬¹à­‹à¬‡à¬¥à¬¿à¬¬à¬¾ à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¬à­à­Ÿà¬¬à¬¹à¬¾à¬° à¬•à¬°à¬¿ à¬¬à¬¿à¬¨à¬¾ à¬•à­Œà¬£à¬¸à¬¿ à¬­à­à¬²à¬°à­‡ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°, à¬¸à­à¬•à­‹à¬²à¬¾à¬°à¬¸à¬¿à¬ªà­ à¬à¬¬à¬‚ à¬šà¬¾à¬•à¬¿à¬°à¬¿ à¬ªà¬¾à¬‡à¬ à¬¤à­à¬°à¬¨à­à¬¤ à¬†à¬¬à­‡à¬¦à¬¨ à¬•à¬°à¬¨à­à¬¤à­à¥¤',
-    'home.applyBtn': 'à¬à¬¬à­‡ à¬†à¬¬à­‡à¬¦à¬¨ à¬•à¬°à¬¨à­à¬¤à­',
-    'home.profileScore': 'à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¸à­à¬•à­‹à¬°',
-    'home.verifiedDocs': 'à¬¯à¬¾à¬žà­à¬š à¬¹à­‹à¬‡à¬¥à¬¿à¬¬à¬¾ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
-    'home.activeApps': 'à¬¸à¬•à­à¬°à¬¿à­Ÿ à¬†à¬¬à­‡à¬¦à¬¨',
-    'home.quickActions': 'à¬¤à­à¬°à¬¨à­à¬¤ à¬¸à­‡à¬¬à¬¾',
-    'home.popularServices': 'à¬²à­‹à¬•à¬ªà­à¬°à¬¿à­Ÿ à¬¸à­‡à¬¬à¬¾ à¬à¬¬à¬‚ à¬¯à­‹à¬œà¬¨à¬¾',
-    'home.fillForm': 'à¬«à¬°à­à¬® à¬…à¬Ÿà­‹-à¬«à¬¿à¬²à­',
-    'home.uploadDocs': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬…à¬ªà¬²à­‹à¬¡à­',
-    'home.checkScore': 'à¬¸à­à¬•à­‹à¬° à¬šà­‡à¬•à­ à¬•à¬°à¬¨à­à¬¤à­',
+    'home.welcome': 'ସ୍ୱାଗତ',
+    'home.searchPlaceholder': 'ସେବା, ସରକାରୀ ଯୋଜନା କିମ୍ବା ଫର୍ମ ଅଟୋ-ଫିଲ୍ ଖୋଜନ୍ତୁ...',
+    'home.heroTitle': '1-କ୍ଲିକ୍ ସରକାରୀ ଫର୍ମ ଅଟୋ-ଫିଲ୍ ପୋର୍ଟାଲ୍',
+    'home.heroSubtitle': 'ସତ୍ୟାପିତ ବ୍ୟକ୍ତିଗତ ତଥ୍ୟ ବ୍ୟବହାର କରି ଟାଇପିଂ ତ୍ରୁଟି ବିନା ପ୍ରମାଣପତ୍ର, ଛାତ୍ରବୃତ୍ତି, ନାମଲେଖା ଓ ଚାକିରି ପାଇଁ ଆବେଦନ କରନ୍ତୁ।',
+    'home.applyBtn': 'ବର୍ତ୍ତମାନ ଆବେଦନ କରନ୍ତୁ',
+    'home.profileScore': 'ପ୍ରୋଫାଇଲ୍ ସ୍କୋର୍',
+    'home.verifiedDocs': 'ସତ୍ୟାପିତ ଦଲିଲ',
+    'home.activeApps': 'ସକ୍ରିୟ ଆବେଦନ',
+    'home.quickActions': 'ତ୍ୱରିତ କାର୍ଯ୍ୟ',
+    'home.popularServices': 'ଲୋକପ୍ରିୟ ସେବା ଓ ଯୋଜନା',
+    'home.fillForm': 'ଫର୍ମ ଅଟୋ-ଫିଲ୍',
+    'home.uploadDocs': 'ଦଲିଲ ଅପଲୋଡ୍ କରନ୍ତୁ',
+    'home.checkScore': 'ସ୍କୋର୍ ଦେଖନ୍ତୁ',
 
     // Services Page
-    'services.all': 'à¬¸à¬®à¬¸à­à¬¤ à¬¸à­‡à¬¬à¬¾',
-    'services.admission': 'à¬¨à¬¾à¬®à¬²à­‡à¬–à¬¾ (Admission)',
-    'services.admissionSub': 'à¬¸à­à¬•à­à¬²à­ à¬à¬¬à¬‚ à¬•à¬²à­‡à¬œ à¬¨à¬¾à¬®à¬²à­‡à¬–à¬¾',
-    'services.scholarship': 'à¬¸à­à¬•à­‹à¬²à¬¾à¬°à¬¸à¬¿à¬ªà­ (Scholarship)',
-    'services.scholarshipSub': 'à¬¬à­ƒà¬¤à­à¬¤à¬¿ à¬à¬¬à¬‚ à¬¸à­à¬•à­‹à¬²à¬¾à¬°à¬¸à¬¿à¬ªà­ à¬ªà­‹à¬°à­à¬Ÿà¬¾à¬²à­',
-    'services.certificates': 'à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬° (Certificates)',
-    'services.certificatesSub': 'à¬†à­Ÿ, à¬œà¬¾à¬¤à¬¿, à¬¸à­à¬¥à¬¾à­Ÿà­€ à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨ à¬à¬¬à¬‚ à¬œà¬¨à­à¬®',
-    'services.jobs': 'à¬¨à¬¿à¬¯à­à¬•à­à¬¤à¬¿ à¬à¬¬à¬‚ à¬šà¬¾à¬•à¬¿à¬°à¬¿ (Jobs)',
-    'services.jobsSub': 'à¬¸à¬°à¬•à¬¾à¬°à­€ à¬à¬¬à¬‚ à¬¬à­‡à¬¸à¬°à¬•à¬¾à¬°à­€ à¬¨à¬¿à¬¯à­à¬•à­à¬¤à¬¿',
-    'services.resume': 'à¬¬à¬¾à­Ÿà­‹à¬¡à¬¾à¬Ÿà¬¾ (My Resume)',
-    'services.resumeSub': 'à¬¡à¬¿à¬œà¬¿à¬Ÿà¬¾à¬²à­ à¬¸à¬¿à¬­à¬¿ à¬¬à¬¿à¬²à­à¬¡à¬°',
-    'services.autoFillNow': '1-à¬•à­à¬²à¬¿à¬•à­ à¬…à¬Ÿà­‹ à¬«à¬¿à¬²à­',
-    'services.previewForm': 'à¬¦à­‡à¬–à¬¨à­à¬¤à­ à¬à¬¬à¬‚ à¬†à¬¬à­‡à¬¦à¬¨ à¬•à¬°à¬¨à­à¬¤à­',
+    'services.all': 'ସମସ୍ତ ସେବା',
+    'services.admission': 'ନାମଲେଖା',
+    'services.admissionSub': 'ସ୍କୁଲ୍ ଓ କଲେଜ୍ ନାମଲେଖା',
+    'services.scholarship': 'ଛାତ୍ରବୃତ୍ତି',
+    'services.scholarshipSub': 'ଛାତ୍ରବୃତ୍ତି ଓ ଷ୍ଟାଇପେଣ୍ଡ ପୋର୍ଟାଲ୍',
+    'services.certificates': 'ପ୍ରମାଣପତ୍ର',
+    'services.certificatesSub': 'ଆୟ, ଜାତି, ବାସସ୍ଥାନ ଓ ଜନ୍ମ ପ୍ରମାଣପତ୍ର',
+    'services.jobs': 'ଚାକିରି ଓ ନିଯୁକ୍ତି',
+    'services.jobsSub': 'ସରକାରୀ ଓ ବେସରକାରୀ ନିଯୁକ୍ତି',
+    'services.resume': 'ମୋ ରିଜ୍ୟୁମ୍',
+    'services.resumeSub': 'ଡିଜିଟାଲ୍ ରିଜ୍ୟୁମ୍ ବିଲ୍ଡର୍',
+    'services.autoFillNow': '1-କ୍ଲିକ୍ ଅଟୋ ଫିଲ୍',
+    'services.previewForm': 'ପୂର୍ବାବଲୋକନ ଓ ଆବେଦନ',
 
     // Documents Page
-    'docs.title': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬­à¬²à­à¬Ÿ à¬à¬¬à¬‚ à¬¯à¬¾à¬žà­à¬š',
-    'docs.subtitle': '1-à¬•à­à¬²à¬¿à¬•à­ à¬«à¬°à­à¬® à¬…à¬Ÿà­‹-à¬«à¬¿à¬²à¬¿à¬‚ à¬ªà¬¾à¬‡à¬ à¬†à¬ªà¬£à¬™à­à¬• à¬†à¬¬à¬¶à­à­Ÿà¬•à­€à­Ÿ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œà¬•à­ à¬¸à­à¬°à¬•à­à¬·à¬¿à¬¤ à¬°à¬–à¬¨à­à¬¤à­à¥¤',
-    'docs.upload': 'à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ à¬…à¬ªà¬²à­‹à¬¡à­ à¬•à¬°à¬¨à­à¬¤à­',
-    'docs.aadhaar': 'à¬†à¬§à¬¾à¬° à¬•à¬¾à¬°à­à¬¡',
-    'docs.pan': 'à¬ªà­à­Ÿà¬¾à¬¨à­ à¬•à¬¾à¬°à­à¬¡',
-    'docs.marksheet': '10à¬®/12à¬¶ à¬®à¬¾à¬°à­à¬•à¬¸à¬¿à¬Ÿà­',
-    'docs.caste': 'à¬œà¬¾à¬¤à¬¿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
-    'docs.income': 'à¬†à­Ÿ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
-    'docs.residence': 'à¬¸à­à¬¥à¬¾à­Ÿà­€ à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°',
-    'docs.photo': 'à¬ªà¬¾à¬¸à¬ªà­‹à¬°à­à¬Ÿ à¬«à­‹à¬Ÿà­‹',
-    'docs.sign': 'à¬¡à¬¿à¬œà¬¿à¬Ÿà¬¾à¬²à­ à¬¦à¬¸à­à¬¤à¬–à¬¤',
+    'docs.title': 'ମୋ ଭଲ୍ଟ୍ ଓ ସତ୍ୟାପିତ ଦଲିଲ',
+    'docs.subtitle': '1-କ୍ଲିକ୍ ଫର୍ମ ଅଟୋ-ଫିଲ୍ ପାଇଁ ଆବଶ୍ୟକ ଦଲିଲ ସଂରକ୍ଷଣ ଓ ସତ୍ୟାପିତ କରନ୍ତୁ।',
+    'docs.upload': 'ଦଲିଲ ଅପଲୋଡ୍ କରନ୍ତୁ',
+    'docs.aadhaar': 'ଆଧାର କାର୍ଡ',
+    'docs.pan': 'ପାନ୍ କାର୍ଡ',
+    'docs.marksheet': 'ଶିକ୍ଷାଗତ ମାର୍କସିଟ୍',
+    'docs.caste': 'ଜାତି ପ୍ରମାଣପତ୍ର',
+    'docs.income': 'ଆୟ ପ୍ରମାଣପତ୍ର',
+    'docs.residence': 'ବାସସ୍ଥାନ ପ୍ରମାଣପତ୍ର',
+    'docs.photo': 'ପାସପୋର୍ଟ ଫଟୋ',
+    'docs.sign': 'ଡିଜିଟାଲ୍ ସ୍ୱାକ୍ଷର',
 
     // Profile Page
-    'profile.title': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬à¬¬à¬‚ à¬¬à¬¿à¬¬à¬°à¬£à­€',
-    'profile.subtitle': 'à¬¤à­à¬°à¬¨à­à¬¤ 1-à¬•à­à¬²à¬¿à¬•à­ à¬«à¬°à­à¬® à¬ªà­‚à¬°à¬£ à¬ªà¬¾à¬‡à¬ à¬†à¬ªà¬£à¬™à­à¬• à¬¯à¬¾à¬žà­à¬š à¬¹à­‹à¬‡à¬¥à¬¿à¬¬à¬¾ à¬¬à¬¿à¬¬à¬°à¬£à­€ à¬…à¬ªà¬¡à­‡à¬Ÿà­ à¬°à¬–à¬¨à­à¬¤à­à¥¤',
-    'profile.personal': '1. à¬¬à­à­Ÿà¬•à­à¬¤à¬¿à¬—à¬¤ à¬¬à¬¿à¬¬à¬°à¬£à­€',
-    'profile.address': '2. à¬ à¬¿à¬•à¬£à¬¾ à¬¬à¬¿à¬¬à¬°à¬£à­€',
-    'profile.qualification': '3. à¬¶à¬¿à¬•à­à¬·à¬¾à¬—à¬¤ à¬¯à­‹à¬—à­à­Ÿà¬¤à¬¾',
-    'profile.bank': '4. à¬¬à­à­Ÿà¬¾à¬™à­à¬• à¬–à¬¾à¬¤à¬¾ à¬¬à¬¿à¬¬à¬°à¬£à­€',
-    'profile.save': 'à¬ªà­à¬°à­‹à¬«à¬¾à¬‡à¬²à­ à¬¸à¬‚à¬°à¬•à­à¬·à¬£ à¬•à¬°à¬¨à­à¬¤à­',
-    'profile.myDocumentsBtn': 'à¬®à­‹à¬° à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ (MY DOCUMENTS)',
-    'profile.myDocumentsTitle': 'à¬®à­‹à¬° à¬¸à¬¤à­à­Ÿà¬¾à¬ªà¬¿à¬¤ à¬¦à¬¸à­à¬¤à¬¾à¬¬à¬¿à¬œ',
-    'profile.myDocumentsSub': 'à¬†à¬§à¬¾à¬°, à¬®à¬¨à­‹à¬¨à­€à¬¤ à¬¶à¬¿à¬•à­à¬·à¬¾à¬—à¬¤ à¬®à¬¾à¬°à­à¬•à¬¸à¬¿à¬Ÿà­ à¬à¬¬à¬‚ à¬ªà­à¬°à¬®à¬¾à¬£à¬ªà¬¤à­à¬°, à¬†à­Ÿ, à¬œà¬¾à¬¤à¬¿ à¬à¬¬à¬‚ à¬¬à¬¾à¬¸à¬¸à­à¬¥à¬¾à¬¨',
-    'services.listSubtitle': 'à¬¸à­‡à¬¬à¬¾ à¬—à­à¬¡à¬¼à¬¿à¬•à¬° à¬¤à¬¾à¬²à¬¿à¬•à¬¾',
+    'profile.title': 'ନାଗରିକ ପ୍ରୋଫାଇଲ୍ ଓ ପସନ୍ଦ',
+    'profile.subtitle': 'ତୁରନ୍ତ 1-କ୍ଲିକ୍ ଫର୍ମ ପୂରଣ ପାଇଁ ଆପଣଙ୍କ ସତ୍ୟାପିତ ତଥ୍ୟ ଅପଡେଟ୍ ରଖନ୍ତୁ।',
+    'profile.personal': '1. ବ୍ୟକ୍ତିଗତ ତଥ୍ୟ',
+    'profile.address': '2. ଠିକଣା ତଥ୍ୟ',
+    'profile.qualification': '3. ଶିକ୍ଷାଗତ ଯୋଗ୍ୟତା',
+    'profile.bank': '4. ବ୍ୟାଙ୍କ ଖାତା ବିବରଣୀ',
+    'profile.save': 'ପ୍ରୋଫାଇଲ୍ ପରିବର୍ତ୍ତନ ସଞ୍ଚୟ କରନ୍ତୁ',
+    'profile.myDocumentsBtn': 'ମୋ ଦଲିଲ',
+    'profile.myDocumentsTitle': 'ମୋ ସତ୍ୟାପିତ ଦଲିଲ',
+    'profile.myDocumentsSub': 'ଆଧାର, ଚୟନିତ ଶିକ୍ଷାଗତ ମାର୍କସିଟ୍ ଓ ପ୍ରମାଣପତ୍ର, ଆୟ, ଜାତି ଓ ବାସସ୍ଥାନ',
+    'services.listSubtitle': 'ଉପଲବ୍ଧ ସେବାର ତାଲିକା',
 
     // Modals
-    'modal.requestsTitle': 'à¬®à­‹à¬° à¬†à¬¬à­‡à¬¦à¬¨ à¬à¬¬à¬‚ à¬«à¬°à­à¬® à¬¸à­à¬¥à¬¿à¬¤à¬¿',
-    'modal.requestsDesc': 'à¬†à¬ªà¬£à¬™à­à¬• à¬†à¬¬à­‡à¬¦à¬¨à¬° à¬°à¬¿à¬…à¬²-à¬Ÿà¬¾à¬‡à¬®à­ à¬¸à­à¬¥à¬¿à¬¤à¬¿ à¬¦à­‡à¬–à¬¨à­à¬¤à­',
-    'modal.walletTitle': 'à¬¨à¬¾à¬—à¬°à¬¿à¬• à¬¡à¬¿à¬œà¬¿à¬Ÿà¬¾à¬²à­ à­±à¬¾à¬²à­‡à¬Ÿà­',
-    'modal.walletDesc': 'à¬¸à­‡à¬¬à¬¾ à¬«à¬¿ à¬ªà­à¬°à¬¦à¬¾à¬¨ à¬ªà¬¾à¬‡à¬ à¬ªà­‹à¬°à­à¬Ÿà¬¾à¬²à­ à¬¬à¬¾à¬²à¬¾à¬¨à­à¬¸ à¬ªà¬°à¬¿à¬šà¬¾à¬³à¬¨à¬¾ à¬•à¬°à¬¨à­à¬¤à­',
+    'modal.requestsTitle': 'ମୋ ଅନୁରୋଧ ଓ ଫର୍ମ ସବମିସନ୍',
+    'modal.requestsDesc': 'ଆପଣଙ୍କ ଆବେଦନର ବାସ୍ତବ ସମୟ ସ୍ଥିତି ଦେଖନ୍ତୁ',
+    'modal.walletTitle': 'ନାଗରିକ ଡିଜିଟାଲ୍ ୱାଲେଟ୍',
+    'modal.walletDesc': 'ସେବା ପ୍ରକ୍ରିୟାକରଣ ଶୁଳ୍କ ପାଇଁ ପୋର୍ଟାଲ୍ ବାଲାନ୍ସ ପରିଚାଳନା କରନ୍ତୁ',
   },
 };
 
@@ -267,24 +270,94 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
+  const getCurrentUserKey = (): string => {
     try {
-      const saved = localStorage.getItem('sff_language') as Language;
-      if (saved && (saved === 'en' || saved === 'hi' || saved === 'or')) {
+      const firebaseUid = auth.currentUser?.uid;
+
+      if (firebaseUid) {
+        return firebaseUid;
+      }
+
+      const storedUser = localStorage.getItem('sff_user');
+
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+
+        const key =
+          user?.uid ||
+          user?.firebaseUid ||
+          user?.sffUserId ||
+          user?.userId ||
+          user?.email ||
+          user?.mobile;
+
+        if (key) {
+          return String(key);
+        }
+      }
+    } catch (e) {
+      console.error('Unable to determine current user for language:', e);
+    }
+
+    return '';
+  };
+
+  const getLanguageStorageKey = (userKey: string): string => {
+    return userKey
+      ? `sff_language_${userKey.replace(/[^a-zA-Z0-9_.-]/g, '_').toLowerCase()}`
+      : 'sff_language_guest';
+  };
+
+  const getSavedLanguage = (userKey: string): Language => {
+    try {
+      const key = getLanguageStorageKey(userKey);
+      const saved = localStorage.getItem(key) as Language;
+
+      if (saved === 'en' || saved === 'hi' || saved === 'or') {
         return saved;
       }
     } catch (e) {
-      console.error(e);
+      console.error('Unable to load user language:', e);
     }
+
     return 'en';
+  };
+
+  const [userKey, setUserKey] = useState<string>(() => getCurrentUserKey());
+
+  const [language, setLanguageState] = useState<Language>(() => {
+    return getSavedLanguage(getCurrentUserKey());
   });
+
+  useEffect(() => {
+    const checkUser = () => {
+      const currentKey = getCurrentUserKey();
+
+      if (currentKey !== userKey) {
+        setUserKey(currentKey);
+        setLanguageState(getSavedLanguage(currentKey));
+      }
+    };
+
+    checkUser();
+
+    const interval = window.setInterval(checkUser, 500);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [userKey]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
+
     try {
-      localStorage.setItem('sff_language', lang);
+      const currentKey = getCurrentUserKey();
+      const storageKey = getLanguageStorageKey(currentKey);
+
+      localStorage.setItem(storageKey, lang);
     } catch (e) {
-      console.error(e);
+      console.error('Unable to save user language:', e);
     }
   };
 
@@ -292,9 +365,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (translations[language] && translations[language][key]) {
       return translations[language][key];
     }
+
     if (translations.en && translations.en[key]) {
       return translations.en[key];
     }
+
     return fallback || key;
   };
 
@@ -306,5 +381,3 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 };
 
 export const useLanguage = () => useContext(LanguageContext);
-
-

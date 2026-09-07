@@ -15,3 +15,6 @@ server-errors.txt
 
 # Firebase Admin private credentials
 firebase-service-account.json
+
+# SFF Android release signing key
+android/sff-release.keystore

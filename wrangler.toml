@@ -1,7 +1,0 @@
-name = "self-fill-forms"
-pages_build_output_dir = "./dist"
-compatibility_date = "2026-09-02"
-
-[[kv_namespaces]]
-binding = "SFF_OTP_STORE"
-id = "1581517c9bca45a8866c91b9acdba268"
