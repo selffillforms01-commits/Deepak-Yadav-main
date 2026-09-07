@@ -10,7 +10,7 @@ interface ForgotPasswordModalProps {
 
 export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen, onClose }) => {
   // Use the same API system as Registration
-  const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://self-fill-forms.pages.dev' : '';
+  const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://sff-backend-pycx.onrender.com' : '';
 
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -379,6 +379,7 @@ export const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({ isOpen
     </AnimatePresence>
   );
 };
+
 
 
 

@@ -27,7 +27,7 @@ import {
   checkUserAlreadyRegistered
 } from '../lib/firestoreService';
 
-const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://self-fill-forms.pages.dev' : '';
+const API_BASE_URL = Capacitor.isNativePlatform() ? 'https://sff-backend-pycx.onrender.com' : '';
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -804,6 +804,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
     </AnimatePresence>
   );
 };
+
 
 
 
