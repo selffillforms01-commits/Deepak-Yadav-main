@@ -16,14 +16,14 @@ import fs from 'fs';
 
 // Initialize Firebase in Node environment for backend persistence
 const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const firebaseAdminServiceAccountPath = path.join(
-  process.cwd(),
-  'firebase-service-account.json'
-);
-
-const firebaseAdminServiceAccount = JSON.parse(
-  fs.readFileSync(firebaseAdminServiceAccountPath, 'utf8')
-);
+const firebaseAdminServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_JSON
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON)
+  : JSON.parse(
+      fs.readFileSync(
+        path.join(process.cwd(), 'firebase-service-account.json'),
+        'utf8'
+      )
+    );
 
 const firebaseAdminApp = getAdminApps().length
   ? getAdminApps()[0]
@@ -581,6 +581,7 @@ ${JSON.stringify(history || [])}`
     res.status(500).json({ error: 'AI processing failed' });
   }
 });
+
 
 
 
