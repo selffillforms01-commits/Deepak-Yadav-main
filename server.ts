@@ -49,9 +49,6 @@ const gmailTransporter = nodemailer.createTransport({
   port: Number(process.env.SMTP_PORT || 587),
   secure: String(process.env.SMTP_SECURE || 'false').toLowerCase() === 'true',
   family: 4,
-  dnsLookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4 }, callback);
-  },
   auth: {
     user: process.env.SMTP_USER || '',
     pass: process.env.SMTP_PASS || '',
@@ -589,6 +586,7 @@ ${JSON.stringify(history || [])}`
     res.status(500).json({ error: 'AI processing failed' });
   }
 });
+
 
 
 
