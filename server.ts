@@ -1,4 +1,8 @@
-﻿import dotenv from 'dotenv';
+import dns from 'node:dns';
+
+dns.setDefaultResultOrder('ipv4first');
+
+import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
@@ -53,7 +57,7 @@ const gmailTransporter = nodemailer.createTransport({
 
 const app = express();
 
-// Global CORS handling — same behavior for Registration and Forgot Password OTP
+// Global CORS handling � same behavior for Registration and Forgot Password OTP
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
@@ -582,6 +586,7 @@ ${JSON.stringify(history || [])}`
     res.status(500).json({ error: 'AI processing failed' });
   }
 });
+
 
 
 
